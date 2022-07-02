@@ -6,4 +6,8 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+module.exports = {
+  images: {
+    domains: ['res.clodinary.com'],
+  },
+};
