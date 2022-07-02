@@ -4,6 +4,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { createCSRFSecret } from '../../util/auth';
 import { createSerializedRegisterSessionTokenCookie } from '../../util/cookies';
 import {
+  addEmailToDatabase,
   createSession,
   createUser,
   getUserByUsername,
@@ -27,11 +28,12 @@ export default async function handler(
       typeof req.body.username !== 'string' ||
       typeof req.body.password !== 'string' ||
       !req.body.username ||
-      !req.body.password
+      !req.body.password ||
+      !req.body.email
     ) {
-      res
-        .status(400)
-        .json({ errors: [{ message: 'username or password not provided' }] });
+      res.status(400).json({
+        errors: [{ message: 'email, username or password not provided' }],
+      });
       return;
     }
 
@@ -59,6 +61,8 @@ export default async function handler(
     const serializedCookie = await createSerializedRegisterSessionTokenCookie(
       session.token,
     );
+
+    const addEmail = await addEmailToDatabase(req.body.email, newUser.id);
 
     res
       .status(200)
