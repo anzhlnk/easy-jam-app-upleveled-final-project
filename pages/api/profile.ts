@@ -1,5 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getUserByValidSessionToken } from '../../util/database';
+import {
+  getUserByValidSessionToken,
+  getUserProfileImageByUserID,
+} from '../../util/database';
 
 export default async function handler(
   req: NextApiRequest,
@@ -18,6 +21,8 @@ export default async function handler(
 
     // to  get the user from the token
     const user = await getUserByValidSessionToken(token);
+    // to get the userPhoto
+    const profileImage = await getUserProfileImageByUserID(user.id);
 
     if (!user) {
       res
@@ -27,7 +32,7 @@ export default async function handler(
     }
 
     // to return the user
-    res.status(200).json({ user: user });
+    res.status(200).json({ user: user, profileImage: profileImage });
   } else {
     res.status(405).json({ errors: [{ message: 'Method not allowed' }] });
   }
