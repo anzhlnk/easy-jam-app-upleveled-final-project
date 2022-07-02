@@ -1,9 +1,11 @@
 import { css, Global } from '@emotion/react';
+import Head from 'next/head';
 import { useCallback, useEffect, useState } from 'react';
 import Layout from '../components/Layout';
 
 export default function App({ Component, pageProps }) {
   const [user, setUser] = useState();
+  const [profileImage, setProfileImage] = useState();
 
   const refreshUserProfile = useCallback(async () => {
     const profileResponse = await fetch('/api/profile');
@@ -12,6 +14,7 @@ export default function App({ Component, pageProps }) {
 
     if (!('errors' in profileResponseBody)) {
       setUser(profileResponseBody.user);
+      setProfileImage(profileResponseBody.profileImage);
     } else {
       profileResponseBody.errors.forEach((error) => console.log(error.message));
       setUser(undefined);
@@ -24,6 +27,9 @@ export default function App({ Component, pageProps }) {
 
   return (
     <>
+      <Head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      </Head>
       <Global
         styles={css`
           html,
@@ -39,7 +45,7 @@ export default function App({ Component, pageProps }) {
           }
         `}
       />
-      <Layout user={user}>
+      <Layout user={user} profileImage={profileImage}>
         <Component {...pageProps} refreshUserProfile={refreshUserProfile} />
       </Layout>
     </>
