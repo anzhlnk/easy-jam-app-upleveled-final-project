@@ -30,7 +30,8 @@
     "**/*.jsx",
     "**/*.cjs",
     "**/*.mjs",
-    "util/cookies.tx"
+    "util/cookies.tx",
+    "components/Form"
   ],
   "exclude": ["node_modules", "build"]
 }
