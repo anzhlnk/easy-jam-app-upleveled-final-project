@@ -4,51 +4,67 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { RegisterResponseBody } from './api/register';
+import { errorMessage } from './login';
 
-const inputContainer = css`
+export const main = css`
+  width: 100vw;
+  height: 100vh;
+  margin: 0px;
+  padding: 0px;
+  position: relative;
+
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 16px;
-
-  input {
-    flex: none;
-    order: 0;
-    align-self: stretch;
-    flex-grow: 0;
-    background: #f8fafd;
-    border: 1px solid #e7ecf3;
-    border-radius: 25px;
-    padding: 16px 0px;
-
-    //font
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 24px;
-    letter-spacing: -0.25px;
-    padding-left: 16px;
-  }
+  justify-content: start;
+  align-items: center;
 `;
 
-const signUpButton = css`
+export const title = css`
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 28px;
+  text-align: center;
+  letter-spacing: -1px;
+  color: #1d232e;
+  margin-bottom: 2em;
+`;
+
+export const inputContainer = css`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 16px 32px;
-  gap: 12px;
+  justify-content: center;
+  padding: 0px;
+  margin: 0px;
+  width: 100vw;
 
-  position: absolute;
-  height: 56px;
-  left: 24px;
-  right: 24px;
-  bottom: 342px;
+  input {
+    width: 25em;
+    height: 50px;
+    margin-top: 1em;
+    box-sizing: border-box;
 
-  background: #92969a;
-  border-radius: 25px;
+    background: #f8fafd;
+    /* Text/200 */
+    border: 1px solid #e7ecf3;
+    border-radius: 25px;
+    padding-left: 2em;
+  }
+  button {
+    width: 21em;
+    margin-top: 8em;
+    box-sizing: border-box;
+    border-radius: 25px;
 
-  span {
+    padding: 16px 32px;
+    gap: 12px;
+    border: none;
+
+    background: #92969a;
+    border-radius: 25px;
+
     font-family: 'Inter';
     font-style: normal;
     font-weight: 500;
@@ -58,12 +74,17 @@ const signUpButton = css`
     letter-spacing: -0.25px;
     color: #ffffff;
   }
+
+  button:active {
+    background: #68107a;
+  }
 `;
 
 type Props = {
   refreshUserProfile: () => Promise<void>;
 };
 export default function Register(props: Props) {
+  const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState<
@@ -80,6 +101,7 @@ export default function Register(props: Props) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
+        email: email,
         username: username,
         password: password,
       }),
@@ -87,8 +109,6 @@ export default function Register(props: Props) {
 
     const registerResponseBody: RegisterResponseBody =
       await registerResponse.json();
-
-    console.log(registerResponseBody);
 
     // in case there is an error
     if ('errors' in registerResponseBody) {
@@ -110,7 +130,7 @@ export default function Register(props: Props) {
       // redirect user to user profile
 
       await props.refreshUserProfile();
-      await router.push('/register-process');
+      await router.push('/form');
     }
   }
 
@@ -121,9 +141,15 @@ export default function Register(props: Props) {
         <meta name="sign up" content="Register a new user" />
       </Head>
 
-      <main>
-        <h1>Sign up</h1>
+      <main css={main}>
+        <h1 css={title}>Sign up</h1>
         <div css={inputContainer}>
+          <input
+            placeholder="email"
+            onChange={(event) => {
+              setEmail(event.currentTarget.value);
+            }}
+          />
           <input
             placeholder="Username"
             onChange={(event) => {
@@ -136,13 +162,21 @@ export default function Register(props: Props) {
             onChange={(event) => {
               setPassword(event.currentTarget.value);
             }}
+            type="password"
+            id="pswrd"
+            name="pswrd"
+            pattern="[a-z]{0,9}"
+            title="Password should be digits (0 to 9) or alphabets (a to z)"
           />
+          <button onClick={() => registerHandler()}>
+            <span>Sign Up</span>
+          </button>
         </div>
-        <button onClick={() => registerHandler()} css={signUpButton}>
-          <span>Sign Up</span>
-        </button>
+
         {errors.map((error) => (
-          <div key={`error-${error.message}`}>{error.message}</div>
+          <div key={`error-${error.message}`} css={errorMessage}>
+            {error.message}
+          </div>
         ))}
       </main>
     </div>
