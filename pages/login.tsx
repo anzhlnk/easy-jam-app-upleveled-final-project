@@ -29,6 +29,7 @@ const title = css`
     letter-spacing: -1px;
     color: #1d232e;
     margin-bottom: 2em;
+    margin-top: 24px;
   }
 `;
 
@@ -187,6 +188,7 @@ export default function Login(props: Props) {
               placeholder="Username"
             />
             <input
+              type="password"
               name="pswrd"
               pattern="[a-z]{0,9}"
               value={password}
