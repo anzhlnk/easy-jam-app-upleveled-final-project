@@ -20,8 +20,8 @@ export default async function handler(
     }
 
     // to  get the user from the token
+
     const user = await getUserByValidSessionToken(token);
-    // to get the userPhoto
     const profileImage = await getUserProfileImageByUserID(user.id);
 
     if (!user) {
