@@ -1,13 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { verifyCsrfToken } from '../../../util/auth';
-import {
-  addRequiredGender,
-  addRequiredInstrument,
-  deleteRequiredGender,
-  deleteRequiredInstrument,
-  getValidSessionByToken,
-  updateStatus,
-} from '../../../util/database';
+import { getValidSessionByToken, updateStatus } from '../../../util/database';
 
 export default async function handler(
   req: NextApiRequest,
@@ -15,7 +8,7 @@ export default async function handler(
 ) {
   if (!req.body.csrfToken) {
     return res.status(400).json({
-      error: 'no csrf token Found',
+      errors: [{ message: 'no csrf token Found' }],
     });
   }
 
@@ -29,13 +22,13 @@ export default async function handler(
 
   if (!session) {
     return res.status(403).json({
-      error: 'unauthorized user',
+      errors: [{ message: 'unauthorized user' }],
     });
   }
   // 4.  validate the csrf token against the seed we have in the database
   if (!(await verifyCsrfToken(session.csrfSecret, csrfToken))) {
     return res.status(403).json({
-      error: 'csrf is not valid',
+      errors: [{ message: 'csrf is not valid' }],
     });
   }
 
@@ -52,6 +45,6 @@ export default async function handler(
 
   // if a method not allowed is used
   res.status(405).json({
-    error: 'Method not allowed',
+    errors: [{ message: 'Method not allowed' }],
   });
 }
