@@ -9,6 +9,8 @@ export const prevButtonContainer = css`
   justify-content: start;
   align-items: left;
   width: 21em;
+  margin-top: -64px;
+  z-index: 0;
 `;
 
 export const prevButton = css`
@@ -16,18 +18,22 @@ export const prevButton = css`
   align-items: center;
   justify-content: center;
 
-  height: 53px;
-  width: 53px;
-  background: #92969a;
+  height: 24px;
+  width: 24px;
+
   border-radius: 100px;
   border: none;
-  color: #ffffff;
+  background: none;
+  z-index: 1;
+  margin-bottom: 38px;
 `;
-const datePickerContainer = css`
+export const datePickerContainer = css`
   display: flex;
   justify-content: center;
   align-items: center;
+
   margin-bottom: 10em;
+
   .date-picker {
     width: 100%;
     input {
@@ -53,6 +59,21 @@ const datePickerContainer = css`
     }
   }
 `;
+
+export const headerContainer = css`
+  z-index: 0;
+  @media (min-width: 500px) {
+    width: 50vw;
+  }
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-top: 24px;
+`;
+
 const Second = ({ nextPage, prevPage, handleFormData, values }) => {
   const submitFormData = (e) => {
     e.preventDefault();
@@ -66,10 +87,16 @@ const Second = ({ nextPage, prevPage, handleFormData, values }) => {
 
   return (
     <form onSubmit={submitFormData} css={main}>
-      <h1 css={title}>I was born on...</h1>
+      <div css={headerContainer}>
+        <h1 css={title}>I was born on...</h1>
+      </div>
       <div css={prevButtonContainer}>
         <button onClick={prevPage} css={prevButton}>
-          {'<'}
+          <img
+            src="/back-icon.png"
+            alt="back button"
+            style={{ width: 24, height: 24 }}
+          />
         </button>
       </div>
       <div css={datePickerContainer}>

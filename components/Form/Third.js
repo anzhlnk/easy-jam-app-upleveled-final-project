@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import { useState } from 'react';
 import { main, title } from '../../pages/register';
 import { nextButton, nextButtonContainer } from './First';
-import { prevButton, prevButtonContainer } from './Second';
+import { headerContainer, prevButton, prevButtonContainer } from './Second';
 
 export const inputContainer = css`
   display: flex;
@@ -13,15 +13,19 @@ export const inputContainer = css`
   margin: 0px;
 
   input {
-    width: 25em;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
     height: 50px;
     margin-top: 2em;
     box-sizing: border-box;
-
     border: 1px solid #e7ecf3;
     border-radius: 25px;
 
     accent-color: #68107a;
+  }
+  span {
+    margin-top: 0.5em;
   }
 `;
 
@@ -41,55 +45,59 @@ const Third = ({ nextPage, prevPage, handleFormData, values, genders }) => {
 
   return (
     <form onSubmit={submitFormData} css={main}>
-      <div>
+      <div css={headerContainer}>
         <h1 css={title}>I identify as...</h1>
-        <div css={prevButtonContainer}>
-          <button onClick={prevPage} css={prevButton}>
-            {'<'}
-          </button>
+      </div>
+      <div css={prevButtonContainer}>
+        <button onClick={prevPage} css={prevButton}>
+          <img
+            src="/back-icon.png"
+            alt="back button"
+            style={{ width: 24, height: 24 }}
+          />
+        </button>
+      </div>
+      <div>
+        <div css={inputContainer}>
+          <input
+            type="radio"
+            name="gender"
+            value={genders[0].id}
+            checked={Number(values.gender) === genders[0].id}
+            onChange={(e) => {
+              handleFormData('gender', e.currentTarget.value);
+            }}
+          />
+          <span> {genders[0].genderName}</span>
         </div>
-        <div>
-          <div css={inputContainer}>
-            <input
-              type="radio"
-              name="gender"
-              value={genders[0].id}
-              checked={Number(values.gender) === genders[0].id}
-              onChange={(e) => {
-                handleFormData('gender', e.currentTarget.value);
-              }}
-            />
-            {genders[0].genderName}
-          </div>
-          <div css={inputContainer}>
-            <input
-              type="radio"
-              name="gender"
-              value={genders[1].id}
-              checked={Number(values.gender) === genders[1].id}
-              onChange={(e) => {
-                handleFormData('gender', e.currentTarget.value);
-              }}
-            />
-            {genders[1].genderName}
-          </div>
-          <div className="radio-btn" css={inputContainer}>
-            <input
-              type="radio"
-              value={genders[2].id}
-              checked={Number(values.gender) === genders[2].id}
-              onChange={(e) => {
-                handleFormData('gender', e.currentTarget.value);
-              }}
-            />
-            {genders[2].genderName}
-          </div>
+        <div css={inputContainer}>
+          <input
+            type="radio"
+            name="gender"
+            value={genders[1].id}
+            checked={Number(values.gender) === genders[1].id}
+            onChange={(e) => {
+              handleFormData('gender', e.currentTarget.value);
+            }}
+          />
+          <span>{genders[1].genderName}</span>
         </div>
-        <div css={nextButtonContainer}>
-          <button type="submit" css={nextButton}>
-            {'>'}
-          </button>
+        <div className="radio-btn" css={inputContainer}>
+          <input
+            type="radio"
+            value={genders[2].id}
+            checked={Number(values.gender) === genders[2].id}
+            onChange={(e) => {
+              handleFormData('gender', e.currentTarget.value);
+            }}
+          />
+          <span> {genders[2].genderName}</span>
         </div>
+      </div>
+      <div css={nextButtonContainer}>
+        <button type="submit" css={nextButton}>
+          {'>'}
+        </button>
       </div>
     </form>
   );

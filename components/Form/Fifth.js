@@ -3,7 +3,7 @@ import Select from 'react-select';
 import { errorMessage } from '../../pages/login';
 import { main, title } from '../../pages/register';
 import { contentContainer, nextButton, nextButtonContainer } from './First';
-import { prevButton, prevButtonContainer } from './Second';
+import { headerContainer, prevButton, prevButtonContainer } from './Second';
 import { inputContainer } from './Third';
 
 const customStyles = {
@@ -42,11 +42,17 @@ const Fifth = ({ nextPage, prevPage, handleFormData, values, genres }) => {
 
   return (
     <form onSubmit={submitFormData} css={main}>
-      <h1 css={title}>The genres I’d like to play...</h1>
+      <div css={headerContainer}>
+        <h1 css={title}>The genres I’d like to play ...</h1>
+      </div>
       <div css={contentContainer}>
         <div css={prevButtonContainer}>
           <button onClick={prevPage} css={prevButton}>
-            {'<'}
+            <img
+              src="/back-icon.png"
+              alt="back button"
+              style={{ width: 24, height: 24 }}
+            />
           </button>
         </div>
         <div css={inputContainer}>

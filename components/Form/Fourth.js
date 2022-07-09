@@ -3,8 +3,8 @@ import { useState } from 'react';
 import Select from 'react-select';
 import { errorMessage } from '../../pages/login';
 import { main, title } from '../../pages/register';
-import { contentContainer, nextButton, nextButtonContainer } from './First';
-import { prevButton, prevButtonContainer } from './Second';
+import { nextButton, nextButtonContainer } from './First';
+import { headerContainer, prevButton, prevButtonContainer } from './Second';
 import { inputContainer } from './Third';
 
 const customStyles = {
@@ -53,48 +53,54 @@ const Fourth = ({
 
   return (
     <form onSubmit={submitFormData} css={main}>
-      <h1 css={title}>The instrument(s) I’d like to play while jamming...</h1>
-      <div css={contentContainer}>
-        <div css={prevButtonContainer}>
-          <button onClick={prevPage} css={prevButton}>
-            {'<'}
-          </button>
-        </div>
-        <div css={inputContainer}>
-          <Select
-            styles={customStyles}
-            id="instrument-multi-select"
-            instanceId="instrument-multi-select"
-            isMulti
-            options={displayedInstrumentOptions.filter(
-              (option) =>
-                values.instrument.map((x) => x.value).indexOf(option.value) ===
-                -1,
-            )}
-            value={
-              displayedInstrumentOptions.length === values.instrument.length + 1 // all instruments selected
-                ? { label: 'All Instruments', value: 'All Instruments' }
-                : values.instrument.map((x) => {
-                    return { value: x.value, label: x.label };
-                  })
-            }
-            placeholder="Select Instruments"
-            onChange={(data) => {
-              handleFormData(
-                'instrument',
-                data.find((option) => option.value === 'all')
-                  ? displayedInstrumentOptions.slice(1) // give entire {label: "sax/piano", value: 1/2/3} object
-                  : data,
-              );
-            }}
-          />
-        </div>
-        {error ? (
-          <div css={errorMessage}>Please add at least 1 instrument</div>
-        ) : (
-          ''
-        )}
+      <div css={headerContainer}>
+        <h1 css={title}>The instrument(s) I’d like to play ...</h1>
       </div>
+
+      <div css={prevButtonContainer}>
+        <button onClick={prevPage} css={prevButton}>
+          <img
+            src="/back-icon.png"
+            alt="back button"
+            style={{ width: 24, height: 24 }}
+          />
+        </button>
+      </div>
+      <div css={inputContainer}>
+        <Select
+          styles={customStyles}
+          id="instrument-multi-select"
+          instanceId="instrument-multi-select"
+          isMulti
+          options={displayedInstrumentOptions.filter(
+            (option) =>
+              values.instrument.map((x) => x.value).indexOf(option.value) ===
+              -1,
+          )}
+          value={
+            displayedInstrumentOptions.length === values.instrument.length + 1 // all instruments selected
+              ? { label: 'All Instruments', value: 'All Instruments' }
+              : values.instrument.map((x) => {
+                  return { value: x.value, label: x.label };
+                })
+          }
+          placeholder="Select Instruments"
+          onChange={(data) => {
+            handleFormData(
+              'instrument',
+              data.find((option) => option.value === 'all')
+                ? displayedInstrumentOptions.slice(1) // give entire {label: "sax/piano", value: 1/2/3} object
+                : data,
+            );
+          }}
+        />
+      </div>
+      {error ? (
+        <div css={errorMessage}>Please add at least 1 instrument</div>
+      ) : (
+        ''
+      )}
+
       <div css={nextButtonContainer}>
         <button type="submit" css={nextButton}>
           {'>'}

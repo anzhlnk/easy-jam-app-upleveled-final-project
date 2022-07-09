@@ -3,6 +3,7 @@ import { useState } from 'react';
 import validator from 'validator';
 import { errorMessage } from '../../pages/login';
 import { inputContainer, main, title } from '../../pages/register';
+import { headerContainer } from './Second';
 
 export const contentContainer = css`
   display: flex;
@@ -14,6 +15,11 @@ export const nextButtonContainer = css`
   display: flex;
   justify-content: right;
   width: 21em;
+  position: fixed;
+  bottom: 8em;
+  @media (min-width: 500px) {
+    bottom: 40em;
+  }
 `;
 
 export const nextButton = css`
@@ -50,7 +56,9 @@ const First = ({ nextPage, handleFormData, values }) => {
 
   return (
     <form onSubmit={submitFormData} css={main}>
-      <h1 css={title}>My name is...</h1>
+      <div css={headerContainer}>
+        <h1 css={title}>My name is...</h1>
+      </div>
       <div css={contentContainer}>
         <div css={inputContainer}>
           <input
