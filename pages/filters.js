@@ -2,12 +2,12 @@ import 'rc-slider/assets/index.css';
 import 'react-datepicker/dist/react-datepicker.css';
 import { css } from '@emotion/react';
 import Head from 'next/head';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Slider from 'rc-slider';
 import { useState } from 'react';
 import Select from 'react-select';
 import { nextButton } from '../components/Form/First';
+import { headerContainer } from '../components/Form/Second';
 import { main, title } from '../pages/register';
 import { createCsrfToken } from '../util/auth';
 import {
@@ -26,7 +26,7 @@ import {
 import { errorMessage } from './login';
 
 const container = css`
-  margin-top: 24px;
+  margin-top: 20px;
 `;
 
 const buttonContainer = css`
@@ -40,8 +40,38 @@ const contentContainer = css`
 `;
 
 const statusVisibility = css`
-  width: 6vw;
+  margin-top: 16px;
+  width: 36px;
+  height: 20px;
+  background: linear-gradient(#fff, #fff) padding-box,
+    linear-gradient(45deg, #f7ff26, #4dfb34, #18fdef) border-box;
+  border: 2px solid transparent;
+  border-radius: 50px;
 `;
+
+const inputs = css`
+  margin-top: 8px;
+`;
+
+export const nextButtonContainer = css`
+  display: flex;
+  justify-content: right;
+`;
+
+const valueText = css`
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 24px;
+  text-align: left;
+  letter-spacing: -0.25px;
+
+  color: #3b3c3d;
+
+  opacity: 0.29;
+`;
+
 export default function Filters(props) {
   const [errors, setErrors] = useState([]);
   const [error, setError] = useState(false);
@@ -388,12 +418,12 @@ export default function Filters(props) {
       </Head>
       <main>
         <form css={main} onSubmit={submitFormData}>
-          <div>
+          <div css={headerContainer}>
             <h1 css={title}>Start discovering</h1>
           </div>
           <div css={contentContainer}>
             <div css={container}>
-              <span>Visible</span>
+              <span>Status</span>
               <Slider
                 range
                 className="t-slider"
@@ -404,11 +434,23 @@ export default function Filters(props) {
                 onChange={handleChangeStatus}
                 allowCross={false}
                 css={statusVisibility}
+                handleStyle={{
+                  borderColor: '#18fdef',
+                  height: 22,
+                  width: 22,
+                  marginTop: -8,
+                }}
               />
+              {valueVisible === 1 ? (
+                <div css={valueText}>visible in the search</div>
+              ) : (
+                <div css={valueText}>not visible in the search</div>
+              )}
             </div>
             <div css={container}>
               <span>Instrument</span>
               <Select
+                css={inputs}
                 id="instrument-multi-select"
                 instanceId="instrument-multi-select"
                 isMulti
@@ -431,6 +473,7 @@ export default function Filters(props) {
             <div css={container}>
               <span>Gender</span>
               <Select
+                css={inputs}
                 id="gender-multi-select"
                 instanceId="gender-multi-select"
                 isMulti
@@ -453,6 +496,7 @@ export default function Filters(props) {
             <div css={container}>
               <span>Age range</span>{' '}
               <Slider
+                css={inputs}
                 range
                 className="t-slider"
                 min={12}
@@ -461,11 +505,26 @@ export default function Filters(props) {
                 step={1}
                 onChange={handleChangeRequiredAge}
                 allowCross={false}
+                trackStyle={{
+                  backgroundColor: '#CACACA',
+                }}
+                handleStyle={{
+                  borderColor: '#18fdef',
+                  height: 16,
+                  width: 16,
+                }}
               />
+            </div>
+            <div css={valueText}>
+              from {valueAgeRange[0]} to {valueAgeRange[1]}
             </div>
             <div css={container}>
               <span>Distance</span>
               <Slider
+                css={inputs}
+                trackStyle={{
+                  backgroundColor: '#CACACA',
+                }}
                 className="t-slider"
                 min={1}
                 max={100}
@@ -473,17 +532,37 @@ export default function Filters(props) {
                 step={1}
                 onChange={handleChangeDistance}
                 allowCross={false}
+                handleStyle={{
+                  borderColor: '#18fdef',
+                  height: 16,
+                  width: 16,
+                }}
               />
             </div>
+            <div css={valueText}>up to {valueDistanceSlider} km</div>
             {error ? (
               <div css={errorMessage}>Please, add instruments and genders</div>
             ) : (
               ''
             )}
-            {/* onClick={buttonHandler}  */}
-            <button css={nextButton} onClick={buttonHandler}>
-              {'✔'}
-            </button>
+            <div css={nextButtonContainer}>
+              <button
+                css={nextButton}
+                onClick={buttonHandler}
+                style={{ marginTop: 36 }}
+              >
+                <img
+                  src="/tick_icon.png"
+                  alt="tick icon"
+                  style={{ width: 20, height: 18 }}
+                />
+              </button>
+            </div>
+            {errors.map((error) => (
+              <div key={`error-${error.message}`} css={errorMessage}>
+                {error.message}
+              </div>
+            ))}
           </div>
         </form>
       </main>
