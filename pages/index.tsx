@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
 
@@ -145,4 +146,21 @@ export default function Home() {
       </main>
     </div>
   );
+}
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const token = context.req.cookies.sessionToken;
+
+  // if there is a token, redirect to discovert
+  if (token) {
+    return {
+      redirect: {
+        destination: `/discovery`,
+      },
+    };
+  } else {
+    return {
+      props: {},
+    };
+  }
 }
