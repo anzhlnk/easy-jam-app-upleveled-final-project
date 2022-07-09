@@ -8,7 +8,6 @@ import { errorMessage } from './login';
 
 export const main = css`
   width: 100vw;
-  height: 100vh;
   margin: 0px;
   padding: 0px;
   position: relative;
@@ -45,12 +44,14 @@ export const inputContainer = css`
     height: 50px;
     margin-top: 1em;
     box-sizing: border-box;
-
     background: #f8fafd;
-    /* Text/200 */
     border: 1px solid #e7ecf3;
     border-radius: 25px;
     padding-left: 2em;
+  }
+  input:active,
+  input:focus {
+    outline-color: #68107a;
   }
   button {
     width: 21em;
@@ -142,7 +143,9 @@ export default function Register(props: Props) {
       </Head>
 
       <main css={main}>
-        <h1 css={title}>Sign up</h1>
+        <h1 css={title} style={{ marginTop: 24 }}>
+          Sign up
+        </h1>
         <div css={inputContainer}>
           <input
             placeholder="email"
