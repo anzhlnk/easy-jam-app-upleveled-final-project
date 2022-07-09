@@ -42,6 +42,8 @@ export default function App({ Component, pageProps }) {
 
           * {
             box-sizing: border-box;
+            margin: 0px;
+            padding: 0px;
           }
         `}
       />
