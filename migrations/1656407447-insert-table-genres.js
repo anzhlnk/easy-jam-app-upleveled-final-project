@@ -33,7 +33,7 @@ const genreDatabase = [
   },
   {
     id: '9',
-    genre_name: 'rhythm and blues',
+    genre_name: 'r&b',
   },
   {
     id: '10',
@@ -78,7 +78,7 @@ const genreDatabase = [
   },
   {
     id: '19',
-    genre_name: 'electronic music',
+    genre_name: 'electronic',
   },
   {
     id: '20',
