@@ -5,7 +5,6 @@ const instrumentDatabase = [
   { instrument_name: 'drums' },
   { instrument_name: 'saxophone' },
   { instrument_name: 'flute' },
-  { instrument_name: 'cello' },
   { instrument_name: 'trumpet' },
   { instrument_name: 'harp' },
   { instrument_name: 'synthesizer' },
