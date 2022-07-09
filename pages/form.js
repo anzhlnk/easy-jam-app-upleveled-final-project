@@ -226,6 +226,7 @@ export async function getServerSideProps(context) {
   const user = await getUserByValidSessionToken(
     context.req.cookies.sessionToken,
   );
+  console.log('user', user);
 
   if (!session) {
     return {
@@ -238,7 +239,9 @@ export async function getServerSideProps(context) {
   const instruments = await getInstruments();
   const genres = await getGenres();
   const genders = await getGenders();
+
   const dataId = await getPersonalDataIDByUserId(user.id);
+  console.log('dataId', dataId);
 
   return {
     props: {
