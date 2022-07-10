@@ -1,8 +1,13 @@
 import { css } from '@emotion/react';
+import { useLoadScript } from '@react-google-maps/api';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import DatePicker from 'react-datepicker';
+import PlacesAutocomplete, {
+  geocodeByAddress,
+  getLatLng,
+} from 'react-places-autocomplete';
 import validator from 'validator';
 import { datePickerContainer } from '../../../components/Form/Second';
 import { errorMessage } from '../../../pages/login';
@@ -104,6 +109,7 @@ export const inputContainer = css`
 `;
 
 export default function UpdatePersonalInfo(props) {
+  const libraries = ['places'];
   const dateOfBirth = Date.parse(props.userBirthday);
   const [error, setError] = useState(false);
   const [errors, setErrors] = useState('');
@@ -111,14 +117,34 @@ export default function UpdatePersonalInfo(props) {
   const [lastName, setLastName] = useState(props.personalData.lastName);
   const [birthday, setBirthday] = useState(dateOfBirth);
   const [location, setLocation] = useState(props.personalData.address);
+  const [lat, setLat] = useState(props.personalData.latitude);
+  const [lng, setLng] = useState(props.personalData.longitude);
   const router = useRouter();
 
-  console.log('birthday', birthday);
+  const { isLoaded, loadError } = useLoadScript({
+    googleMapsApiKey: props.googleAPI,
+    libraries,
+  });
+
+  if (loadError) return 'Error loading maps';
+  if (!isLoaded) return 'Loading Maps';
 
   let twelveYearsAgo = new Date();
   twelveYearsAgo = twelveYearsAgo.setFullYear(
     twelveYearsAgo.getFullYear() - 12,
   );
+
+  const handleChange = (value) => {
+    setLocation(value);
+  };
+
+  const handleSelect = async (value) => {
+    const results = await geocodeByAddress(value);
+    const latLng = await getLatLng(results[0]);
+    setLocation(value);
+    setLat(latLng.lat);
+    setLng(latLng.lng);
+  };
 
   const submitFormData = (e) => {
     if (
@@ -137,6 +163,8 @@ export default function UpdatePersonalInfo(props) {
       lastName: lastName,
       birthday: birthday,
       location: location,
+      longitude:lng,
+      latitude:lat,
       csrfToken: props.csrfToken,
     });
     console.log('request', body);
@@ -150,6 +178,8 @@ export default function UpdatePersonalInfo(props) {
         lastName: lastName,
         birthday: birthday,
         location: location,
+        longitude:lng,
+        latitude:lat,
         csrfToken: props.csrfToken,
       }),
     });
@@ -189,12 +219,47 @@ export default function UpdatePersonalInfo(props) {
           onChange={(event) => setLastName(event.currentTarget.value)}
           defaultValue={lastName}
         />
-        <input
-          type="text"
-          placeholder="location"
-          onChange={(event) => setLocation(event.currentTarget.value)}
-          defaultValue={location}
-        />
+        <PlacesAutocomplete
+          value={location}
+          onChange={handleChange}
+          onSelect={handleSelect}
+        >
+          {({
+            getInputProps,
+            suggestions,
+            getSuggestionItemProps,
+            loading,
+          }) => (
+            <div css={inputContainer}>
+              <input {...getInputProps({ placeholder: 'address' })} />
+              <div>
+                {loading && <div>Loading...</div>}
+                {suggestions.map((suggestion) => {
+                  const style = {
+                    background: suggestion.active ? '#d9dbdb' : '#fff',
+                    width: '20em',
+                    marginTop: 12,
+                    marginBottom: 12,
+                    paddingTop: 4,
+                    paddingBottom: 4,
+                    fontFamily: 'Inter',
+                    fontWeight: 500,
+                    fontSize: 14,
+                    color: '#5d6470',
+                  };
+
+                  return (
+                    <div key={`li-suggestion-${suggestion.placeId}`}>
+                      <div {...getSuggestionItemProps(suggestion, { style })}>
+                        {suggestion.description}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+        </PlacesAutocomplete>
         <div css={datePickerContainer}>
           <DatePicker
             wrapperClassName="date-picker"
@@ -241,8 +306,7 @@ export async function getServerSideProps(context) {
   const personalData = await getUserPersonalData(dataId);
 
   const userBirthday = await getUserBirthday(dataId);
-
-  console.log('birthday', userBirthday);
+  const googleAPI = process.env.GOOGLE_API_KEY;
 
   console.log(personalData);
   if (user) {
@@ -252,6 +316,7 @@ export async function getServerSideProps(context) {
         dataId: dataId,
         personalData: personalData,
         userBirthday: JSON.parse(JSON.stringify(userBirthday)),
+        googleAPI: googleAPI,
       },
     };
   }

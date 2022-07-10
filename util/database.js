@@ -144,6 +144,8 @@ export async function getUserPersonalData(userId) {
     personal_data.last_name AS last_name,
     extract(year from age(personal_data.birthday))  AS age,
     locations.address AS address,
+    locations.longitude as longitude,
+    locations.latitude as  latitude,
     personal_data.short_description AS short_description,
     personal_data.about_me AS about_me,
     personal_data.profile_picture_url AS profile_picture_url,
@@ -957,6 +959,8 @@ export async function updatePersonalDataFromAccount(
   birthday,
   locationId,
   location,
+  longitude,
+  latitude,
 ) {
   const profileData = await sql`
 UPDATE
@@ -973,7 +977,9 @@ personal_data
 UPDATE
 locations
     SET
-      address = ${location}
+      address = ${location},
+      longitude = ${longitude},
+      latitude = ${latitude}
     WHERE
       id = ${locationId}
     RETURNING *;

@@ -1,11 +1,13 @@
+import 'react-datepicker/dist/react-datepicker.css';
 import Head from 'next/head';
 import { useState } from 'react';
+import DatePicker from 'react-datepicker';
 
 export default function UserProfile() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
-  const [birthday, setBirthday] = useState('');
+
   const [gender, setGender] = useState('');
   const [instrument, setInstrument] = useState('');
   const [genre, setGenre] = useState('');
@@ -16,6 +18,11 @@ export default function UserProfile() {
 
   const toggleHandler = (id) => () => setActive(id);
 
+  let twelveYearsAgo = new Date();
+  twelveYearsAgo = twelveYearsAgo.setFullYear(
+    twelveYearsAgo.getFullYear() - 12,
+  );
+  const [birthday, setBirthday] = useState(new Date(twelveYearsAgo));
   return (
     <div>
       <Head>
@@ -29,16 +36,22 @@ export default function UserProfile() {
             <h1>My name is...</h1>
             <div>
               <input
+                type="text"
                 placeholder="First name"
                 onChange={(event) => {
                   setFirstName(event.currentTarget.value);
                 }}
+                required
+                pattern="[A-Za-z]"
               />
               <input
+                type="text"
                 placeholder="Last name"
                 onChange={(event) => {
                   setLastName(event.currentTarget.value);
                 }}
+                required
+                pattern="[A-Za-z]"
               />
             </div>
             <button onClick={toggleHandler(1)}> {'>'} </button>
@@ -49,11 +62,16 @@ export default function UserProfile() {
           <div>
             <button onClick={toggleHandler(0)}> back </button>
             <h1>I was born on...</h1>
-            <input
-              placeholder="birthday"
-              onChange={(event) => {
-                setBirthday(event.currentTarget.value);
-              }}
+            <DatePicker
+              dateFormat="dd/MM/yyyy"
+              maxDate={twelveYearsAgo}
+              selected={birthday}
+              showYearDropdown
+              dateFormatCalendar="MMMM"
+              yearDropdownItemNumber={601}
+              scrollableYearDropdown
+              scrollableMonthDropdown
+              onChange={(date) => setBirthday(date)}
             />
             <button onClick={toggleHandler(2)}> {'>'} </button>
           </div>

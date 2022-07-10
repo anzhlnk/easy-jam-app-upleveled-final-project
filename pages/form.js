@@ -36,9 +36,9 @@ function Form(props) {
     gender: '',
     profilePicture:
       'https://res.cloudinary.com/dnbe0yphw/image/upload/v1656405197/x5881le9eaea9auigpkw.png',
-    location: 'Vienna, Rathausplatz',
-    longitude: '48.2106',
-    latitude: '16.3588',
+    location: '',
+    longitude: '',
+    latitude: '',
   });
 
   const nextPage = () => {
@@ -196,7 +196,8 @@ function Form(props) {
             nextPage={nextPage}
             prevPage={prevPage}
             values={formData}
-            handleFormData={handleInputFieldData}
+            handleFormData={handleOtherDataFields}
+            googleAPI={props.googleAPI}
           />
         </div>
       );
@@ -242,6 +243,7 @@ export async function getServerSideProps(context) {
 
   const dataId = await getPersonalDataIDByUserId(user.id);
   console.log('dataId', dataId);
+  const googleAPI = process.env.GOOGLE_API_KEY;
 
   return {
     props: {
@@ -251,6 +253,7 @@ export async function getServerSideProps(context) {
       genres: genres,
       genders: genders,
       dataId: dataId,
+      googleAPI: googleAPI,
     },
   };
 }

@@ -54,16 +54,6 @@ export default async function handler(
     }
 
     const locationID = await getLocationIdByPersonalDataID(dataId);
-
-    console.log(
-      'heeere',
-      dataId,
-      req.body.firstName,
-      req.body.lastName,
-      req.body.birthday,
-      locationID,
-      req.body.location,
-    );
     const updatedPersonalData = await updatePersonalDataFromAccount(
       dataId,
       req.body.firstName,
@@ -71,6 +61,8 @@ export default async function handler(
       req.body.birthday,
       locationID,
       req.body.location,
+      req.body.longitude,
+      req.body.latitude,
     );
 
     return res.status(200).json(updatedPersonalData);
