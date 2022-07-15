@@ -29,12 +29,6 @@ const container = css`
   margin-top: 20px;
 `;
 
-const buttonContainer = css`
-  width: 80vw;
-  display: flex;
-  justify-content: right;
-`;
-
 const contentContainer = css`
   width: 80vw;
 `;
@@ -158,7 +152,7 @@ export default function Filters(props) {
     }
   }
 
-  //API call for updating status
+  // API call for updating status
   async function updateStatus(selectedOption) {
     const response = await fetch(`api/update-data/requirements-status`, {
       method: 'PUT',
@@ -179,7 +173,7 @@ export default function Filters(props) {
     }
   }
 
-  //API call for adding genders
+  // API call for adding genders
   async function addOptionGenders(addedItems) {
     console.log(
       'add call genders',
@@ -219,7 +213,7 @@ export default function Filters(props) {
     }
   }
 
-  //API call for adding instruments
+  // API call for adding instruments
   async function addOption(addedItems) {
     console.log(
       'addcall',
@@ -326,7 +320,7 @@ export default function Filters(props) {
     e.preventDefault();
   };
 
-  //handle Change for instruments
+  // handle Change for instruments
   const handleChange = async (selectedOption) => {
     if (selectedOption === null) {
       selectedOption = [];
@@ -335,13 +329,13 @@ export default function Filters(props) {
       selectedOption = displayedInstrumentOptions.slice(1);
     }
     if (selectedOption.length > valueRequiredInstruments.length) {
-      let addedItems = selectedOption.filter(
+      const addedItems = selectedOption.filter(
         (x) => !valueRequiredInstruments.includes(x),
       );
       console.log('added Items in handleChange', addedItems);
       await addOption(addedItems.map((e) => e.value));
     } else {
-      let removedItems = valueRequiredInstruments.filter(
+      const removedItems = valueRequiredInstruments.filter(
         (x) => !selectedOption.includes(x),
       );
       console.log(removedItems);
@@ -362,13 +356,13 @@ export default function Filters(props) {
       selectedOption = displayedGenderOptions.slice(1);
     }
     if (selectedOption.length > valueRequiredGenders.length) {
-      let addedItems = selectedOption.filter(
+      const addedItems = selectedOption.filter(
         (x) => !valueRequiredGenders.includes(x),
       );
       console.log('added Items in handleChange Genders', addedItems);
       await addOptionGenders(addedItems.map((e) => e.value));
     } else {
-      let removedItems = valueRequiredGenders.filter(
+      const removedItems = valueRequiredGenders.filter(
         (x) => !selectedOption.includes(x),
       );
       console.log(removedItems);
@@ -558,8 +552,8 @@ export default function Filters(props) {
                 />
               </button>
             </div>
-            {errors.map((error) => (
-              <div key={`error-${error.message}`} css={errorMessage}>
+            {errors.map((issue) => (
+              <div key={`error-${issue.message}`} css={errorMessage}>
                 {error.message}
               </div>
             ))}

@@ -10,12 +10,8 @@ import {
   getUserByValidSessionToken,
   getValidSessionByToken,
 } from '../../../util/database';
-import {
-  confirmButton,
-  confirmButtonContainer,
-  headerContainer,
-  title,
-} from './personal-info';
+import { headerContainer } from './instruments-update';
+import { confirmButton, confirmButtonContainer, title } from './personal-info';
 
 export const contentContainer = css`
   display: flex;
@@ -71,7 +67,7 @@ export default function UpdatePassword(props) {
   const [errors, setErrors] = useState([]);
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
-  const [confirmedNewPassword, setconfirmedNewPassword] = useState('');
+  const [confirmedNewPassword, setConfirmedNewPassword] = useState('');
   const router = useRouter();
 
   const submitFormData = (e) => {
@@ -138,7 +134,7 @@ export default function UpdatePassword(props) {
           type="password"
           placeholder="Confirm new password"
           onChange={(event) =>
-            setconfirmedNewPassword(event.currentTarget.value)
+            setConfirmedNewPassword(event.currentTarget.value)
           }
         />
       </div>
@@ -150,7 +146,7 @@ export default function UpdatePassword(props) {
       ))}
 
       <div css={confirmButtonContainer}>
-        <button type="submit" css={confirmButton} onClick={updatePassword}>
+        <button css={confirmButton} onClick={updatePassword}>
           <img
             src="/tick_icon.png"
             alt="tick icon"

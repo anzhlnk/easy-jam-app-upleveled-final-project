@@ -10,6 +10,7 @@ import {
   getUserInstrument,
   getValidSessionByToken,
 } from '../../../util/database';
+import { errorMessage } from '../../login';
 import { title } from '../usersbyid/[userId]';
 import { inputContainer } from './personal-info';
 
@@ -43,10 +44,6 @@ export const headerContainer = css`
   margin-left: 24px;
   margin-top: -24px;
   margin-bottom: 38px;
-  :first-child {
-    z-index: 0;
-    margin-right: 10em;
-  }
 `;
 
 const UserIsntrumentUpdate = (props) => {
@@ -94,7 +91,7 @@ const UserIsntrumentUpdate = (props) => {
     }
   }
 
-  //API call for adding instruments
+  // API call for adding instruments
   async function addOption(addedItems) {
     console.log(
       'addcall',
@@ -143,13 +140,13 @@ const UserIsntrumentUpdate = (props) => {
       selectedOption = displayedInstrumentOptions.slice(1);
     }
     if (selectedOption.length > valueUserInstruments.length) {
-      let addedItems = selectedOption.filter(
+      const addedItems = selectedOption.filter(
         (x) => !valueUserInstruments.includes(x),
       );
       console.log('added Items in handleChange', addedItems);
       await addOption(addedItems.map((e) => e.value));
     } else {
-      let removedItems = valueUserInstruments.filter(
+      const removedItems = valueUserInstruments.filter(
         (x) => !selectedOption.includes(x),
       );
       console.log(removedItems);
@@ -199,8 +196,8 @@ const UserIsntrumentUpdate = (props) => {
         ''
       )}
 
-      {errors.map((error) => (
-        <div key={`error-${error.message}`} css={errorMessage}>
+      {errors.map((issue) => (
+        <div key={`error-${issue.message}`} css={errorMessage}>
           {error.message}
         </div>
       ))}

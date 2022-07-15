@@ -83,7 +83,7 @@ const UserGenreUpdate = (props) => {
     }
   }
 
-  //API call for adding genres
+  // API call for adding genres
   async function addOption(addedItems) {
     console.log(
       'addcall',
@@ -130,13 +130,13 @@ const UserGenreUpdate = (props) => {
       selectedOption = displayedGenreOptions.slice(1);
     }
     if (selectedOption.length > valueUserGenres.length) {
-      let addedItems = selectedOption.filter(
+      const addedItems = selectedOption.filter(
         (x) => !valueUserGenres.includes(x),
       );
       console.log('added Items in handleChange instruments', addedItems);
       await addOption(addedItems.map((e) => e.value));
     } else {
-      let removedItems = valueUserGenres.filter(
+      const removedItems = valueUserGenres.filter(
         (x) => !selectedOption.includes(x),
       );
       console.log(removedItems);
@@ -183,8 +183,8 @@ const UserGenreUpdate = (props) => {
         />
       </div>
       {error ? <div css={errorMessage}>Please add at least 3 genres</div> : ''}
-      {errors.map((error) => (
-        <div key={`error-${error.message}`} css={errorMessage}>
+      {errors.map((issue) => (
+        <div key={`error-${issue.message}`} css={errorMessage}>
           {error.message}
         </div>
       ))}

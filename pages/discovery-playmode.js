@@ -2,9 +2,11 @@
 import 'swiper/css';
 import 'swiper/css/effect-creative';
 import { css } from '@emotion/react';
-// import 'react-widgets/styles.css';
 import Head from 'next/head';
 import Link from 'next/link';
+// import 'react-widgets/styles.css';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
 // import required modules
 import { EffectCreative } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -50,7 +52,7 @@ export const main = css`
   flex-direction: column;
   justify-content: start;
 `;
-const allcontentContainer = css`
+const allContentContainer = css`
   display: flex;
   flex-direction: column;
   margin-top: 2em;
@@ -141,7 +143,7 @@ const instrumentContainer = css`
   margin-top: 0.5em;
 `;
 
-const playinInstruments = css`
+const playingInstruments = css`
   display: flex;
   flex-direction: row;
   margin-top: 1.5em;
@@ -150,13 +152,6 @@ const playinInstruments = css`
 const instrumentImage = css`
   max-width: 20px;
   max-height: 25px;
-`;
-
-const horizontalLine = css`
-  width: 50vw;
-  border: 1px solid #e7ecf3;
-  justify-content: right;
-  margin-top: 12px;
 `;
 
 const viewProfileContainer = css`
@@ -224,6 +219,8 @@ const addUser = css`
   }
 `;
 export default function UserProfile(props) {
+  const [errors, setErrors] = useState([]);
+  const router = useRouter();
   async function createAChat() {
     if (props.conversationID) {
       await router.push(`/chats/${props.conversationID}`);
@@ -282,12 +279,12 @@ export default function UserProfile(props) {
             />
           </Link>
         </div>
-        <div css={allcontentContainer}>
+        <div css={allContentContainer}>
           <div css={contentContainer}>
             <span>100%</span>
             <Swiper
               grabCursor={true}
-              effect={'creative'}
+              effect="creative"
               creativeEffect={{
                 prev: {
                   shadow: true,
@@ -339,7 +336,7 @@ export default function UserProfile(props) {
                             <div css={shortDescription}>
                               <span>{profile.shortDescription}</span>
                             </div>
-                            <div css={playinInstruments}>
+                            <div css={playingInstruments}>
                               {profile.playingInstrument
                                 .split(',')
                                 .map((instrument) => {
@@ -431,7 +428,7 @@ export async function getServerSideProps(context) {
   ].flat();
   console.log('profileList', profileList);
 
-  let counts = {};
+  const counts = {};
   profileList.forEach((e) => {
     if (!(e in counts)) {
       counts[e] = 0;

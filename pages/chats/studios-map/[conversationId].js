@@ -100,10 +100,6 @@ const Studios = (props) => {
                     lng: Number(room.longitude),
                   }}
                   optimized={true}
-                  title={{
-                    fontSize: '14pt',
-                    text: room.studioName.toString(),
-                  }}
                   label={{
                     fontSize: '14pt',
                     text: room.studioName,

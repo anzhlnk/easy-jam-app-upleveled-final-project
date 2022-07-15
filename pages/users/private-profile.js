@@ -24,7 +24,7 @@ import {
   genreListContainer,
   instrumentImage,
   instrumentImageContainer,
-  playinInstruments,
+  playingInstruments,
   textSections,
   title,
   userName,
@@ -262,7 +262,7 @@ export default function UserDetail(props) {
                 {props.personalData.age}, from{' '}
                 {props.personalData.address.split(',')[0]}
               </div>
-              <div css={playinInstruments}>
+              <div css={playingInstruments}>
                 {props.personalData.playingInstrument
                   .split(',')
                   .map((instrument) => {

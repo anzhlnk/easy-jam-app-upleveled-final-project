@@ -57,7 +57,7 @@ export const main = css`
   justify-content: start;
   box-sizing: border-box;
 `;
-const allcontentContainer = css`
+const allContentContainer = css`
   display: flex;
   flex-direction: column;
   margin-top: 2em;
@@ -106,7 +106,7 @@ export default function Discovery(props) {
             </Link>
           </div>
         </div>
-        <div css={allcontentContainer}>
+        <div css={allContentContainer}>
           <div css={contentContainer}>
             {props.personalDataUsersFull &&
               props.personalDataUsersFull.filter((profile) => {
@@ -342,7 +342,7 @@ export async function getServerSideProps(context) {
   ].flat();
   console.log('profileList', profileList);
 
-  let counts = {};
+  const counts = {};
   profileList.forEach((e) => {
     if (!(e in counts)) {
       counts[e] = 0;

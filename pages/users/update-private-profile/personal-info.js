@@ -34,10 +34,6 @@ export const headerContainer = css`
   margin-left: 24px;
   margin-top: -24px;
   margin-bottom: 38px;
-  :first-child {
-    z-index: 0;
-    margin-right: 10em;
-  }
   h1 {
     margin-right: -1em;
   }
@@ -163,8 +159,8 @@ export default function UpdatePersonalInfo(props) {
       lastName: lastName,
       birthday: birthday,
       location: location,
-      longitude:lng,
-      latitude:lat,
+      longitude: lng,
+      latitude: lat,
       csrfToken: props.csrfToken,
     });
     console.log('request', body);
@@ -178,8 +174,8 @@ export default function UpdatePersonalInfo(props) {
         lastName: lastName,
         birthday: birthday,
         location: location,
-        longitude:lng,
-        latitude:lat,
+        longitude: lng,
+        latitude: lat,
         csrfToken: props.csrfToken,
       }),
     });
@@ -208,13 +204,11 @@ export default function UpdatePersonalInfo(props) {
       </div>
       <div css={inputContainer}>
         <input
-          type="text"
           placeholder="First name"
           onChange={(event) => setFirstName(event.currentTarget.value)}
           defaultValue={firstName}
         />
         <input
-          type="text"
           placeholder="Last name"
           onChange={(event) => setLastName(event.currentTarget.value)}
           defaultValue={lastName}
@@ -277,7 +271,7 @@ export default function UpdatePersonalInfo(props) {
       {error ? <div css={errorMessage}>Please, enter your full name</div> : ''}
 
       <div css={confirmButtonContainer}>
-        <button type="submit" css={confirmButton} onClick={updatePersonalData}>
+        <button css={confirmButton} onClick={updatePersonalData}>
           <img
             src="/tick_icon.png"
             alt="tick icon"

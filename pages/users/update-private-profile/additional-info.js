@@ -125,7 +125,7 @@ export default function UserDetail(props) {
   );
   const [aboutMe, setAboutMe] = useState(props.personalData.aboutMe);
 
-  const [editShortDescription, setEditShortescription] = useState('');
+  const [editShortDescription, setEditShortDescription] = useState('');
   const [editAboutMe, setEditAboutMe] = useState('');
 
   const [active, setActive] = useState(false);
@@ -241,7 +241,7 @@ export default function UserDetail(props) {
                   className="box"
                   value={editShortDescription}
                   onChange={(event) =>
-                    setEditShortescription(event.currentTarget.value)
+                    setEditShortDescription(event.currentTarget.value)
                   }
                 />
                 <h2 className="secondHeader">About me</h2>
@@ -279,7 +279,7 @@ export default function UserDetail(props) {
                 css={transparentButton}
                 onClick={() => {
                   setActive(true);
-                  setEditShortescription(shortDescription);
+                  setEditShortDescription(shortDescription);
                   setEditAboutMe(aboutMe);
                 }}
               >
