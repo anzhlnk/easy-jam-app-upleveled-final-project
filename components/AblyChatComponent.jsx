@@ -173,7 +173,9 @@ const AblyChatComponent = (props) => {
         css={messageTextStyle(sender === props.personalDataId)}
         data-author={author}
       >
-        {message.timestamp}
+        {message.timestampAdapted
+          ? message.timestampAdapted
+          : new Date(message.timestamp).toTimeString().slice(0, 5)}
         <br />
         {message.data && message.data}
         {message.content && message.content}
