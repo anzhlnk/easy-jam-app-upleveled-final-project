@@ -2,9 +2,13 @@ import { css } from '@emotion/react';
 // import 'react-widgets/styles.css';
 import Head from 'next/head';
 import Link from 'next/link';
+import FilterResults from '../components/FilterResults';
 import {
+  getDistance,
+  getLocationIdByPersonalDataID,
   getPersonalDataIDByUserId,
   getProfilesByAge,
+  getProfilesByDistance,
   getProfilesByGender,
   getProfilesByGenres,
   getProfilesByInstruments,
@@ -13,10 +17,20 @@ import {
   getValidSessionByToken,
 } from '../util/database';
 
-const buddyAvatar = css`
-  width: 50px;
-  height: 50px;
-  border-radius: 25px;
+const matchPercentage = css`
+  display: flex;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 20px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: left;
+  margin-bottom: 1.5em;
+  /* background: linear-gradient(#fff, #fff) padding-box,
+    linear-gradient(45deg, #f7ff26, #4dfb34, #18fdef) border-box; */
+  padding-bottom: 1em;
+  border-bottom: 4px solid transparent;
 `;
 
 export const headerContainer = css`
@@ -24,17 +38,13 @@ export const headerContainer = css`
   @media (min-width: 500px) {
     width: 50vw;
   }
-  width: 50vw;
+  width: 45vw;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
   margin-left: 24px;
   margin-top: -24px;
-  :first-child {
-    z-index: 0;
-    margin-right: 10em;
-  }
 `;
 
 export const main = css`
@@ -70,95 +80,7 @@ const contentContainer = css`
   max-width: vw;
 `;
 
-const profileDataContainer = css`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 2em;
-  box-sizing: border-box;
-`;
-
-const profileImage = css`
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-`;
-
-const buddyName = css`
-  display: flex;
-  flex-direction: row;
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 24px;
-  letter-spacing: -0.25px;
-  color: #1d232e;
-  span {
-    margin-right: 6px;
-  }
-`;
-
-const nameInstrumentsContainer = css`
-  min-width: 250px;
-  display: flex;
-  flex-direction: column;
-  margin-left: 1em;
-`;
-
-const playinInstruments = css`
-  display: flex;
-  flex-direction: row;
-`;
-
-const profileButtonContainer = css`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-color: none;
-  border: none;
-
-  a {
-    text-decoration: none;
-  }
-  button {
-    border: none;
-    border-color: #ffffff;
-    width: 35px;
-    height: 35px;
-    background: #ffffff;
-    border-radius: 100px;
-
-    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
-  }
-`;
-
-const instrumentImageContainer = css`
-  border: 1px solid #000000;
-  border-radius: 25px;
-  width: 35px;
-  height: 35px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 0.5em;
-  margin-top: 0.5em;
-`;
-
-const instrumentImage = css`
-  max-width: 20px;
-  max-height: 25px;
-`;
-
-const horizontalLine = css`
-  width: 50vw;
-  border: 1px solid #e7ecf3;
-  justify-content: right;
-  margin-top: 12px;
-`;
-
-export default function UserProfile(props) {
+export default function Discovery(props) {
   return (
     <div>
       <Head>
@@ -175,7 +97,7 @@ export default function UserProfile(props) {
             />
           </Link>
           <div>
-            <Link href="/discover-playmode">
+            <Link href="/discovery-playmode">
               <img
                 src="/play_icon.png"
                 alt="filter"
@@ -186,208 +108,196 @@ export default function UserProfile(props) {
         </div>
         <div css={allcontentContainer}>
           <div css={contentContainer}>
-            <span> 100%</span>
             {props.personalDataUsersFull &&
-              props.personalDataUsersFull.map((profile) => {
-                return (
-                  <div key={`personal-id-${profile.personalDataId}`}>
-                    <div css={profileDataContainer}>
-                      <div css={profileImage}>
-                        <img
-                          src={profile.profilePictureUrl}
-                          alt="user avatar"
-                          css={buddyAvatar}
-                        />
-                      </div>
-                      <div css={nameInstrumentsContainer}>
-                        <div css={buddyName}>
-                          <span>{profile.firstName}</span>
-                          <span>{profile.lastName}</span>
-                        </div>
-                        <div css={playinInstruments}>
-                          {profile.playingInstrument
-                            .split(',')
-                            .map((instrument) => {
-                              return (
-                                <div
-                                  key={`instrument-${instrument}`}
-                                  css={instrumentImageContainer}
-                                >
-                                  <img
-                                    src={`/icons/${instrument}.png`}
-                                    alt="playing instrument"
-                                    css={instrumentImage}
-                                  />
-                                </div>
-                              );
-                            })}
-                        </div>
-                        <hr css={horizontalLine} />
-                      </div>
-                      <div css={profileButtonContainer}>
-                        <Link
-                          href={`/users/usersbyid/${profile.personalDataId}`}
-                        >
-                          <button>{'>'}</button>
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
+              props.personalDataUsersFull.filter((profile) => {
+                return props.buddiesWithinHundredDistance.some(
+                  (buddy) =>
+                    buddy.buddyPersonalDataId === profile.personalDataId,
                 );
-              })}
+              }).length > 0 && (
+                <span css={matchPercentage}>
+                  Mutual match: 4 out of 5 categories
+                </span>
+              )}
+            {props.personalDataUsersFull &&
+              props.personalDataUsersFull
+                .filter((profile) => {
+                  return props.buddiesWithinHundredDistance.some(
+                    (buddy) =>
+                      buddy.buddyPersonalDataId === profile.personalDataId,
+                  );
+                })
+                .map((profile) => {
+                  return (
+                    <div key={`personal-id-${profile.personalDataId}`}>
+                      <FilterResults
+                        profile={profile}
+                        buddiesWithinHundredDistance={
+                          props.buddiesWithinHundredDistance
+                        }
+                        personalDataUsersFull={props.personalDataUsersFull}
+                        personalDataUsersEighty={props.personalDataUsersEighty}
+                        personalDataUsersSixty={props.personalDataUsersSixty}
+                        personalDataUsersFourty={props.personalDataUsersFourty}
+                        personalDataUsersTwenty={props.personalDataUsersTwenty}
+                      />
+                    </div>
+                  );
+                })}
           </div>
           <div css={contentContainer}>
-            <span> 75%</span>
-            {props.personalDataUsersSeventyFive &&
-              props.personalDataUsersSeventyFive.map((profile) => {
-                return (
-                  <div key={`personal-id-${profile.personalDataId}`}>
-                    <div css={profileDataContainer}>
-                      <div css={profileImage}>
-                        <img
-                          src={profile.profilePictureUrl}
-                          alt="user avatar"
-                          css={buddyAvatar}
-                        />
-                      </div>
-                      <div css={nameInstrumentsContainer}>
-                        <div css={buddyName}>
-                          <span>{profile.firstName}</span>
-                          <span>{profile.lastName}</span>
-                        </div>
-                        <div css={playinInstruments}>
-                          {profile.playingInstrument
-                            .split(',')
-                            .map((instrument) => {
-                              return (
-                                <div
-                                  key={`instrument-${instrument}`}
-                                  css={instrumentImageContainer}
-                                >
-                                  <img
-                                    src={`/icons/${instrument}.png`}
-                                    alt="playing instrument"
-                                    css={instrumentImage}
-                                  />
-                                </div>
-                              );
-                            })}
-                        </div>
-                        <hr css={horizontalLine} />
-                      </div>
-                      <div css={profileButtonContainer}>
-                        <Link
-                          href={`/users/usersbyid/${profile.personalDataId}`}
-                        >
-                          <button>{'>'}</button>
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
+            {props.personalDataUsersEighty &&
+              props.personalDataUsersEighty.filter((profile) => {
+                return props.buddiesWithinHundredDistance.some(
+                  (buddy) =>
+                    buddy.buddyPersonalDataId === profile.personalDataId,
                 );
-              })}
+              }).length > 0 && (
+                <span css={matchPercentage}>
+                  Mutual match: 4 out of 5 categories
+                </span>
+              )}
+            {props.personalDataUsersEighty &&
+              props.personalDataUsersEighty
+                .filter((profile) => {
+                  return props.buddiesWithinHundredDistance.some(
+                    (buddy) =>
+                      buddy.buddyPersonalDataId === profile.personalDataId,
+                  );
+                })
+                .map((profile) => {
+                  return (
+                    <div key={`personal-id-${profile.personalDataId}`}>
+                      <FilterResults
+                        profile={profile}
+                        buddiesWithinHundredDistance={
+                          props.buddiesWithinHundredDistance
+                        }
+                        personalDataUsersFull={props.personalDataUsersFull}
+                        personalDataUsersEighty={props.personalDataUsersEighty}
+                        personalDataUsersSixty={props.personalDataUsersSixty}
+                        personalDataUsersFourty={props.personalDataUsersFourty}
+                        personalDataUsersTwenty={props.personalDataUsersTwenty}
+                      />
+                    </div>
+                  );
+                })}
           </div>
           <div css={contentContainer}>
-            <span> 50%</span>
-            {props.personalDataUsersHalfMatch &&
-              props.personalDataUsersHalfMatch.map((profile) => {
-                return (
-                  <div key={`personal-id-${profile.personalDataId}`}>
-                    <div css={profileDataContainer}>
-                      <div css={profileImage}>
-                        <img
-                          src={profile.profilePictureUrl}
-                          alt="user avatar"
-                          css={buddyAvatar}
-                        />
-                      </div>
-                      <div css={nameInstrumentsContainer}>
-                        <div css={buddyName}>
-                          <span>{profile.firstName}</span>
-                          <span>{profile.lastName}</span>
-                        </div>
-                        <div css={playinInstruments}>
-                          {profile.playingInstrument
-                            .split(',')
-                            .map((instrument) => {
-                              return (
-                                <div
-                                  key={`instrument-${instrument}`}
-                                  css={instrumentImageContainer}
-                                >
-                                  <img
-                                    src={`/icons/${instrument}.png`}
-                                    alt="playing instrument"
-                                    css={instrumentImage}
-                                  />
-                                </div>
-                              );
-                            })}
-                        </div>
-                        <hr css={horizontalLine} />
-                      </div>
-                      <div css={profileButtonContainer}>
-                        <Link
-                          href={`/users/usersbyid/${profile.personalDataId}`}
-                        >
-                          <button>{'>'}</button>
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
+            {props.personalDataUsersSixty &&
+              props.personalDataUsersSixty.filter((profile) => {
+                return props.buddiesWithinHundredDistance.some(
+                  (buddy) =>
+                    buddy.buddyPersonalDataId === profile.personalDataId,
                 );
-              })}
+              }).length > 0 && (
+                <span css={matchPercentage}>
+                  Mutual match: 3 out of 5 categories
+                </span>
+              )}
+            {props.personalDataUsersSixty &&
+              props.personalDataUsersSixty
+                .filter((profile) => {
+                  return props.buddiesWithinHundredDistance.some(
+                    (buddy) =>
+                      buddy.buddyPersonalDataId === profile.personalDataId,
+                  );
+                })
+                .map((profile) => {
+                  return (
+                    <div key={`personal-id-${profile.personalDataId}`}>
+                      <FilterResults
+                        profile={profile}
+                        buddiesWithinHundredDistance={
+                          props.buddiesWithinHundredDistance
+                        }
+                        personalDataUsersFull={props.personalDataUsersFull}
+                        personalDataUsersEighty={props.personalDataUsersEighty}
+                        personalDataUsersSixty={props.personalDataUsersSixty}
+                        personalDataUsersFourty={props.personalDataUsersFourty}
+                        personalDataUsersTwenty={props.personalDataUsersTwenty}
+                      />
+                    </div>
+                  );
+                })}
           </div>
           <div css={contentContainer}>
-            <span> 25%</span>
-            {props.personalDataUsersQuaterMatch &&
-              props.personalDataUsersQuaterMatch.map((profile) => {
-                return (
-                  <div key={`personal-id-${profile.personalDataId}`}>
-                    <div css={profileDataContainer}>
-                      <div css={profileImage}>
-                        <img
-                          src={profile.profilePictureUrl}
-                          alt="user avatar"
-                          css={buddyAvatar}
-                        />
-                      </div>
-                      <div css={nameInstrumentsContainer}>
-                        <div css={buddyName}>
-                          <span>{profile.firstName}</span>
-                          <span>{profile.lastName}</span>
-                        </div>
-                        <div css={playinInstruments}>
-                          {profile.playingInstrument
-                            .split(',')
-                            .map((instrument) => {
-                              return (
-                                <div
-                                  key={`instrument-${instrument}`}
-                                  css={instrumentImageContainer}
-                                >
-                                  <img
-                                    src={`/icons/${instrument}.png`}
-                                    alt="playing instrument"
-                                    css={instrumentImage}
-                                  />
-                                </div>
-                              );
-                            })}
-                        </div>
-                        <hr css={horizontalLine} />
-                      </div>
-                      <div css={profileButtonContainer}>
-                        <Link
-                          href={`/users/usersbyid/${profile.personalDataId}`}
-                        >
-                          <button>{'>'}</button>
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
+            {props.personalDataUsersFourty &&
+              props.personalDataUsersFourty.filter((profile) => {
+                return props.buddiesWithinHundredDistance.some(
+                  (buddy) =>
+                    buddy.buddyPersonalDataId === profile.personalDataId,
                 );
-              })}
+              }).length > 0 && (
+                <span css={matchPercentage}>
+                  Mutual match: 2 out of 5 categories
+                </span>
+              )}
+
+            {props.personalDataUsersFourty &&
+              props.personalDataUsersFourty
+                .filter((profile) => {
+                  return props.buddiesWithinHundredDistance.some(
+                    (buddy) =>
+                      buddy.buddyPersonalDataId === profile.personalDataId,
+                  );
+                })
+                .map((profile) => {
+                  return (
+                    <div key={`personal-id-${profile.personalDataId}`}>
+                      <FilterResults
+                        profile={profile}
+                        buddiesWithinHundredDistance={
+                          props.buddiesWithinHundredDistance
+                        }
+                        personalDataUsersFull={props.personalDataUsersFull}
+                        personalDataUsersEighty={props.personalDataUsersEighty}
+                        personalDataUsersSixty={props.personalDataUsersSixty}
+                        personalDataUsersFourty={props.personalDataUsersFourty}
+                        personalDataUsersTwenty={props.personalDataUsersTwenty}
+                      />
+                    </div>
+                  );
+                })}
+          </div>
+          <div css={contentContainer}>
+            {props.personalDataUsersTwenty &&
+              props.personalDataUsersTwenty.filter((profile) => {
+                return props.buddiesWithinHundredDistance.some(
+                  (buddy) =>
+                    buddy.buddyPersonalDataId === profile.personalDataId,
+                );
+              }).length > 0 && (
+                <span css={matchPercentage}>
+                  Mutual match: 1 out of 5 categories
+                </span>
+              )}
+
+            {props.personalDataUsersTwenty &&
+              props.personalDataUsersTwenty
+                .filter((profile) => {
+                  return props.buddiesWithinHundredDistance.some(
+                    (buddy) =>
+                      buddy.buddyPersonalDataId === profile.personalDataId,
+                  );
+                })
+                .map((profile) => {
+                  return (
+                    <div key={`personal-id-${profile.personalDataId}`}>
+                      <FilterResults
+                        profile={profile}
+                        buddiesWithinHundredDistance={
+                          props.buddiesWithinHundredDistance
+                        }
+                        personalDataUsersFull={props.personalDataUsersFull}
+                        personalDataUsersEighty={props.personalDataUsersEighty}
+                        personalDataUsersSixty={props.personalDataUsersSixty}
+                        personalDataUsersFourty={props.personalDataUsersFourty}
+                        personalDataUsersTwenty={props.personalDataUsersTwenty}
+                      />
+                    </div>
+                  );
+                })}
           </div>
         </div>
       </main>
@@ -409,6 +319,8 @@ export async function getServerSideProps(context) {
   }
 
   const dataId = await getPersonalDataIDByUserId(user.id);
+  const locationId = await getLocationIdByPersonalDataID(dataId);
+  console.log('locationId', locationId);
 
   const profilesByAge = await getProfilesByAge(dataId);
   console.log('profilesByAge', profilesByAge);
@@ -418,13 +330,17 @@ export async function getServerSideProps(context) {
   console.log('profilesByInstrument', profilesByInstrument);
   const profilesByGenres = await getProfilesByGenres(dataId);
   console.log('profilesByGenres', profilesByGenres);
+  const profilesByDistance = await getProfilesByDistance(locationId);
+  console.log('profilesByDistance', profilesByDistance);
 
   const profileList = [
     profilesByAge.map((profile) => profile.buddyPersonalDataId),
     profilesByGender.map((profile) => profile.buddyPersonalDataId),
     profilesByInstrument.map((profile) => profile.buddyPersonalDataId),
     profilesByGenres.map((profile) => profile.buddyPersonalDataId),
+    profilesByDistance.map((profile) => profile.buddyPersonalDataId),
   ].flat();
+  console.log('profileList', profileList);
 
   let counts = {};
   profileList.forEach((e) => {
@@ -434,46 +350,62 @@ export async function getServerSideProps(context) {
     counts[e]++;
     // return ((e: count) += 1);
   });
-  console.log('list', counts);
+  console.log('counts', counts);
+
+  const distanceToBuddies = await getDistance(locationId, profileList);
+  console.log('distanceToBuddies', distanceToBuddies);
+  const buddiesWithinHundredDistance = distanceToBuddies.filter((distance) => {
+    return Math.ceil(distance.distanceToBuddyMeters / 1000) <= 100;
+  });
+
+  console.log('buddiesWithinHundredDistance', buddiesWithinHundredDistance);
 
   const fullMatch = Array.from(
+    Object.keys(counts).filter((key) => counts[key] === 5),
+    Number,
+  );
+  const eightyMatch = Array.from(
     Object.keys(counts).filter((key) => counts[key] === 4),
     Number,
   );
-  const seventyFiveMatch = Array.from(
+  const sixtyMatch = Array.from(
     Object.keys(counts).filter((key) => counts[key] === 3),
     Number,
   );
-  const halfMatch = Array.from(
+  const fourtyMatch = Array.from(
     Object.keys(counts).filter((key) => counts[key] === 2),
     Number,
   );
-  const quaterMatch = Array.from(
+  const twentyMatch = Array.from(
     Object.keys(counts).filter((key) => counts[key] === 1),
     Number,
   );
   console.log('fullMatch', fullMatch);
-  console.log('seventyFiveMatch', seventyFiveMatch);
-  console.log('halfMatch', halfMatch);
-  console.log('quaterMatch', quaterMatch);
+  console.log('eightyMatch', eightyMatch);
+  console.log('sixtyMatch', sixtyMatch);
+  console.log('fourtyMatch', fourtyMatch);
+  console.log('twentyMatch', twentyMatch);
 
   const personalDataUsersFull = await getUsersPersonalData(fullMatch);
   console.log('personalDataUsersFull', personalDataUsersFull);
-  const personalDataUsersSeventyFive = await getUsersPersonalData(
-    seventyFiveMatch,
-  );
-  console.log('personalDataUsersSeventyFive', personalDataUsersSeventyFive);
-  const personalDataUsersHalfMatch = await getUsersPersonalData(halfMatch);
-  console.log('personalDataUsersHalfMatch', personalDataUsersHalfMatch);
-  const personalDataUsersQuaterMatch = await getUsersPersonalData(quaterMatch);
-  console.log('personalDataUsersQuaterMatch', personalDataUsersQuaterMatch);
+  const personalDataUsersEighty = await getUsersPersonalData(eightyMatch);
+  console.log('personalDataUsersEighty', personalDataUsersEighty);
+  const personalDataUsersSixty = await getUsersPersonalData(sixtyMatch);
+  console.log('personalDataUsersSixty', personalDataUsersSixty);
+  const personalDataUsersFourty = await getUsersPersonalData(fourtyMatch);
+  console.log('personalDataUsersFourty', personalDataUsersFourty);
+  const personalDataUsersTwenty = await getUsersPersonalData(twentyMatch);
+  console.log('personalDataUsersTwenty', personalDataUsersTwenty);
+
   return {
     props: {
       profileList: profileList,
+      buddiesWithinHundredDistance: buddiesWithinHundredDistance,
       personalDataUsersFull: personalDataUsersFull,
-      personalDataUsersSeventyFive: personalDataUsersSeventyFive,
-      personalDataUsersHalfMatch: personalDataUsersHalfMatch,
-      personalDataUsersQuaterMatch: personalDataUsersQuaterMatch,
+      personalDataUsersEighty: personalDataUsersEighty,
+      personalDataUsersSixty: personalDataUsersSixty,
+      personalDataUsersFourty: personalDataUsersFourty,
+      personalDataUsersTwenty: personalDataUsersTwenty,
     },
   };
 }
