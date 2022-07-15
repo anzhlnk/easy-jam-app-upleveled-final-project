@@ -2,11 +2,17 @@ import { css } from '@emotion/react';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+import { createCsrfToken } from '../../../util/auth';
 import {
+  getConversationIdbyUsersDataId,
   getPersonalDataIDByUserId,
   getUserById,
+  getUserByValidSessionToken,
   getUserGenreByPersonalDataID,
   getUserPersonalData,
+  getValidSessionByToken,
 } from '../../../util/database';
 
 export const headerContainer = css`
@@ -21,10 +27,6 @@ export const headerContainer = css`
   justify-content: space-between;
   margin-left: 24px;
   margin-top: -24px;
-  :first-child {
-    z-index: 0;
-    margin-right: 10em;
-  }
 `;
 
 export const title = css`
@@ -135,7 +137,7 @@ const horizontalLine = css`
   width: 50vw;
   border: 1px solid #e7ecf3;
   justify-content: right;
-  margin-top: 10em;
+  margin-top: 5em;
 `;
 
 export const textSections = css`
@@ -197,7 +199,35 @@ type Props = {
   };
 };
 export default function UserProfile(props: Props) {
-  if (!props.personalData) {
+  const router = useRouter();
+  // create a new chat}
+  const [errors, setErrors] = useState([]);
+
+  async function createAChat() {
+    if (props.conversationID) {
+      await router.push(`/chats/${props.conversationID}`);
+    } else {
+      const response = await fetch(`../../api/chats/new-chat`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          buddyPersonalDataId: props.personalData.personalDataId,
+          csrfToken: props.csrfToken,
+        }),
+      });
+      const createdChat = await response.json();
+      if ('errors' in createdChat) {
+        setErrors(createdChat.errors);
+        await router.push('/discovery');
+      } else {
+        await router.push(`/chats/${createdChat.id}`);
+      }
+    }
+  }
+
+  if (!props.personalData || 'errors' in props) {
     return (
       <>
         <Head>
@@ -271,7 +301,9 @@ export default function UserProfile(props: Props) {
             <span>{props.personalData.aboutMe}</span>
           </div>
           <hr css={horizontalLine} />
-          <button css={sendRequestButton}>Send request</button>
+          <button css={sendRequestButton} onClick={createAChat}>
+            Send a message
+          </button>
         </div>
       </main>
     </div>
@@ -285,19 +317,56 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       props: {},
     };
   }
-  const user = await getUserById(parseInt(userIdFromUrl));
 
-  if (!user) {
+  const sessionToken = context.req.cookies.sessionToken;
+  const session = await getValidSessionByToken(sessionToken);
+  const csrfToken = await createCsrfToken(session.csrfSecret);
+  if (!session) {
+    return {
+      props: { errors: 'Not authenticated' },
+    };
+  }
+
+  const currentUser = await getUserByValidSessionToken(
+    context.req.cookies.sessionToken,
+  );
+  const currentUserDataId = await getPersonalDataIDByUserId(currentUser.id);
+
+  if (!currentUser) {
     context.res.statusCode = 404;
     return { props: {} };
   }
-  const dataId = await getPersonalDataIDByUserId(user.id);
-  const userGenres = await getUserGenreByPersonalDataID(dataId);
+
+  const buddyUser = await getUserById(parseInt(userIdFromUrl));
+  const buddyDataId = await getPersonalDataIDByUserId(buddyUser.id);
+  const userGenres = await getUserGenreByPersonalDataID(buddyDataId);
   const userGenresArray = userGenres.map((genre) => genre.genreName);
-  const personalData = await getUserPersonalData(dataId);
-  console.log('personalData', personalData);
-  console.log('userGenres', userGenres);
+  const personalData = await getUserPersonalData(buddyDataId);
+
+  // get conversation id if exists to be able to redirect to it later
+
+  const conversationID = await getConversationIdbyUsersDataId(
+    currentUserDataId,
+    buddyDataId,
+  );
+
+  if (!conversationID) {
+    return {
+      props: {
+        personalData: personalData,
+        userGenresArray: userGenresArray,
+        csrfToken: csrfToken,
+        conversationID: null,
+      },
+    };
+  }
+
   return {
-    props: { personalData: personalData, userGenresArray: userGenresArray },
+    props: {
+      personalData: personalData,
+      userGenresArray: userGenresArray,
+      csrfToken: csrfToken,
+      conversationID: conversationID.conversationId,
+    },
   };
 }
