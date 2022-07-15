@@ -42,10 +42,11 @@ export const headerContainer = css`
   justify-content: space-between;
   margin-left: 24px;
   margin-top: 24px;
-  :first-child {
+
+  /* :first-child {
     z-index: 0;
     margin-right: 10em;
-  }
+  } */
 `;
 
 const contentAll = css`
@@ -62,6 +63,10 @@ const settingContentContainer = css`
   align-items: left;
   padding-left: 32px;
   padding-right: 32px;
+
+  @media (min-width: 500px) {
+    width: 50vw;
+  }
 `;
 const editOptionsContainer = css`
   a {
@@ -214,7 +219,7 @@ export default function UserDetail(props) {
     await props.refreshUserProfile();
   }
 
-  if (!props.personalData) {
+  if (!props.personalData || 'errors' in props) {
     return (
       <>
         <Head>
