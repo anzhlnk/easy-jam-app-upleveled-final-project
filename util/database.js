@@ -950,6 +950,62 @@ WHERE  personal_data_id= ${personal_data_id}
   return profilesByInstrument && camelcaseKeys(profilesByInstrument);
 }
 
+export async function getProfilesByDistance(location_id) {
+  if (!location_id) return undefined;
+
+  const profilesByDistance = await sql`
+with location_current_user as (
+  select id, latitude, longitude, preferred_distance * 1000 as maximum_buddy_distance_meters from locations where id = ${location_id}
+),
+distances_to_buddies as (
+  select
+  personal_data.id as buddy_personal_data_id,
+  locations.id as buddy_location_id,
+  earth_distance(
+    ll_to_earth(locations.latitude, locations.longitude),
+    ll_to_earth(location_current_user.latitude, location_current_user.longitude)
+  ) as distance_to_buddy_meters,
+  location_current_user.maximum_buddy_distance_meters as distance_requirements_current_user
+  from locations, location_current_user, personal_data
+  where locations.id != location_current_user.id
+  and personal_data.location_id = locations.id
+  order by distance_to_buddy_meters
+),
+
+locations_interested as (
+  select
+  *
+  from distances_to_buddies
+  WHERE distance_to_buddy_meters  <= distance_requirements_current_user
+),
+
+buddy_distance_requirements as (
+  select
+  locations_interested.*,
+   preferred_distance * 1000 as distance_requirements_buddy
+  from
+  locations_interested,
+  locations
+  where locations.id = locations_interested.buddy_location_id
+),
+locations_matches as(
+  select
+  *
+  from
+  buddy_distance_requirements
+  where
+  distance_to_buddy_meters <= distance_requirements_buddy
+)
+select
+DISTINCT buddy_personal_data_id,
+distance_to_buddy_meters
+from
+locations_matches
+
+`;
+  return profilesByDistance && camelcaseKeys(profilesByDistance);
+}
+
 // update user profile from the account settings
 
 export async function updatePersonalDataFromAccount(
@@ -985,4 +1041,319 @@ locations
     RETURNING *;
 `;
   return camelcaseKeys(updatedLocation, profileData);
+}
+
+// get distance to the current user for the list of users
+
+export async function getDistance(location_id, buddy_data_ids) {
+  if (!location_id) return undefined;
+
+  const distanceToBuddies = await sql`
+
+with location_current_user as (
+SELECT
+id, latitude, longitude, preferred_distance * 1000 as maximum_buddy_distance_meters
+FROM
+locations
+where id = ${location_id}
+),
+
+distances_to_buddies as (
+SELECT
+  personal_data.id as buddy_personal_data_id,
+  locations.id as buddy_location_id,
+  earth_distance(
+    ll_to_earth(locations.latitude, locations.longitude),
+    ll_to_earth(location_current_user.latitude, location_current_user.longitude)
+  ) as distance_to_buddy_meters,
+  location_current_user.maximum_buddy_distance_meters as distance_requirements_current_user
+FROM
+locations, location_current_user, personal_data
+WHERE
+locations.id != location_current_user.id AND
+personal_data.id in  ${sql(buddy_data_ids)}  AND
+ personal_data.location_id = locations.id)
+
+SELECT
+buddy_personal_data_id, distance_to_buddy_meters
+from
+distances_to_buddies
+`;
+
+  return camelcaseKeys(distanceToBuddies);
+}
+
+// chat-related queries
+
+export async function createNewConversation(currentUserPersonalDataId) {
+  const [chat] = await sql`
+  INSERT INTO conversations
+  (id)
+  VALUES
+  (DEFAULT)
+  RETURNING
+    *
+  `;
+  return camelcaseKeys(chat);
+}
+
+export async function addAUserToTheConversation(listOfusers) {
+  const addedUserToTheConversation = await sql`
+  INSERT INTO conversation_users
+  ${sql(listOfusers, 'personal_data_id', 'conversation_id')}`;
+  return camelcaseKeys(addedUserToTheConversation);
+}
+
+// to be deleted
+export async function getConversationById(conversationId) {
+  const [conversation] = await sql`
+  SELECT
+  *
+  FROM
+ conversations
+WHERE
+id = ${conversationId}
+  `;
+  return camelcaseKeys(conversation);
+}
+
+export async function getMessagesByConversationId(conversationId) {
+  const history = await sql`
+  SELECT
+    id, personal_data_id, conversation_id , timestamp as timestamp, content
+  FROM
+ messages
+WHERE
+conversation_id = ${conversationId}
+  `;
+  return camelcaseKeys(history);
+}
+
+export async function getConversationsUser(conversationId) {
+  const conversationParticipants = await sql`
+  SELECT
+  *
+  FROM
+  conversation_users
+WHERE
+conversation_id = ${conversationId}
+  `;
+  return camelcaseKeys(conversationParticipants);
+}
+
+export async function createNewMessage(
+  conversationvId,
+  currentUserdataId,
+  content,
+) {
+  const [message] = await sql`
+  INSERT INTO messages
+  (personal_data_id, conversation_id, content )
+  VALUES
+  (${currentUserdataId},${conversationvId},${content})
+  RETURNING
+    *
+  `;
+  return camelcaseKeys(message);
+}
+
+export async function getConversationIdbyUsersDataId(
+  currentUserDataId,
+  buddyDataId,
+) {
+  const [conversationId] = await sql`
+  with user_chats as (
+SELECT
+*
+FROM
+conversation_users
+WHERE
+personal_data_id = ${currentUserDataId}
+)
+SELECT
+conversation_users.personal_data_id as buddy_personal_data_id,
+conversation_users.conversation_id as conversation_id
+FROM
+conversation_users,
+user_chats
+WHERE
+user_chats.conversation_id = conversation_users.conversation_id AND
+conversation_users.personal_data_id = ${buddyDataId}
+  `;
+  return conversationId && camelcaseKeys(conversationId);
+}
+
+export async function getbuddyName(dataId) {
+  const [buddyName] = await sql`
+  SELECT
+   first_name
+  FROM
+personal_data
+WHERE
+id = ${dataId}
+  `;
+  return camelcaseKeys(buddyName);
+}
+
+export async function getLatestChatsInfo(dataId) {
+  const chats = await sql`
+with user_conversations as (
+
+SELECT
+*
+FROM
+conversation_users
+WHERE
+personal_data_id = ${dataId}
+),
+buddy_conversation as(
+SELECT
+conversation_users.personal_data_id as buddy_personal_data_id,
+conversation_users.conversation_id as conversation_id
+FROM
+conversation_users,
+user_conversations
+WHERE
+user_conversations.conversation_id = conversation_users.conversation_id AND
+conversation_users.personal_data_id != ${dataId}),
+
+latest_timestamp as(
+SELECT
+messages.conversation_id as conversation_id,
+max(messages.timestamp) as timestamp
+from
+buddy_conversation,
+messages
+WHERE
+messages.conversation_id= buddy_conversation.conversation_id
+group by messages.conversation_id),
+
+second_step as(
+SELECT
+messages.conversation_id as conversation_id,
+messages.content as content,
+messages.timestamp as timestamp,
+buddy_conversation.buddy_personal_data_id as buddy_personal_data_id
+FROM
+latest_timestamp,
+messages,
+buddy_conversation
+WHERE
+buddy_conversation.conversation_id = latest_timestamp.conversation_id AND
+latest_timestamp.conversation_id = messages.conversation_id AND
+latest_timestamp.timestamp = messages.timestamp)
+
+SELECT
+personal_data.first_name as buddy_first_name,
+personal_data.profile_picture_url as profile_picture_url,
+second_step.*
+FROM
+personal_data,
+second_step
+where
+personal_data.id = second_step.buddy_personal_data_id
+ORDER by second_step.timestamp desc
+
+  `;
+  return camelcaseKeys(chats);
+}
+
+// TO_CHAR(messages.timestamp, 'YYYY-MM-DD HH24:MI:SS') as timestamp,
+
+// studios
+
+export async function getStudios() {
+  const studios = await sql`
+  SELECT
+locations.longitude as longitude,
+locations.latitude  as latitude,
+locations.address as address,
+rehearsal_studios.studio_name as studio_name,
+rehearsal_studios.id as rehearsal_studios_id
+  FROM
+  rehearsal_studios,
+  locations
+WHERE
+locations.id =rehearsal_studios.location_id
+  `;
+  return camelcaseKeys(studios);
+}
+
+export async function getClosestStudio(participantsDataId) {
+  const [closestStudio] = await sql`
+with buddies_locations_geo as(
+  SELECT
+  personal_data.id as personal_data_id,
+  locations.latitude as latitude,
+  locations.longitude as longitude
+  FROM
+  personal_data,
+  locations
+  WHERE
+  personal_data.id in ${sql(participantsDataId)} AND
+  personal_data.location_id = locations.id),
+
+  rehearsal_studios_geo as (
+  SELECT
+  locations.id as location_id,
+  rehearsal_studios.studio_name as studio_name,
+  locations.latitude as latitude,
+  locations.longitude as longitude
+  FROM locations,
+  rehearsal_studios
+  WHERE
+  rehearsal_studios.location_id = locations.id),
+
+
+  distances_from_user_to_studios as (
+  select personal_data_id, rehearsal_studios_geo.location_id,
+          earth_distance(
+            ll_to_earth(buddies_locations_geo.latitude, buddies_locations_geo.longitude),
+            ll_to_earth(rehearsal_studios_geo.latitude, rehearsal_studios_geo.longitude)
+          ) as distance_meters
+           from
+  buddies_locations_geo,
+  rehearsal_studios_geo
+  order by distance_meters
+  ),
+
+  distances_from_users_to_studios_one_line as (
+  select
+  a.distance_meters as distance_meters_user1,
+  b.distance_meters as distance_meters_user2,
+  a.location_id as location_id_studio,
+  a.personal_data_id as personal_data_id_user1,
+  b.personal_data_id as personal_data_id_user2
+  from
+  distances_from_user_to_studios a,
+  distances_from_user_to_studios b
+  where a.location_id = b.location_id
+  and a.personal_data_id <> b.personal_data_id
+  ),
+
+  sum_distances as (
+  select
+  *, distance_meters_user1 + distance_meters_user2 as sum_of_user_distances_to_studio
+  from
+  distances_from_users_to_studios_one_line
+  ),
+
+  mindist as (select min(sum_of_user_distances_to_studio) min_sum_distance_between_users_and_studio
+  from sum_distances),
+
+  closest_studio as(
+select location_id_studio from sum_distances
+where sum_of_user_distances_to_studio <= (select min_sum_distance_between_users_and_studio from mindist)
+limit 1)
+SELECT
+locations.*,
+rehearsal_studios.studio_name as studio_name
+from locations,
+rehearsal_studios,
+closest_studio
+WHERE locations.id = closest_studio.location_id_studio AND
+locations.id = rehearsal_studios.location_id
+
+`;
+  return camelcaseKeys(closestStudio);
 }
