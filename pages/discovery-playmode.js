@@ -9,8 +9,11 @@ import Link from 'next/link';
 import { EffectCreative } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import {
+  getDistance,
+  getLocationIdByPersonalDataID,
   getPersonalDataIDByUserId,
   getProfilesByAge,
+  getProfilesByDistance,
   getProfilesByGender,
   getProfilesByGenres,
   getProfilesByInstruments,
@@ -216,8 +219,46 @@ const addUser = css`
   border-radius: 50px;
 
   box-shadow: 1px 1px 4px rgba(93, 107, 130, 0.44);
+  button {
+    border: none;
+  }
 `;
 export default function UserProfile(props) {
+  async function createAChat() {
+    if (props.conversationID) {
+      await router.push(`/chats/${props.conversationID}`);
+    } else {
+      const response = await fetch(`../../api/chats/new-chat`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          buddyPersonalDataId: props.personalData.personalDataId,
+          csrfToken: props.csrfToken,
+        }),
+      });
+      const createdChat = await response.json();
+      if ('errors' in createdChat) {
+        setErrors(createdChat.errors);
+        await router.push('/discovery');
+      } else {
+        await router.push(`/chats/${createdChat.id}`);
+      }
+    }
+  }
+
+  // if (!props.personalData || 'errors' in props) {
+  //   return (
+  //     <>
+  //       <Head>
+  //         <title>User not found</title>
+  //         <meta name="description" content="User not found" />
+  //       </Head>
+  //       <h1>404 - User not found</h1>
+  //     </>
+  //   );
+  // }
   return (
     <div css={main}>
       <Head>
@@ -260,17 +301,21 @@ export default function UserProfile(props) {
               modules={[EffectCreative]}
               className="mySwiper2"
             >
-              {props.personalDataUsersFull &&
-                props.personalDataUsersFull.map((profile) => {
+              {props.personalDataUsersEighty &&
+                props.personalDataUsersEighty.map((profile) => {
                   return (
                     <SwiperSlide key={`personal-id-${profile.personalDataId}`}>
                       <div>
                         <div css={profileDataContainer}>
                           <div css={addUserContainer}>
                             <div css={addUser}>
-                              <Link href="/discovery">
-                                <img src="/User_Add.png" alt="add user" />
-                              </Link>
+                              <button onClick={createAChat}>
+                                <img
+                                  src="/message.png"
+                                  alt="message the user"
+                                  style={{ width: 17, height: 14 }}
+                                />
+                              </button>
                             </div>
                           </div>
                           <div css={profileImage}>
@@ -321,11 +366,6 @@ export default function UserProfile(props) {
                                   );
                                 })
                                 .map((genre) => {
-                                  console.log(
-                                    'genre',
-                                    genre.genreName.split(','),
-                                  );
-
                                   return genre.genreName
                                     .split(',')
                                     .map((singleGenre) => {
@@ -368,6 +408,8 @@ export async function getServerSideProps(context) {
   }
 
   const dataId = await getPersonalDataIDByUserId(user.id);
+  const locationId = await getLocationIdByPersonalDataID(dataId);
+  console.log('locationId', locationId);
 
   const profilesByAge = await getProfilesByAge(dataId);
   console.log('profilesByAge', profilesByAge);
@@ -375,16 +417,19 @@ export async function getServerSideProps(context) {
   console.log('profilesByGender', profilesByGender);
   const profilesByInstrument = await getProfilesByInstruments(dataId);
   console.log('profilesByInstrument', profilesByInstrument);
-
   const profilesByGenres = await getProfilesByGenres(dataId);
   console.log('profilesByGenres', profilesByGenres);
+  const profilesByDistance = await getProfilesByDistance(locationId);
+  console.log('profilesByDistance', profilesByDistance);
 
   const profileList = [
     profilesByAge.map((profile) => profile.buddyPersonalDataId),
     profilesByGender.map((profile) => profile.buddyPersonalDataId),
     profilesByInstrument.map((profile) => profile.buddyPersonalDataId),
     profilesByGenres.map((profile) => profile.buddyPersonalDataId),
+    profilesByDistance.map((profile) => profile.buddyPersonalDataId),
   ].flat();
+  console.log('profileList', profileList);
 
   let counts = {};
   profileList.forEach((e) => {
@@ -394,50 +439,62 @@ export async function getServerSideProps(context) {
     counts[e]++;
     // return ((e: count) += 1);
   });
-  console.log('list', counts);
+  console.log('counts', counts);
+
+  const distanceToBuddies = await getDistance(locationId, profileList);
+  console.log('distanceToBuddies', distanceToBuddies);
+  const buddiesWithinHundredDistance = distanceToBuddies.filter((distance) => {
+    return Math.ceil(distance.distanceToBuddyMeters / 1000) <= 100;
+  });
+
+  console.log('buddiesWithinHundredDistance', buddiesWithinHundredDistance);
 
   const fullMatch = Array.from(
+    Object.keys(counts).filter((key) => counts[key] === 5),
+    Number,
+  );
+  const eightyMatch = Array.from(
     Object.keys(counts).filter((key) => counts[key] === 4),
     Number,
   );
-  const seventyFiveMatch = Array.from(
+  const sixtyMatch = Array.from(
     Object.keys(counts).filter((key) => counts[key] === 3),
     Number,
   );
-  const halfMatch = Array.from(
+  const fourtyMatch = Array.from(
     Object.keys(counts).filter((key) => counts[key] === 2),
     Number,
   );
-  const quaterMatch = Array.from(
+  const twentyMatch = Array.from(
     Object.keys(counts).filter((key) => counts[key] === 1),
     Number,
   );
   console.log('fullMatch', fullMatch);
-  console.log('seventyFiveMatch', seventyFiveMatch);
-  console.log('halfMatch', halfMatch);
-  console.log('quaterMatch', quaterMatch);
+  console.log('eightyMatch', eightyMatch);
+  console.log('sixtyMatch', sixtyMatch);
+  console.log('fourtyMatch', fourtyMatch);
+  console.log('twentyMatch', twentyMatch);
 
   const personalDataUsersFull = await getUsersPersonalData(fullMatch);
   console.log('personalDataUsersFull', personalDataUsersFull);
-  const personalDataUsersSeventyFive = await getUsersPersonalData(
-    seventyFiveMatch,
-  );
-  console.log('personalDataUsersSeventyFive', personalDataUsersSeventyFive);
-  const personalDataUsersHalfMatch = await getUsersPersonalData(halfMatch);
-  console.log('personalDataUsersHalfMatch', personalDataUsersHalfMatch);
-  const personalDataUsersQuaterMatch = await getUsersPersonalData(quaterMatch);
-  console.log('personalDataUsersQuaterMatch', personalDataUsersQuaterMatch);
-
+  const personalDataUsersEighty = await getUsersPersonalData(eightyMatch);
+  console.log('personalDataUsersEighty', personalDataUsersEighty);
+  const personalDataUsersSixty = await getUsersPersonalData(sixtyMatch);
+  console.log('personalDataUsersSixty', personalDataUsersSixty);
+  const personalDataUsersFourty = await getUsersPersonalData(fourtyMatch);
+  console.log('personalDataUsersFourty', personalDataUsersFourty);
+  const personalDataUsersTwenty = await getUsersPersonalData(twentyMatch);
+  console.log('personalDataUsersTwenty', personalDataUsersTwenty);
   const userGenres = await getUsersGenreByPersonalDataID(profileList);
-
-  console.log('userGenres', userGenres);
   return {
     props: {
       profileList: profileList,
+      buddiesWithinHundredDistance: buddiesWithinHundredDistance,
       personalDataUsersFull: personalDataUsersFull,
-      personalDataUsersSeventyFive: personalDataUsersSeventyFive,
-      personalDataUsersHalfMatch: personalDataUsersHalfMatch,
-      personalDataUsersQuaterMatch: personalDataUsersQuaterMatch,
+      personalDataUsersEighty: personalDataUsersEighty,
+      personalDataUsersSixty: personalDataUsersSixty,
+      personalDataUsersFourty: personalDataUsersFourty,
+      personalDataUsersTwenty: personalDataUsersTwenty,
       userGenresArray: userGenres,
     },
   };
