@@ -10,7 +10,7 @@ export default function Layout(props) {
         refreshUserProfile={props.refreshUserProfile}
       />
       {props.children}
-      <Footer />
+      <Footer user={props.user} />
     </div>
   );
 }
