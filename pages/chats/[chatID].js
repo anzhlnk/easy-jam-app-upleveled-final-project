@@ -186,10 +186,11 @@ export async function getServerSideProps(context) {
           personalDataId: chat.personalDataId,
           conversationId: chat.conversationId,
           content: chat.content,
-          timestamp:
+          timestampAdapted:
             new Date(Date.parse(chat.timestamp)).toDateString() === today
               ? new Date(Date.parse(chat.timestamp)).toTimeString().slice(0, 5)
               : new Date(Date.parse(chat.timestamp)).toDateString().slice(3),
+          timestamp: new Date(Date.parse(chat.timestamp)).toString(),
         };
       },
     );
