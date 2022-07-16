@@ -7,7 +7,7 @@ import {
 } from '@react-google-maps/api';
 import Head from 'next/head';
 import Link from 'next/link';
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   getClosestStudio,
   getConversationsUser,
@@ -59,7 +59,7 @@ const contentContainer = css`
 const options = { disableDefaultUI: true, zoomControl: true };
 
 const Studios = (props) => {
-  const [libraries] = useState(['places', 'geometry']);
+  const libraries = useMemo(() => ['places', 'geometry'], []);
   const [infoWindowID, setInfoWindowID] = useState('');
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: props.googleAPI,

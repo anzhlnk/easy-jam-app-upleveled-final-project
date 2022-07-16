@@ -1,5 +1,5 @@
 import { useLoadScript } from '@react-google-maps/api';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
@@ -12,7 +12,7 @@ import { headerContainer, prevButton, prevButtonContainer } from './Second';
 
 const Sixth = ({ nextPage, prevPage, handleFormData, values, googleAPI }) => {
   const [error, setError] = useState(false);
-  const [libraries] = useState(['places']);
+  const libraries = useMemo(() => ['places'], []);
   const handleChange = async (value) => {
     handleFormData('location', value);
   };

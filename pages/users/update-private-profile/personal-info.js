@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import { useLoadScript } from '@react-google-maps/api';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import PlacesAutocomplete, {
   geocodeByAddress,
@@ -105,7 +105,7 @@ export const inputContainer = css`
 `;
 
 export default function UpdatePersonalInfo(props) {
-  const [libraries] = useState(['places']);
+  const libraries = useMemo(() => ['places'], []);
   const dateOfBirth = Date.parse(props.userBirthday);
   const [error, setError] = useState(false);
   const [errors, setErrors] = useState('');
