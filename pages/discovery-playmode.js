@@ -10,7 +10,9 @@ import { useState } from 'react';
 // import required modules
 import { EffectCreative } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { createCsrfToken } from '../util/auth';
 import {
+  getConversationIdsbyUsersDataId,
   getDistance,
   getLocationIdByPersonalDataID,
   getPersonalDataIDByUserId,
@@ -221,21 +223,40 @@ const addUser = css`
 export default function UserProfile(props) {
   const [errors, setErrors] = useState([]);
   const router = useRouter();
-  async function createAChat() {
-    if (props.conversationID) {
-      await router.push(`/chats/${props.conversationID}`);
+
+  async function createChat(buddyId) {
+    const buddyConversationId = await props.conversations.filter(
+      (conversation) => {
+        return conversation.buddyPersonalDataId === buddyId;
+      },
+    );
+    console.log('buddyConversationId', buddyConversationId);
+    if (buddyConversationId?.length > 0) {
+      console.log(
+        'buddyConversationId[0].conversationId',
+        buddyConversationId[0].conversationId,
+      );
+      await router.push(`/chats/${buddyConversationId[0].conversationId}`);
     } else {
-      const response = await fetch(`../../api/chats/new-chat`, {
+      console.log(
+        JSON.stringify({
+          buddyPersonalDataId: buddyId,
+          csrfToken: props.csrfToken,
+        }),
+      );
+      const response = await fetch(`./api/chats/new-chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          buddyPersonalDataId: props.personalData.personalDataId,
+          buddyPersonalDataId: buddyId,
           csrfToken: props.csrfToken,
         }),
       });
+
       const createdChat = await response.json();
+
       if ('errors' in createdChat) {
         setErrors(createdChat.errors);
         await router.push('/discovery');
@@ -281,7 +302,7 @@ export default function UserProfile(props) {
         </div>
         <div css={allContentContainer}>
           <div css={contentContainer}>
-            <span>100%</span>
+            {/* <span>100%</span> */}
             <Swiper
               grabCursor={true}
               effect="creative"
@@ -306,7 +327,15 @@ export default function UserProfile(props) {
                         <div css={profileDataContainer}>
                           <div css={addUserContainer}>
                             <div css={addUser}>
-                              <button onClick={createAChat}>
+                              <button
+                                onClick={() => {
+                                  createChat(profile.personalDataId).catch(
+                                    () => {
+                                      console.log('error');
+                                    },
+                                  );
+                                }}
+                              >
                                 <img
                                   src="/message.png"
                                   alt="message the user"
@@ -394,6 +423,7 @@ export default function UserProfile(props) {
 export async function getServerSideProps(context) {
   const sessionToken = context.req.cookies.sessionToken;
   const session = await getValidSessionByToken(sessionToken);
+  const csrfToken = await createCsrfToken(session.csrfSecret);
   const user = await getUserByValidSessionToken(
     context.req.cookies.sessionToken,
   );
@@ -406,18 +436,12 @@ export async function getServerSideProps(context) {
 
   const dataId = await getPersonalDataIDByUserId(user.id);
   const locationId = await getLocationIdByPersonalDataID(dataId);
-  console.log('locationId', locationId);
 
   const profilesByAge = await getProfilesByAge(dataId);
-  console.log('profilesByAge', profilesByAge);
   const profilesByGender = await getProfilesByGender(dataId);
-  console.log('profilesByGender', profilesByGender);
   const profilesByInstrument = await getProfilesByInstruments(dataId);
-  console.log('profilesByInstrument', profilesByInstrument);
   const profilesByGenres = await getProfilesByGenres(dataId);
-  console.log('profilesByGenres', profilesByGenres);
   const profilesByDistance = await getProfilesByDistance(locationId);
-  console.log('profilesByDistance', profilesByDistance);
 
   const profileList = [
     profilesByAge.map((profile) => profile.buddyPersonalDataId),
@@ -428,6 +452,12 @@ export async function getServerSideProps(context) {
   ].flat();
   console.log('profileList', profileList);
 
+  const conversations = await getConversationIdsbyUsersDataId(
+    dataId,
+    profileList,
+  );
+  console.log('conversations', conversations);
+
   const counts = {};
   profileList.forEach((e) => {
     if (!(e in counts)) {
@@ -436,15 +466,11 @@ export async function getServerSideProps(context) {
     counts[e]++;
     // return ((e: count) += 1);
   });
-  console.log('counts', counts);
 
   const distanceToBuddies = await getDistance(locationId, profileList);
-  console.log('distanceToBuddies', distanceToBuddies);
   const buddiesWithinHundredDistance = distanceToBuddies.filter((distance) => {
     return Math.ceil(distance.distanceToBuddyMeters / 1000) <= 100;
   });
-
-  console.log('buddiesWithinHundredDistance', buddiesWithinHundredDistance);
 
   const fullMatch = Array.from(
     Object.keys(counts).filter((key) => counts[key] === 5),
@@ -466,22 +492,12 @@ export async function getServerSideProps(context) {
     Object.keys(counts).filter((key) => counts[key] === 1),
     Number,
   );
-  console.log('fullMatch', fullMatch);
-  console.log('eightyMatch', eightyMatch);
-  console.log('sixtyMatch', sixtyMatch);
-  console.log('fourtyMatch', fourtyMatch);
-  console.log('twentyMatch', twentyMatch);
 
   const personalDataUsersFull = await getUsersPersonalData(fullMatch);
-  console.log('personalDataUsersFull', personalDataUsersFull);
   const personalDataUsersEighty = await getUsersPersonalData(eightyMatch);
-  console.log('personalDataUsersEighty', personalDataUsersEighty);
   const personalDataUsersSixty = await getUsersPersonalData(sixtyMatch);
-  console.log('personalDataUsersSixty', personalDataUsersSixty);
   const personalDataUsersFourty = await getUsersPersonalData(fourtyMatch);
-  console.log('personalDataUsersFourty', personalDataUsersFourty);
   const personalDataUsersTwenty = await getUsersPersonalData(twentyMatch);
-  console.log('personalDataUsersTwenty', personalDataUsersTwenty);
   const userGenres = await getUsersGenreByPersonalDataID(profileList);
   return {
     props: {
@@ -493,6 +509,8 @@ export async function getServerSideProps(context) {
       personalDataUsersFourty: personalDataUsersFourty,
       personalDataUsersTwenty: personalDataUsersTwenty,
       userGenresArray: userGenres,
+      conversations: conversations,
+      csrfToken: csrfToken,
     },
   };
 }
