@@ -38,10 +38,10 @@ export default async function handler(
     // to  get the user from the token
     const currentUser = await getUserByValidSessionToken(sessionToken);
 
-    const currentUserdataId = await getPersonalDataIDByUserId(currentUser.id);
+    const currentUserDataId = await getPersonalDataIDByUserId(currentUser.id);
     const newMessage = await createNewMessage(
       req.body.conversation,
-      currentUserdataId,
+      currentUserDataId,
       req.body.content,
     );
     return res.status(200).json(newMessage);
