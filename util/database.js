@@ -1357,3 +1357,31 @@ locations.id = rehearsal_studios.location_id
 `;
   return camelcaseKeys(closestStudio);
 }
+
+// get conversations
+
+export async function getConversationIdsbyUsersDataId(
+  currentUserDataId,
+  buddyDataId,
+) {
+  const conversationId = await sql`
+  with user_chats as (
+    SELECT
+    *
+    FROM
+    conversation_users
+    WHERE
+    personal_data_id = ${currentUserDataId}
+    )
+    SELECT
+    conversation_users.personal_data_id as buddy_personal_data_id,
+    conversation_users.conversation_id as conversation_id
+    FROM
+    conversation_users,
+    user_chats
+    WHERE
+    user_chats.conversation_id = conversation_users.conversation_id AND
+    conversation_users.personal_data_id in ${sql(buddyDataId)}
+  `;
+  return conversationId && camelcaseKeys(conversationId);
+}
