@@ -145,7 +145,6 @@ const Studios = (props) => {
     </div>
   );
 };
-//export default React.memo(Studios);
 export default Studios;
 
 export async function getServerSideProps(context) {
@@ -164,10 +163,10 @@ export async function getServerSideProps(context) {
   const googleAPI = process.env.GOOGLE_API_KEY;
 
   const conversation = await Number(context.query.conversationId);
-  const participatnsOfTheConversation = await getConversationsUser(
+  const participantsOfTheConversation = await getConversationsUser(
     conversation,
   );
-  const currentUserParticipant = participatnsOfTheConversation
+  const currentUserParticipant = participantsOfTheConversation
     .map((user) => {
       return user.personalDataId;
     })
@@ -187,9 +186,11 @@ export async function getServerSideProps(context) {
     };
   }
 
-  const participantsDataId = participatnsOfTheConversation.map((user) => {
-    return user.personalDataId;
-  });
+  const participantsDataId = participantsOfTheConversation.map(
+    (participant) => {
+      return participant.personalDataId;
+    },
+  );
 
   const closestStudio = await getClosestStudio(participantsDataId);
 

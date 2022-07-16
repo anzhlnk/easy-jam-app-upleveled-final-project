@@ -2,8 +2,6 @@ import { css } from '@emotion/react';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useState } from 'react';
 import { createCsrfToken } from '../../util/auth';
 import {
   getbuddyName,
@@ -26,7 +24,6 @@ const notAuthenticated = css`
   font-family: 'Michroma';
   font-size: 14px;
   line-height: 40px;
-
   text-transform: uppercase;
 `;
 
@@ -66,11 +63,6 @@ const AblyChatComponent = dynamic(
 );
 
 export default function TestChat(props) {
-  // custom error message
-  const [errorInfo, setErrorInfo] = useState('');
-  const router = useRouter();
-  const [map, setMap] = useState(false);
-
   return 'errors' in props ? (
     <>
       <Head>
@@ -141,13 +133,13 @@ export async function getServerSideProps(context) {
   if (user) {
     // get the conversation via the id from the url
     const conversation = await getConversationById(context.query.chatID);
-    const participatnsOfTheConversation = await getConversationsUser(
+    const participantsOfTheConversation = await getConversationsUser(
       conversation.id,
     );
 
-    const currentUserParticipant = participatnsOfTheConversation
-      .map((user) => {
-        return user.personalDataId;
+    const currentUserParticipant = participantsOfTheConversation
+      .map((participant) => {
+        return participant.personalDataId;
       })
       .includes(dataId);
 
@@ -166,12 +158,12 @@ export async function getServerSideProps(context) {
       };
     }
 
-    const buddyDataId = participatnsOfTheConversation
-      .filter((user) => {
-        return user.personalDataId !== dataId;
+    const buddyDataId = participantsOfTheConversation
+      .filter((participant) => {
+        return participant.personalDataId !== dataId;
       })
-      .map((user) => {
-        return user.personalDataId;
+      .map((participant) => {
+        return participant.personalDataId;
       })[0];
     const buddyName = await getbuddyName(buddyDataId);
     const today = new Date().toDateString();
@@ -204,7 +196,7 @@ export async function getServerSideProps(context) {
         csrfToken: csrfToken,
         dataId: dataId,
         buddyName: buddyName.firstName,
-        participatnsOfTheConversation: participatnsOfTheConversation,
+        participantsOfTheConversation: participantsOfTheConversation,
       },
     };
   }
