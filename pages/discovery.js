@@ -81,6 +81,13 @@ const contentContainer = css`
 `;
 
 export default function Discovery(props) {
+  const matchingProfiles = [
+    { numberOfMatchingCategories: 5, users: props.personalDataUsersFull },
+    { numberOfMatchingCategories: 4, users: props.personalDataUsersEighty },
+    { numberOfMatchingCategories: 3, users: props.personalDataUsersSixty },
+    { numberOfMatchingCategories: 2, users: props.personalDataUsersFourty },
+    { numberOfMatchingCategories: 1, users: props.personalDataUsersTwenty },
+  ];
   return (
     <div>
       <Head>
@@ -107,198 +114,47 @@ export default function Discovery(props) {
           </div>
         </div>
         <div css={allContentContainer}>
-          <div css={contentContainer}>
-            {props.personalDataUsersFull &&
-              props.personalDataUsersFull.filter((profile) => {
-                return props.buddiesWithinHundredDistance.some(
-                  (buddy) =>
-                    buddy.buddyPersonalDataId === profile.personalDataId,
-                );
-              }).length > 0 && (
-                <span css={matchPercentage}>
-                  Mutual match: 4 out of 5 categories
-                </span>
-              )}
-            {props.personalDataUsersFull &&
-              props.personalDataUsersFull
-                .filter((profile) => {
-                  return props.buddiesWithinHundredDistance.some(
-                    (buddy) =>
-                      buddy.buddyPersonalDataId === profile.personalDataId,
-                  );
-                })
-                .map((profile) => {
-                  return (
-                    <div key={`personal-id-${profile.personalDataId}`}>
-                      <FilterResults
-                        profile={profile}
-                        buddiesWithinHundredDistance={
-                          props.buddiesWithinHundredDistance
-                        }
-                        personalDataUsersFull={props.personalDataUsersFull}
-                        personalDataUsersEighty={props.personalDataUsersEighty}
-                        personalDataUsersSixty={props.personalDataUsersSixty}
-                        personalDataUsersFourty={props.personalDataUsersFourty}
-                        personalDataUsersTwenty={props.personalDataUsersTwenty}
-                      />
-                    </div>
-                  );
-                })}
-          </div>
-          <div css={contentContainer}>
-            {props.personalDataUsersEighty &&
-              props.personalDataUsersEighty.filter((profile) => {
-                return props.buddiesWithinHundredDistance.some(
-                  (buddy) =>
-                    buddy.buddyPersonalDataId === profile.personalDataId,
-                );
-              }).length > 0 && (
-                <span css={matchPercentage}>
-                  Mutual match: 4 out of 5 categories
-                </span>
-              )}
-            {props.personalDataUsersEighty &&
-              props.personalDataUsersEighty
-                .filter((profile) => {
-                  return props.buddiesWithinHundredDistance.some(
-                    (buddy) =>
-                      buddy.buddyPersonalDataId === profile.personalDataId,
-                  );
-                })
-                .map((profile) => {
-                  return (
-                    <div key={`personal-id-${profile.personalDataId}`}>
-                      <FilterResults
-                        profile={profile}
-                        buddiesWithinHundredDistance={
-                          props.buddiesWithinHundredDistance
-                        }
-                        personalDataUsersFull={props.personalDataUsersFull}
-                        personalDataUsersEighty={props.personalDataUsersEighty}
-                        personalDataUsersSixty={props.personalDataUsersSixty}
-                        personalDataUsersFourty={props.personalDataUsersFourty}
-                        personalDataUsersTwenty={props.personalDataUsersTwenty}
-                      />
-                    </div>
-                  );
-                })}
-          </div>
-          <div css={contentContainer}>
-            {props.personalDataUsersSixty &&
-              props.personalDataUsersSixty.filter((profile) => {
-                return props.buddiesWithinHundredDistance.some(
-                  (buddy) =>
-                    buddy.buddyPersonalDataId === profile.personalDataId,
-                );
-              }).length > 0 && (
-                <span css={matchPercentage}>
-                  Mutual match: 3 out of 5 categories
-                </span>
-              )}
-            {props.personalDataUsersSixty &&
-              props.personalDataUsersSixty
-                .filter((profile) => {
-                  return props.buddiesWithinHundredDistance.some(
-                    (buddy) =>
-                      buddy.buddyPersonalDataId === profile.personalDataId,
-                  );
-                })
-                .map((profile) => {
-                  return (
-                    <div key={`personal-id-${profile.personalDataId}`}>
-                      <FilterResults
-                        profile={profile}
-                        buddiesWithinHundredDistance={
-                          props.buddiesWithinHundredDistance
-                        }
-                        personalDataUsersFull={props.personalDataUsersFull}
-                        personalDataUsersEighty={props.personalDataUsersEighty}
-                        personalDataUsersSixty={props.personalDataUsersSixty}
-                        personalDataUsersFourty={props.personalDataUsersFourty}
-                        personalDataUsersTwenty={props.personalDataUsersTwenty}
-                      />
-                    </div>
-                  );
-                })}
-          </div>
-          <div css={contentContainer}>
-            {props.personalDataUsersFourty &&
-              props.personalDataUsersFourty.filter((profile) => {
-                return props.buddiesWithinHundredDistance.some(
-                  (buddy) =>
-                    buddy.buddyPersonalDataId === profile.personalDataId,
-                );
-              }).length > 0 && (
-                <span css={matchPercentage}>
-                  Mutual match: 2 out of 5 categories
-                </span>
-              )}
-
-            {props.personalDataUsersFourty &&
-              props.personalDataUsersFourty
-                .filter((profile) => {
-                  return props.buddiesWithinHundredDistance.some(
-                    (buddy) =>
-                      buddy.buddyPersonalDataId === profile.personalDataId,
-                  );
-                })
-                .map((profile) => {
-                  return (
-                    <div key={`personal-id-${profile.personalDataId}`}>
-                      <FilterResults
-                        profile={profile}
-                        buddiesWithinHundredDistance={
-                          props.buddiesWithinHundredDistance
-                        }
-                        personalDataUsersFull={props.personalDataUsersFull}
-                        personalDataUsersEighty={props.personalDataUsersEighty}
-                        personalDataUsersSixty={props.personalDataUsersSixty}
-                        personalDataUsersFourty={props.personalDataUsersFourty}
-                        personalDataUsersTwenty={props.personalDataUsersTwenty}
-                      />
-                    </div>
-                  );
-                })}
-          </div>
-          <div css={contentContainer}>
-            {props.personalDataUsersTwenty &&
-              props.personalDataUsersTwenty.filter((profile) => {
-                return props.buddiesWithinHundredDistance.some(
-                  (buddy) =>
-                    buddy.buddyPersonalDataId === profile.personalDataId,
-                );
-              }).length > 0 && (
-                <span css={matchPercentage}>
-                  Mutual match: 1 out of 5 categories
-                </span>
-              )}
-
-            {props.personalDataUsersTwenty &&
-              props.personalDataUsersTwenty
-                .filter((profile) => {
-                  return props.buddiesWithinHundredDistance.some(
-                    (buddy) =>
-                      buddy.buddyPersonalDataId === profile.personalDataId,
-                  );
-                })
-                .map((profile) => {
-                  return (
-                    <div key={`personal-id-${profile.personalDataId}`}>
-                      <FilterResults
-                        profile={profile}
-                        buddiesWithinHundredDistance={
-                          props.buddiesWithinHundredDistance
-                        }
-                        personalDataUsersFull={props.personalDataUsersFull}
-                        personalDataUsersEighty={props.personalDataUsersEighty}
-                        personalDataUsersSixty={props.personalDataUsersSixty}
-                        personalDataUsersFourty={props.personalDataUsersFourty}
-                        personalDataUsersTwenty={props.personalDataUsersTwenty}
-                      />
-                    </div>
-                  );
-                })}
-          </div>
+          {matchingProfiles.map((personalDataMatchingGroup) => {
+            // content container for header (how much matching)
+            return (
+              <div
+                key={personalDataMatchingGroup.percentage}
+                css={contentContainer}
+              >
+                {personalDataMatchingGroup.users &&
+                  personalDataMatchingGroup.users.filter((profile) => {
+                    return props.buddiesWithinHundredDistance.some(
+                      (buddy) =>
+                        buddy.buddyPersonalDataId === profile.personalDataId,
+                    );
+                  }).length > 0 && (
+                    <span css={matchPercentage}>
+                      {`Mutual match: ${personalDataMatchingGroup.numberOfMatchingCategories} out of 5 categories`}
+                    </span>
+                  )}
+                {personalDataMatchingGroup.users &&
+                  personalDataMatchingGroup.users
+                    .filter((profile) => {
+                      return props.buddiesWithinHundredDistance.some(
+                        (buddy) =>
+                          buddy.buddyPersonalDataId === profile.personalDataId,
+                      );
+                    })
+                    .map((profile) => {
+                      return (
+                        <div key={`personal-id-${profile.personalDataId}`}>
+                          <FilterResults
+                            profile={profile}
+                            buddiesWithinHundredDistance={
+                              props.buddiesWithinHundredDistance
+                            }
+                          />
+                        </div>
+                      );
+                    })}
+              </div>
+            );
+          })}
         </div>
       </main>
     </div>
