@@ -105,7 +105,7 @@ export const inputContainer = css`
 `;
 
 export default function UpdatePersonalInfo(props) {
-  const libraries = ['places'];
+  const [libraries] = useState(['places']);
   const dateOfBirth = Date.parse(props.userBirthday);
   const [error, setError] = useState(false);
   const [errors, setErrors] = useState('');
