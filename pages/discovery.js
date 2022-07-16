@@ -387,15 +387,10 @@ export async function getServerSideProps(context) {
   console.log('twentyMatch', twentyMatch);
 
   const personalDataUsersFull = await getUsersPersonalData(fullMatch);
-  console.log('personalDataUsersFull', personalDataUsersFull);
   const personalDataUsersEighty = await getUsersPersonalData(eightyMatch);
-  console.log('personalDataUsersEighty', personalDataUsersEighty);
   const personalDataUsersSixty = await getUsersPersonalData(sixtyMatch);
-  console.log('personalDataUsersSixty', personalDataUsersSixty);
   const personalDataUsersFourty = await getUsersPersonalData(fourtyMatch);
-  console.log('personalDataUsersFourty', personalDataUsersFourty);
   const personalDataUsersTwenty = await getUsersPersonalData(twentyMatch);
-  console.log('personalDataUsersTwenty', personalDataUsersTwenty);
 
   return {
     props: {
