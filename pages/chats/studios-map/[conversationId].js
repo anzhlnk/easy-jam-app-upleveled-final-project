@@ -1,7 +1,13 @@
 import { css } from '@emotion/react';
-import { GoogleMap, Marker, useLoadScript } from '@react-google-maps/api';
+import {
+  GoogleMap,
+  InfoWindow,
+  Marker,
+  useLoadScript,
+} from '@react-google-maps/api';
 import Head from 'next/head';
 import Link from 'next/link';
+import React from 'react';
 import {
   getClosestStudio,
   getConversationsUser,
@@ -10,6 +16,8 @@ import {
   getUserByValidSessionToken,
   getValidSessionByToken,
 } from '../../../util/database';
+
+const { useState } = React;
 
 const mapContainerStyle = {
   width: '80vw',
@@ -48,11 +56,11 @@ const contentContainer = css`
   align-items: center;
 `;
 
-const libraries = ['places', 'geometry'];
-
 const options = { disableDefaultUI: true, zoomControl: true };
 
 const Studios = (props) => {
+  const [libraries] = useState(['places', 'geometry']);
+  const [infoWindowID, setInfoWindowID] = useState('');
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: props.googleAPI,
     libraries,
@@ -66,6 +74,45 @@ const Studios = (props) => {
   console.log('props.closestStudio.latitude', props.closestStudio.latitude);
   if (loadError) return 'Error loading maps';
   if (!isLoaded) return 'Loading Maps';
+
+  let markers;
+  const handleMarkerClick = (index) => {
+    if (infoWindowID === '') {
+      setInfoWindowID(index);
+    } else {
+      setInfoWindowID('');
+    }
+  };
+  if (props.studios !== null) {
+    markers = props.studios.map((room, i) => {
+      return (
+        <Marker
+          key={`'room'-${room.rehearsalStudiosId}`}
+          position={{
+            lat: Number(room.latitude),
+            lng: Number(room.longitude),
+          }}
+          optimized={true}
+          title={room.studioName}
+          onClick={() => {
+            handleMarkerClick(i);
+          }}
+          // For Hovering:
+          // onMouseOver={() => {
+          //   setInfoWindowID(i);
+          // }}
+          // onMouseOut={() => setInfoWindowID('')}
+          animation={google.maps.Animation.DROP}
+        >
+          {infoWindowID === i && (
+            <InfoWindow onCloseClick={() => setInfoWindowID('')}>
+              <span>{room.studioName}</span>
+            </InfoWindow>
+          )}
+        </Marker>
+      );
+    });
+  }
 
   return (
     <div>
@@ -91,30 +138,14 @@ const Studios = (props) => {
             center={center}
             options={options}
           >
-            {props.studios.map((room) => {
-              return (
-                <Marker
-                  key={`'room'-${room.rehearsalStudiosId}`}
-                  position={{
-                    lat: Number(room.latitude),
-                    lng: Number(room.longitude),
-                  }}
-                  optimized={true}
-                  label={{
-                    fontSize: '14pt',
-                    text: room.studioName,
-                  }}
-                  animation={google.maps.Animation.DROP}
-                />
-              );
-            })}
+            {markers}
           </GoogleMap>
         </div>
       </main>
     </div>
   );
 };
-
+//export default React.memo(Studios);
 export default Studios;
 
 export async function getServerSideProps(context) {
