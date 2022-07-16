@@ -159,6 +159,33 @@ const nameAgeDistanceContainer = css`
     color: #a7b0c0;
   }
 `;
+const percentageMessageContainer = css`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1em;
+  .percentage {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 150px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    /* identical to box height, or 143% */
+
+    text-align: right;
+
+    /* Text/300 */
+
+    color: #a7b0c0;
+  }
+`;
+
 export default function FilterResultsPlaymode(props) {
   const [errors, setErrors] = useState([]);
   const router = useRouter();
@@ -288,6 +315,9 @@ export default function FilterResultsPlaymode(props) {
                     );
                   });
                 })}
+            </div>
+            <div css={percentageMessageContainer}>
+              <div className="percentage">{props.percentage}</div>
             </div>
           </div>
         </div>

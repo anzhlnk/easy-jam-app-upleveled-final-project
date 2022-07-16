@@ -89,48 +89,6 @@ const contentContainer = css`
 `;
 
 export default function UserProfile(props) {
-  // async function createChat(buddyId) {
-  //   const buddyConversationId = await props.conversations.filter(
-  //     (conversation) => {
-  //       return conversation.buddyPersonalDataId === buddyId;
-  //     },
-  //   );
-  //   console.log('buddyConversationId', buddyConversationId);
-  //   if (buddyConversationId?.length > 0) {
-  //     console.log(
-  //       'buddyConversationId[0].conversationId',
-  //       buddyConversationId[0].conversationId,
-  //     );
-  //     await router.push(`/chats/${buddyConversationId[0].conversationId}`);
-  //   } else {
-  //     console.log(
-  //       JSON.stringify({
-  //         buddyPersonalDataId: buddyId,
-  //         csrfToken: props.csrfToken,
-  //       }),
-  //     );
-  //     const response = await fetch(`./api/chats/new-chat`, {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({
-  //         buddyPersonalDataId: buddyId,
-  //         csrfToken: props.csrfToken,
-  //       }),
-  //     });
-
-  //     const createdChat = await response.json();
-
-  //     if ('errors' in createdChat) {
-  //       setErrors(createdChat.errors);
-  //       await router.push('/discovery');
-  //     } else {
-  //       await router.push(`/chats/${createdChat.id}`);
-  //     }
-  //   }
-  // }
-
   // if (!props.personalData || 'errors' in props) {
   //   return (
   //     <>
@@ -142,6 +100,14 @@ export default function UserProfile(props) {
   //     </>
   //   );
   // }
+
+  const matchingProfiles = [
+    { percentage: '100% match', users: props.personalDataUsersFull },
+    { percentage: '80% match', users: props.personalDataUsersEighty },
+    { percentage: '60% match', users: props.personalDataUsersSixty },
+    { percentage: '40% match', users: props.personalDataUsersFourty },
+    { percentage: '20% match', users: props.personalDataUsersTwenty },
+  ];
   return (
     <div css={main}>
       <Head>
@@ -167,7 +133,6 @@ export default function UserProfile(props) {
         </div>
         <div css={allContentContainer}>
           <div css={contentContainer}>
-            {/* <span>100%</span> */}
             <Swiper
               grabCursor={true}
               effect="creative"
@@ -184,151 +149,40 @@ export default function UserProfile(props) {
               modules={[EffectCreative]}
               className="mySwiper2"
             >
-              {props.personalDataUsersFull &&
-                props.personalDataUsersFull
-                  .filter((profile) => {
-                    return props.buddiesWithinHundredDistance.some(
-                      (buddy) =>
-                        buddy.buddyPersonalDataId === profile.personalDataId,
-                    );
-                  })
-                  .map((profile) => {
-                    return (
-                      <div key={`personal-id-${profile.personalDataId}`}>
-                        <SwiperSlide>
-                          <FilterResultsPlaymode
-                            profile={profile}
-                            buddiesWithinHundredDistance={
-                              props.buddiesWithinHundredDistance
-                            }
-                            personalDataUsersFull={props.personalDataUsersFull}
-                            conversations={props.conversations}
-                            userGenresArray={props.userGenresArray}
-                          />
-                        </SwiperSlide>
-                      </div>
-                    );
-                  })}
-              {props.personalDataUsersEighty &&
-                props.personalDataUsersEighty
-                  .filter((profile) => {
-                    return props.buddiesWithinHundredDistance.some(
-                      (buddy) =>
-                        buddy.buddyPersonalDataId === profile.personalDataId,
-                    );
-                  })
-                  .map((profile) => {
-                    return (
-                      <div key={`personal-id-${profile.personalDataId}`}>
-                        <SwiperSlide
-                          key={`personal-id-${profile.personalDataId}`}
-                        >
-                          <FilterResultsPlaymode
-                            profile={profile}
-                            buddiesWithinHundredDistance={
-                              props.buddiesWithinHundredDistance
-                            }
-                            personalDataUsersEighty={
-                              props.personalDataUsersEighty
-                            }
-                            conversations={props.conversations}
-                            userGenresArray={props.userGenresArray}
-                          />
-                        </SwiperSlide>
-                      </div>
-                    );
-                  })}
-              {props.personalDataUsersSixty &&
-                props.personalDataUsersSixty
-                  .filter((profile) => {
-                    return props.buddiesWithinHundredDistance.some(
-                      (buddy) =>
-                        buddy.buddyPersonalDataId === profile.personalDataId,
-                    );
-                  })
-                  .map((profile) => {
-                    return (
-                      <div key={`personal-id-${profile.personalDataId}`}>
-                        <SwiperSlide
-                          key={`personal-id-${profile.personalDataId}`}
-                        >
-                          <FilterResultsPlaymode
-                            profile={profile}
-                            buddiesWithinHundredDistance={
-                              props.buddiesWithinHundredDistance
-                            }
-                            personalDataUsersSixty={
-                              props.personalDataUsersSixty
-                            }
-                            conversations={props.conversations}
-                            userGenresArray={props.userGenresArray}
-                          />
-                        </SwiperSlide>
-                      </div>
-                    );
-                  })}
-              {props.personalDataUsersFourty &&
-                props.personalDataUsersFourty
-                  .filter((profile) => {
-                    return props.buddiesWithinHundredDistance.some(
-                      (buddy) =>
-                        buddy.buddyPersonalDataId === profile.personalDataId,
-                    );
-                  })
-                  .map((profile) => {
-                    return (
-                      <div key={`personal-id-${profile.personalDataId}`}>
-                        <SwiperSlide
-                          key={`personal-id-${profile.personalDataId}`}
-                        >
-                          <FilterResultsPlaymode
-                            profile={profile}
-                            buddiesWithinHundredDistance={
-                              props.buddiesWithinHundredDistance
-                            }
-                            personalDataUsersFourty={
-                              props.personalDataUsersFourty
-                            }
-                            conversations={props.conversations}
-                            userGenresArray={props.userGenresArray}
-                          />
-                        </SwiperSlide>
-                      </div>
-                    );
-                  })}
-              {props.personalDataUsersTwenty &&
-                props.personalDataUsersTwenty
-                  .filter((profile) => {
-                    return props.buddiesWithinHundredDistance.some(
-                      (buddy) =>
-                        buddy.buddyPersonalDataId === profile.personalDataId,
-                    );
-                  })
-                  .map((profile) => {
-                    console.log(
-                      'profile.personalDataId personalDataUsersTwenty',
-                      profile.personalDataId,
-                    );
-                    return (
-                      <div key={`personal-id-${profile.personalDataId}`}>
-                        <SwiperSlide
-                          key={`personal-id-${profile.personalDataId}`}
-                        >
-                          <FilterResultsPlaymode
-                            profile={profile}
-                            buddiesWithinHundredDistance={
-                              props.buddiesWithinHundredDistance
-                            }
-                            personalDataUsersTwenty={
-                              props.personalDataUsersTwenty
-                            }
-                            conversations={props.conversations}
-                            userGenresArray={props.userGenresArray}
-                          />
-                        </SwiperSlide>
-                      </div>
-                    );
-                  })}
+              {matchingProfiles.map((personalDataMatchingGroup) => {
+                return (
+                  personalDataMatchingGroup.users &&
+                  personalDataMatchingGroup.users
+                    .filter((profile) => {
+                      return props.buddiesWithinHundredDistance.some(
+                        (buddy) =>
+                          buddy.buddyPersonalDataId === profile.personalDataId,
+                      );
+                    })
+                    .map((profile) => {
+                      return (
+                        <div key={`personal-id-${profile.personalDataId}`}>
+                          <SwiperSlide
+                            key={`personal-id-${profile.personalDataId}`}
+                          >
+                            <FilterResultsPlaymode
+                              profile={profile}
+                              buddiesWithinHundredDistance={
+                                props.buddiesWithinHundredDistance
+                              }
+                              personalDataUsersFull={
+                                props.personalDataUsersFull
+                              }
+                              conversations={props.conversations}
+                              userGenresArray={props.userGenresArray}
+                              percentage={personalDataMatchingGroup.percentage}
+                            />
+                          </SwiperSlide>
+                        </div>
+                      );
+                    })
+                );
+              })}
             </Swiper>
           </div>
         </div>
