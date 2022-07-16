@@ -90,7 +90,7 @@ export default async function handler(
     const passwordHash = await bcrypt.hash(req.body.newPassword, 12);
 
     // to update the password
-    const newPassword = await updatePassword(username, passwordHash);
+    await updatePassword(username, passwordHash);
 
     res.status(200);
   } else {

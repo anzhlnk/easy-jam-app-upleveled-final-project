@@ -224,6 +224,7 @@ export default function FilterResultsPlaymode(props) {
 
       if ('errors' in createdChat) {
         setErrors(createdChat.errors);
+        console.log(errors);
         await router.push('/discovery');
       } else {
         await router.push(`/chats/${createdChat.id}`);

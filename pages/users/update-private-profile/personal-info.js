@@ -183,6 +183,7 @@ export default function UpdatePersonalInfo(props) {
 
     if ('errors' in updatedUserPersonalData) {
       setErrors(updatedUserPersonalData.errors);
+      console.error(errors);
       return;
     } else {
       // redirect user to private-profile

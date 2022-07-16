@@ -196,11 +196,14 @@ const UserIsntrumentUpdate = (props) => {
         ''
       )}
 
-      {errors.map((issue) => (
-        <div key={`error-${issue.message}`} css={errorMessage}>
-          {error.message}
-        </div>
-      ))}
+      {errors.map((issue) => {
+        console.error(issue);
+        return (
+          <div key={`error-${issue.message}`} css={errorMessage}>
+            {error.message}
+          </div>
+        );
+      })}
     </form>
   );
 };

@@ -1,4 +1,3 @@
-import { css } from '@emotion/react';
 import { useState } from 'react';
 import Select from 'react-select';
 import { errorMessage } from '../../pages/login';
@@ -102,9 +101,7 @@ const Fourth = ({
       )}
 
       <div css={nextButtonContainer}>
-        <button type="submit" css={nextButton}>
-          {'>'}
-        </button>
+        <button css={nextButton}>{'>'}</button>
       </div>
     </form>
   );

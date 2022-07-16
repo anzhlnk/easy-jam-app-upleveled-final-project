@@ -1071,7 +1071,7 @@ FROM
 locations, location_current_user, personal_data
 WHERE
 locations.id != location_current_user.id AND
-personal_data.id in  ${sql(buddy_data_ids)}  AND
+personal_data.id in ${sql(buddy_data_ids)}  AND
  personal_data.location_id = locations.id)
 
 SELECT
@@ -1085,7 +1085,7 @@ distances_to_buddies
 
 // chat-related queries
 
-export async function createNewConversation(currentUserPersonalDataId) {
+export async function createNewConversation() {
   const [chat] = await sql`
   INSERT INTO conversations
   (id)

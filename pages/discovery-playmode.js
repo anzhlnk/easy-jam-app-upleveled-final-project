@@ -1,12 +1,8 @@
-// Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/effect-creative';
 import { css } from '@emotion/react';
 import Head from 'next/head';
 import Link from 'next/link';
-// import 'react-widgets/styles.css';
-import { useState } from 'react';
-// import required modules
 import { EffectCreative } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import FilterResultsPlaymode from '../components/FilterResultsPlaymode';

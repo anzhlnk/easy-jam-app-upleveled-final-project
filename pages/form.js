@@ -124,6 +124,7 @@ function Form(props) {
 
     if ('errors' in updatedUserPersonalData) {
       setErrors(updatedUserPersonalData.errors);
+      console.log(errors);
       return;
     } else {
       // redirect user to filters

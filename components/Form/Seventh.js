@@ -4,7 +4,7 @@ import { useState } from 'react';
 import validator from 'validator';
 import { errorMessage } from '../../pages/login';
 import { main, title } from '../../pages/register';
-import { contentContainer, nextButton, nextButtonContainer } from './First';
+import { nextButton, nextButtonContainer } from './First';
 import { headerContainer, prevButton, prevButtonContainer } from './Second';
 
 const imageField = css`
@@ -47,7 +47,7 @@ const imageField = css`
   }
 `;
 
-const image = css`
+const imageStyle = css`
   @media (min-width: 500px) {
     margin-right: 24em;
   }
@@ -133,7 +133,12 @@ const Seventh = ({
           <p>Loading...</p>
         ) : (
           <div css={imageContainer}>
-            <img src={imageUrl} className="mt-4" alt="upload" css={image} />
+            <img
+              src={imageUrl}
+              className="mt-4"
+              alt="upload"
+              css={imageStyle}
+            />
           </div>
         )}
       </div>
@@ -141,7 +146,6 @@ const Seventh = ({
 
       <div css={nextButtonContainer}>
         <button
-          type="submit"
           onClick={() => {
             updatePersonalData();
           }}

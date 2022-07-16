@@ -1,12 +1,8 @@
-// Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/pagination';
 import { css } from '@emotion/react';
 import Head from 'next/head';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useState } from 'react';
-// import required modules
 import { createCsrfToken } from '../../util/auth';
 import {
   getLatestChatsInfo,
@@ -87,14 +83,10 @@ const errorsStyle = css`
   font-family: 'Michroma';
   font-size: 14px;
   line-height: 40px;
-
   text-transform: uppercase;
 `;
 
 export default function UserDetail(props) {
-  const [errors, setErrors] = useState([]);
-  const router = useRouter();
-
   if ('errors' in props) {
     return (
       <>

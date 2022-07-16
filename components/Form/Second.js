@@ -115,9 +115,7 @@ const Second = ({ nextPage, prevPage, handleFormData, values }) => {
         />
       </div>
       <div css={nextButtonContainer}>
-        <button type="submit" css={nextButton}>
-          {'>'}
-        </button>
+        <button css={nextButton}>{'>'}</button>
       </div>
     </form>
   );

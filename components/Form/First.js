@@ -62,13 +62,11 @@ const First = ({ nextPage, handleFormData, values }) => {
       <div css={contentContainer}>
         <div css={inputContainer}>
           <input
-            type="text"
             placeholder="First name"
             onChange={handleFormData('firstName')}
             value={values.firstName}
           />
           <input
-            type="text"
             placeholder="Last name"
             onChange={handleFormData('lastName')}
             value={values.lastName}
@@ -80,9 +78,7 @@ const First = ({ nextPage, handleFormData, values }) => {
           ''
         )}
         <div css={nextButtonContainer}>
-          <button type="submit" css={nextButton}>
-            {'>'}
-          </button>
+          <button css={nextButton}>{'>'}</button>
         </div>
       </div>
     </form>

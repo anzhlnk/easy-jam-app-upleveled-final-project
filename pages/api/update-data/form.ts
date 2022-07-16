@@ -19,7 +19,7 @@ export default async function handler(
 ) {
   if (!req.body.csrfToken) {
     return res.status(400).json({
-      errors: [{ message:  'no csrf token Found'}],
+      errors: [{ message: 'no csrf token Found' }],
     });
   }
 
@@ -33,13 +33,13 @@ export default async function handler(
 
   if (!session) {
     return res.status(403).json({
-      errors: [{ message:  'unauthorized user'}],
+      errors: [{ message: 'unauthorized user' }],
     });
   }
   // 4.  validate the csrf token against the seed we have in the database
   if (!(await verifyCsrfToken(session.csrfSecret, csrfToken))) {
     return res.status(403).json({
-      errors: [{ message:  'csrf is not valid'}],
+      errors: [{ message: 'csrf is not valid' }],
     });
   }
 
@@ -57,7 +57,7 @@ export default async function handler(
       !req.body.latitude
     ) {
       return res.status(400).json({
-        errors: [{ message: 'Please add personal data'}],
+        errors: [{ message: 'Please add personal data' }],
       });
     }
 
@@ -88,7 +88,7 @@ export default async function handler(
     const dataId = req.body.dataId;
     // standard value
     const defaultRequiredAge = [0, 100];
-    const addedDefaultRequiredAge = await insertDefaultRequiredAge(
+    await insertDefaultRequiredAge(
       dataId,
       defaultRequiredAge[0],
       defaultRequiredAge[1],
@@ -111,8 +111,7 @@ export default async function handler(
       },
     );
     // standard value
-    const addedDefaultRequiredInstruments =
-      await insertDefaultRequiredInstruments(defaultListOfInstruments);
+    await insertDefaultRequiredInstruments(defaultListOfInstruments);
 
     type Gender = {
       id: string;
@@ -128,9 +127,7 @@ export default async function handler(
     });
 
     // standard value
-    const addedDefaultRequiredGenders = await insertDefaultRequiredGenders(
-      defaultListOfGenders,
-    );
+    await insertDefaultRequiredGenders(defaultListOfGenders);
 
     return (
       res.status(200).json(updatedProfileInfo),
@@ -142,6 +139,6 @@ export default async function handler(
 
   // if a method not allowed is used
   res.status(405).json({
-    errors: [{ message:  'Method not allowed'}],
+    errors: [{ message: 'Method not allowed' }],
   });
 }

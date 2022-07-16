@@ -1,13 +1,13 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-  reactStrictMode: true,
-  experimental: {
-    emotion: true,
-  },
-};
+// const nextConfig = {
+//   reactStrictMode: true,
+//   experimental: {
+//     emotion: true,
+//   },
+// };
 
 module.exports = {
   images: {
-    domains: ['res.clodinary.com'],
+    domains: ['res.cloudinary.com'],
   },
 };

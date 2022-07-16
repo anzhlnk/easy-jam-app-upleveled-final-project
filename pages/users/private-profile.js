@@ -349,6 +349,7 @@ export default function UserDetail(props) {
                   </Link>
                 </div>
                 <div css={editOptionsContainer}>
+                  {/* TODO Ask mentor about this: */}
                   <a href="/logout">
                     <h2>Log out</h2>{' '}
                     <img

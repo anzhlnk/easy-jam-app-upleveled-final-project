@@ -213,6 +213,7 @@ export default function UserProfile(props) {
       const createdChat = await response.json();
       if ('errors' in createdChat) {
         setErrors(createdChat.errors);
+        console.error(errors);
         await router.push('/discovery');
       } else {
         await router.push(`/chats/${createdChat.id}`);

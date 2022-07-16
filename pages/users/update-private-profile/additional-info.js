@@ -257,7 +257,9 @@ export default function UserDetail(props) {
                 css={transparentButton}
                 onClick={() => {
                   setActive(false);
-                  updateDescriptionHandler();
+                  updateDescriptionHandler().catch((e) => {
+                    console.error('Error in updateDescriptionHandler: ', e);
+                  });
                 }}
               >
                 <img

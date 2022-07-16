@@ -62,7 +62,7 @@ export default async function handler(
       session.token,
     );
 
-    const addEmail = await addEmailToDatabase(req.body.email, newUser.id);
+    await addEmailToDatabase(req.body.email, newUser.id);
 
     res
       .status(200)

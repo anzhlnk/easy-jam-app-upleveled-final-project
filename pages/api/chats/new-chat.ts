@@ -52,9 +52,7 @@ export default async function handler(
       },
     ];
 
-    const addedUserToTheConversation = await addAUserToTheConversation(
-      usersConversationList,
-    );
+    await addAUserToTheConversation(usersConversationList);
 
     return res.status(200).json(createdNewConversation);
   }

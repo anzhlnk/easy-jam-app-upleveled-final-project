@@ -14,6 +14,7 @@ const Sixth = ({ nextPage, prevPage, handleFormData, values, googleAPI }) => {
   const [error, setError] = useState(false);
   const libraries = useMemo(() => ['places'], []);
   const handleChange = async (value) => {
+    // does this function have to wait for handleFormData to succeed before continuing?
     handleFormData('location', value);
   };
 
@@ -100,9 +101,7 @@ const Sixth = ({ nextPage, prevPage, handleFormData, values, googleAPI }) => {
       {error ? <div css={errorMessage}>Please,add your address</div> : ''}
 
       <div css={nextButtonContainer}>
-        <button type="submit" css={nextButton}>
-          {'>'}
-        </button>
+        <button css={nextButton}>{'>'}</button>
       </div>
     </form>
   );

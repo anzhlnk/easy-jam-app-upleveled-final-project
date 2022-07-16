@@ -90,9 +90,7 @@ const Fifth = ({ nextPage, prevPage, handleFormData, values, genres }) => {
         )}
       </div>
       <div css={nextButtonContainer}>
-        <button type="submit" css={nextButton}>
-          {'>'}
-        </button>
+        <button css={nextButton}>{'>'}</button>
       </div>
     </form>
   );

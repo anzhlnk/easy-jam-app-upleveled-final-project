@@ -1,7 +1,6 @@
 import { css } from '@emotion/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
 
 const avatarContainer = css`
   width: 100vw;
