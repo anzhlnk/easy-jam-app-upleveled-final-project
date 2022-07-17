@@ -2,3 +2,9 @@ build
 
 # Next.js build folder
 .next
+
+# Ably library import
+pages/chats/\[chatID\].js
+
+# a tag instead of Link so logout works
+pages/users/private-profile.js

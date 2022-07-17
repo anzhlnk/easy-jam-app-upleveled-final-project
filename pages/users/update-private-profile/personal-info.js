@@ -154,16 +154,6 @@ export default function UpdatePersonalInfo(props) {
   };
 
   async function updatePersonalData() {
-    let body = JSON.stringify({
-      firstName: firstName,
-      lastName: lastName,
-      birthday: birthday,
-      location: location,
-      longitude: lng,
-      latitude: lat,
-      csrfToken: props.csrfToken,
-    });
-    console.log('request', body);
     const response = await fetch(`../../api/update-data/user-info`, {
       method: 'PUT',
       headers: {

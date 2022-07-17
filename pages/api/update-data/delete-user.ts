@@ -2,7 +2,6 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { verifyCsrfToken } from '../../../util/auth';
 import {
   deleteUser,
-  getPersonalDataIDByUserId,
   getUserByValidSessionToken,
   getValidSessionByToken,
 } from '../../../util/database';

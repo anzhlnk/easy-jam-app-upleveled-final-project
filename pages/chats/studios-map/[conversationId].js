@@ -167,8 +167,8 @@ export async function getServerSideProps(context) {
     conversation,
   );
   const currentUserParticipant = participantsOfTheConversation
-    .map((user) => {
-      return user.personalDataId;
+    .map((participant) => {
+      return participant.personalDataId;
     })
     .includes(dataId);
 

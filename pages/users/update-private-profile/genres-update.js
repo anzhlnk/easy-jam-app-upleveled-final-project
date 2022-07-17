@@ -9,7 +9,6 @@ import {
   getUserGenreByPersonalDataID,
   getValidSessionByToken,
 } from '../../../util/database';
-import { errorMessage } from '../../login';
 import { title } from '../usersbyid/[userId]';
 import { headerContainer } from './instruments-update';
 import { inputContainer } from './personal-info';
@@ -32,7 +31,7 @@ const customStyles = {
 };
 const UserGenreUpdate = (props) => {
   const [errors, setErrors] = useState([]);
-  const [error, setError] = useState(false);
+  // const [error, setError] = useState(false);
   // const submitFormData = (e) => {
   //   e.preventDefault();
 
@@ -78,6 +77,7 @@ const UserGenreUpdate = (props) => {
     console.log('remove option instruments: ', deletedInstrument);
     if ('errors' in deletedInstrument) {
       setErrors(deletedInstrument.errors);
+      console.error(errors);
       return;
     }
   }
@@ -162,12 +162,12 @@ const UserGenreUpdate = (props) => {
           onChange={handleChange}
         />
       </div>
-      {error ? <div css={errorMessage}>Please add at least 3 genres</div> : ''}
+      {/* {error ? <div css={errorMessage}>Please add at least 3 genres</div> : ''}
       {errors.map((issue) => (
         <div key={`error-${issue.message}`} css={errorMessage}>
           {error.message}
         </div>
-      ))}
+      ))} */}
     </form>
   );
 };

@@ -47,7 +47,7 @@ export const headerContainer = css`
 `;
 
 const UserIsntrumentUpdate = (props) => {
-  const [error, setError] = useState(false);
+  // const [error, setError] = useState(false);
   const [errors, setErrors] = useState([]);
 
   const displayedInstrumentOptions = [
@@ -168,17 +168,17 @@ const UserIsntrumentUpdate = (props) => {
           onChange={handleChange}
         />
       </div>
-      {error ? (
+      {/* {error ? (
         <div css={errorMessage}>Please add at least 1 instrument</div>
       ) : (
         ''
-      )}
+      )} */}
 
       {errors.map((issue) => {
         console.error(issue);
         return (
           <div key={`error-${issue.message}`} css={errorMessage}>
-            {error.message}
+            {issue.message}
           </div>
         );
       })}
@@ -202,11 +202,8 @@ export async function getServerSideProps(context) {
 
   const csrfToken = await createCsrfToken(session.csrfSecret);
   const dataId = await getPersonalDataIDByUserId(user.id);
-
   const instruments = await getInstruments();
   const userInstruments = await getUserInstrument(dataId);
-  console.log('instruments', instruments);
-  console.log('userInstruments', userInstruments);
 
   return {
     props: {

@@ -7,9 +7,11 @@ export function useChannel(channelName, callbackOnMessage) {
   const channel = ably.channels.get(channelName);
 
   const onMount = () => {
-    channel.subscribe((msg) => {
-      callbackOnMessage(msg);
-    });
+    channel
+      .subscribe((msg) => {
+        callbackOnMessage(msg);
+      })
+      .catch((e) => console.error('Error in onMount of AblyReactEffect: ', e));
   };
 
   const onUnmount = () => {
