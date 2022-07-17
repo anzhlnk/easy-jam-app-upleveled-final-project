@@ -1,4 +1,4 @@
-import setPostgresDefaultsOnHeroku from './util/setPostgresDefaultsOnHeroku';
+const setPostgresDefaultsOnHeroku = require('./util/setPostgresDefaultsOnHeroku');
 
 setPostgresDefaultsOnHeroku();
 
