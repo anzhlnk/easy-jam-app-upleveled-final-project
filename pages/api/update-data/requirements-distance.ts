@@ -2,6 +2,8 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { verifyCsrfToken } from '../../../util/auth';
 import {
   getLocationIdByPersonalDataID,
+  getPersonalDataIDByUserId,
+  getUserByValidSessionToken,
   getValidSessionByToken,
   updateDistance,
 } from '../../../util/database';
@@ -37,7 +39,10 @@ export default async function handler(
   }
 
   if (req.method === 'PUT') {
-    const locationID = await getLocationIdByPersonalDataID(req.body.dataId);
+    // to  get the user from the token
+    const currentUser = await getUserByValidSessionToken(sessionToken);
+    const currentUserDataId = await getPersonalDataIDByUserId(currentUser.id);
+    const locationID = await getLocationIdByPersonalDataID(currentUserDataId);
 
     const updatedDistance = await updateDistance(
       req.body.updatedDistance,

@@ -1,6 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { verifyCsrfToken } from '../../../util/auth';
 import {
+  getPersonalDataIDByUserId,
+  getUserByValidSessionToken,
   getValidSessionByToken,
   updateAgeRequirements,
 } from '../../../util/database';
@@ -36,8 +38,11 @@ export default async function handler(
   }
 
   if (req.method === 'PUT') {
+    // to  get the user from the token
+    const currentUser = await getUserByValidSessionToken(sessionToken);
+    const currentUserDataId = await getPersonalDataIDByUserId(currentUser.id);
     const updatedAge = await updateAgeRequirements(
-      req.body.dataId,
+      currentUserDataId,
       req.body.updatedRequiredAgeMin,
       req.body.updatedRequiredAgeMax,
     );

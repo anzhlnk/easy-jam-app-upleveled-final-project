@@ -1,6 +1,11 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { verifyCsrfToken } from '../../../util/auth';
-import { getValidSessionByToken, updateStatus } from '../../../util/database';
+import {
+  getPersonalDataIDByUserId,
+  getUserByValidSessionToken,
+  getValidSessionByToken,
+  updateStatus,
+} from '../../../util/database';
 
 export default async function handler(
   req: NextApiRequest,
@@ -33,10 +38,12 @@ export default async function handler(
   }
 
   if (req.method === 'PUT') {
-    console.log('req.body in status', JSON.stringify(req.body));
+    // to  get the user from the token
+    const currentUser = await getUserByValidSessionToken(sessionToken);
+    const currentUserDataId = await getPersonalDataIDByUserId(currentUser.id);
 
     const updatedStatus = await updateStatus(
-      req.body.dataId,
+      currentUserDataId,
       req.body.updatedStatus,
     );
 

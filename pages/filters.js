@@ -109,6 +109,8 @@ export default function Filters(props) {
   );
   console.log('instrument', valueRequiredInstruments);
 
+  // API call for updating the age requirements
+
   async function updateRequiredAge(selectedOption) {
     console.log('Age range', selectedOption);
     const response = await fetch(`api/update-data/requirements-age`, {
@@ -117,7 +119,6 @@ export default function Filters(props) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        dataId: props.dataId,
         updatedRequiredAgeMin: selectedOption[0],
         updatedRequiredAgeMax: selectedOption[1],
         csrfToken: props.csrfToken,
@@ -139,7 +140,6 @@ export default function Filters(props) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        dataId: props.dataId,
         updatedDistance: selectedOption,
         csrfToken: props.csrfToken,
       }),
@@ -160,7 +160,6 @@ export default function Filters(props) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        dataId: props.dataId,
         updatedStatus: selectedOption,
         csrfToken: props.csrfToken,
       }),
@@ -175,33 +174,13 @@ export default function Filters(props) {
 
   // API call for adding genders
   async function addOptionGenders(addedItems) {
-    console.log(
-      'add call genders',
-      JSON.stringify({
-        dataId: props.dataId,
-        addedItems: addedItems.map((gender) => {
-          return {
-            personal_data_id: props.dataId,
-            gender_id: gender,
-          };
-        }),
-        csrfToken: props.csrfToken,
-      }),
-    );
-
     const response = await fetch(`api/update-data/requirements-genders`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        dataId: props.dataId,
-        addedItems: addedItems.map((gender) => {
-          return {
-            personal_data_id: props.dataId,
-            gender_id: gender,
-          };
-        }),
+        addedItems: addedItems,
         csrfToken: props.csrfToken,
       }),
     });
@@ -215,34 +194,13 @@ export default function Filters(props) {
 
   // API call for adding instruments
   async function addOption(addedItems) {
-    console.log(
-      'addcall',
-      JSON.stringify({
-        dataId: props.dataId,
-        addedItems: addedItems.map((instrument) => {
-          return {
-            personal_data_id: props.dataId,
-            instrument_id: instrument,
-            relation_type_id: 2,
-          };
-        }),
-        csrfToken: props.csrfToken,
-      }),
-    );
     const response = await fetch(`api/update-data/requirements-instruments`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        dataId: props.dataId,
-        addedItems: addedItems.map((instrument) => {
-          return {
-            personal_data_id: props.dataId,
-            instrument_id: instrument,
-            relation_type_id: 2,
-          };
-        }),
+        addedItems: addedItems,
         csrfToken: props.csrfToken,
       }),
     });
@@ -254,24 +212,15 @@ export default function Filters(props) {
     }
   }
 
-  // API call for  deleting genders
+  // API call for deleting genders
 
   async function removeOptionGenders(removedItemId) {
-    console.log(
-      'delete call',
-      JSON.stringify({
-        dataId: props.dataId,
-        removedItemId: removedItemId,
-        csrfToken: props.csrfToken,
-      }),
-    );
     const response = await fetch(`api/update-data/requirements-genders`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        dataId: props.dataId,
         removedItemId: removedItemId,
         csrfToken: props.csrfToken,
       }),
@@ -293,7 +242,6 @@ export default function Filters(props) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        dataId: props.dataId,
         removedItemId: removedItemId,
         csrfToken: props.csrfToken,
       }),
@@ -332,7 +280,6 @@ export default function Filters(props) {
       const addedItems = selectedOption.filter(
         (x) => !valueRequiredInstruments.includes(x),
       );
-      console.log('added Items in handleChange', addedItems);
       await addOption(addedItems.map((e) => e.value));
     } else {
       const removedItems = valueRequiredInstruments.filter(
@@ -579,10 +526,8 @@ export async function getServerSideProps(context) {
 
   const csrfToken = await createCsrfToken(session.csrfSecret);
   const dataId = await getPersonalDataIDByUserId(user.id);
-
   const instruments = await getInstruments();
   const genders = await getGenders();
-
   const locationId = await getLocationIdByPersonalDataID(dataId);
   const userStatus = await getUserStatus(dataId);
   const requiredDistance = await getRequiredDistance(locationId);
@@ -590,12 +535,6 @@ export async function getServerSideProps(context) {
   const requiredAge = await getRequiredAge(dataId);
   const requiredInstruments = await getRequiredInstrument(dataId);
 
-  console.log('dataId', dataId);
-  console.log('requiredGenders', requiredGenders);
-  console.log('status', userStatus);
-  console.log('required age', requiredAge);
-  console.log('required distance ', requiredDistance);
-  console.log('required instruments ', requiredInstruments);
   return {
     props: {
       csrfToken: csrfToken,
@@ -603,7 +542,6 @@ export async function getServerSideProps(context) {
       requiredInstruments: requiredInstruments,
       genders: genders,
       requiredGenders: requiredGenders,
-      dataId: dataId,
       userStatus: userStatus[0],
       requiredDistance: requiredDistance[0],
       requiredAge: requiredAge[0],

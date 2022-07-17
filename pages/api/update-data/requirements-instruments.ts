@@ -3,6 +3,8 @@ import { verifyCsrfToken } from '../../../util/auth';
 import {
   addRequiredInstrument,
   deleteRequiredInstrument,
+  getPersonalDataIDByUserId,
+  getUserByValidSessionToken,
   getValidSessionByToken,
 } from '../../../util/database';
 
@@ -35,19 +37,30 @@ export default async function handler(
       errors: [{ message: 'csrf is not valid' }],
     });
   }
+  // 5. to  get the user from the token
+  const currentUser = await getUserByValidSessionToken(sessionToken);
+  const currentUserDataId = await getPersonalDataIDByUserId(currentUser.id);
 
   // if method Delete
   if (req.method === 'DELETE') {
     const deletedRequiredInstruments = await deleteRequiredInstrument(
-      req.body.dataId,
+      currentUserDataId,
       req.body.removedItemId,
     );
     return res.status(200).json(deletedRequiredInstruments);
   }
 
   if (req.method === 'PUT') {
+    const addedInstruments = req.body.addedItems.map((instrument: number) => {
+      return {
+        personal_data_id: currentUserDataId,
+        instrument_id: instrument,
+        relation_type_id: 2,
+      };
+    });
+
     const addedRequiredInstruments = await addRequiredInstrument(
-      req.body.addedItems,
+      addedInstruments,
     );
     return res.status(200).json(addedRequiredInstruments);
   }

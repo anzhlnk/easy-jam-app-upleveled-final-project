@@ -3,6 +3,8 @@ import { verifyCsrfToken } from '../../../util/auth';
 import {
   addRequiredGender,
   deleteRequiredGender,
+  getPersonalDataIDByUserId,
+  getUserByValidSessionToken,
   getValidSessionByToken,
 } from '../../../util/database';
 
@@ -37,20 +39,28 @@ export default async function handler(
       errors: [{ message: 'csrf is not valid' }],
     });
   }
+  // 5. to  get the user from the token
+  const currentUser = await getUserByValidSessionToken(sessionToken);
+  const currentUserDataId = await getPersonalDataIDByUserId(currentUser.id);
 
   // if method Delete
   if (req.method === 'DELETE') {
     const deletedRequiredGenders = await deleteRequiredGender(
-      req.body.dataId,
+      currentUserDataId,
       req.body.removedItemId,
     );
     return res.status(200).json(deletedRequiredGenders);
   }
 
   if (req.method === 'PUT') {
-    console.log('req.body in added requirements', JSON.stringify(req.body));
+    const addedGenders = req.body.addedItems.map((gender: number) => {
+      return {
+        personal_data_id: currentUserDataId,
+        gender_id: gender,
+      };
+    });
 
-    const addedRequiredGenders = await addRequiredGender(req.body.addedItems);
+    const addedRequiredGenders = await addRequiredGender(addedGenders);
     return res.status(200).json(addedRequiredGenders);
   }
 
