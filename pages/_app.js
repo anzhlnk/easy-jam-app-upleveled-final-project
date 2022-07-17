@@ -16,13 +16,15 @@ export default function App({ Component, pageProps }) {
       setUser(profileResponseBody.user);
       setProfileImage(profileResponseBody.profileImage);
     } else {
-      profileResponseBody.errors.forEach((error) => console.log(error.message));
+      profileResponseBody.errors.forEach((error) =>
+        console.error(error.message),
+      );
       setUser(undefined);
     }
   }, []);
 
   useEffect(() => {
-    refreshUserProfile().catch(() => console.log('fetch api failed'));
+    refreshUserProfile().catch(() => console.error('fetch api failed'));
   }, [refreshUserProfile]);
 
   return (

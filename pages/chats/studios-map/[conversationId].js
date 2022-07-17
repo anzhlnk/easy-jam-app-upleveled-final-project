@@ -71,7 +71,6 @@ const Studios = (props) => {
     lng: Number(props.closestStudio.longitude),
   };
 
-  console.log('props.closestStudio.latitude', props.closestStudio.latitude);
   if (loadError) return 'Error loading maps';
   if (!isLoaded) return 'Loading Maps';
 

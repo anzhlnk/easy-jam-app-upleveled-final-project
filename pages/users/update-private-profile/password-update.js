@@ -164,7 +164,6 @@ export async function getServerSideProps(context) {
     context.req.cookies.sessionToken,
   );
 
-  console.log(user, 'user');
   if (!session) {
     return {
       props: { errors: 'Not authenticated' },

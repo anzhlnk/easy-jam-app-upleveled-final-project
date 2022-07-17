@@ -207,7 +207,6 @@ export default function UserDetail(props) {
       }),
     });
     const deletedUser = await response.json();
-    console.log('remove option genders: ', deletedUser);
     if ('errors' in deletedUser) {
       setErrors(deletedUser.errors);
       return;
@@ -428,7 +427,6 @@ export async function getServerSideProps(context) {
   const userGenresArray = userGenres.map((genre) => genre.genreName);
   const personalData = await getUserPersonalData(dataId);
 
-  console.log(personalData);
   if (user) {
     return {
       props: {

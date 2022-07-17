@@ -92,13 +92,10 @@ export default function Filters(props) {
     props.requiredAge.buddyAgeMax,
   ]);
 
-  console.log('age', valueAgeRange);
   const [valueDistanceSlider, setValueDistanceSlider] = useState(
     props.requiredDistance.preferredDistance,
   );
-  console.log('distance', valueDistanceSlider);
   const [valueVisible, setValueVisible] = useState(props.userStatus.status);
-  console.log('visible', valueVisible);
   const [valueRequiredInstruments, setValueRequiredInstruments] = useState(
     props.requiredInstruments.map((x) => {
       return {
@@ -107,12 +104,10 @@ export default function Filters(props) {
       };
     }),
   );
-  console.log('instrument', valueRequiredInstruments);
 
   // API call for updating the age requirements
 
   async function updateRequiredAge(selectedOption) {
-    console.log('Age range', selectedOption);
     const response = await fetch(`api/update-data/requirements-age`, {
       method: 'PUT',
       headers: {
@@ -125,7 +120,6 @@ export default function Filters(props) {
       }),
     });
     const updatedDistance = await response.json();
-    console.log('updated required age: ', updatedDistance);
     if ('errors' in updatedDistance) {
       setErrors(updatedDistance.errors);
       return;
@@ -145,7 +139,6 @@ export default function Filters(props) {
       }),
     });
     const updatedDistance = await response.json();
-    console.log('updated distance: ', updatedDistance);
     if ('errors' in updatedDistance) {
       setErrors(updatedDistance.errors);
       return;
@@ -165,7 +158,6 @@ export default function Filters(props) {
       }),
     });
     const updatedStatus = await response.json();
-    console.log('updatedStatus: ', updatedStatus);
     if ('errors' in updatedStatus) {
       setErrors(updatedStatus.errors);
       return;
@@ -185,7 +177,6 @@ export default function Filters(props) {
       }),
     });
     const addedGender = await response.json();
-    console.log('added options genders: ', addedGender);
     if ('errors' in addedGender) {
       setErrors(addedGender.errors);
       return;
@@ -205,7 +196,6 @@ export default function Filters(props) {
       }),
     });
     const addedInstrument = await response.json();
-    console.log('added option instruments: ', addedInstrument);
     if ('errors' in addedInstrument) {
       setErrors(addedInstrument.errors);
       return;
@@ -226,7 +216,6 @@ export default function Filters(props) {
       }),
     });
     const deletedGender = await response.json();
-    console.log('remove option genders: ', deletedGender);
     if ('errors' in deletedGender) {
       setErrors(deletedGender.errors);
       return;
@@ -247,7 +236,6 @@ export default function Filters(props) {
       }),
     });
     const deletedInstrument = await response.json();
-    console.log('remove option instruments: ', deletedInstrument);
     if ('errors' in deletedInstrument) {
       setErrors(deletedInstrument.errors);
       return;
@@ -262,7 +250,6 @@ export default function Filters(props) {
       };
     }),
   );
-  console.log('gender', valueRequiredGenders);
 
   const submitFormData = (e) => {
     e.preventDefault();
@@ -285,7 +272,6 @@ export default function Filters(props) {
       const removedItems = valueRequiredInstruments.filter(
         (x) => !selectedOption.includes(x),
       );
-      console.log(removedItems);
       await removedItems.forEach((removedItem) =>
         removeOption(removedItem.value),
       );
@@ -306,13 +292,11 @@ export default function Filters(props) {
       const addedItems = selectedOption.filter(
         (x) => !valueRequiredGenders.includes(x),
       );
-      console.log('added Items in handleChange Genders', addedItems);
       await addOptionGenders(addedItems.map((e) => e.value));
     } else {
       const removedItems = valueRequiredGenders.filter(
         (x) => !selectedOption.includes(x),
       );
-      console.log(removedItems);
       await removedItems.forEach((removedItem) =>
         removeOptionGenders(removedItem.value),
       );

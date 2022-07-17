@@ -176,18 +176,12 @@ export async function getServerSideProps(context) {
 
   const dataId = await getPersonalDataIDByUserId(user.id);
   const locationId = await getLocationIdByPersonalDataID(dataId);
-  console.log('locationId', locationId);
 
   const profilesByAge = await getProfilesByAge(dataId);
-  console.log('profilesByAge', profilesByAge);
   const profilesByGender = await getProfilesByGender(dataId);
-  console.log('profilesByGender', profilesByGender);
   const profilesByInstrument = await getProfilesByInstruments(dataId);
-  console.log('profilesByInstrument', profilesByInstrument);
   const profilesByGenres = await getProfilesByGenres(dataId);
-  console.log('profilesByGenres', profilesByGenres);
   const profilesByDistance = await getProfilesByDistance(locationId);
-  console.log('profilesByDistance', profilesByDistance);
 
   const profileList = [
     profilesByAge.map((profile) => profile.buddyPersonalDataId),
@@ -196,7 +190,6 @@ export async function getServerSideProps(context) {
     profilesByGenres.map((profile) => profile.buddyPersonalDataId),
     profilesByDistance.map((profile) => profile.buddyPersonalDataId),
   ].flat();
-  console.log('profileList', profileList);
 
   const counts = {};
   profileList.forEach((e) => {
@@ -206,15 +199,11 @@ export async function getServerSideProps(context) {
     counts[e]++;
     // return ((e: count) += 1);
   });
-  console.log('counts', counts);
 
   const distanceToBuddies = await getDistance(locationId, profileList);
-  console.log('distanceToBuddies', distanceToBuddies);
   const buddiesWithinHundredDistance = distanceToBuddies.filter((distance) => {
     return Math.ceil(distance.distanceToBuddyMeters / 1000) <= 100;
   });
-
-  console.log('buddiesWithinHundredDistance', buddiesWithinHundredDistance);
 
   const fullMatch = Array.from(
     Object.keys(counts).filter((key) => counts[key] === 5),
@@ -236,12 +225,6 @@ export async function getServerSideProps(context) {
     Object.keys(counts).filter((key) => counts[key] === 1),
     Number,
   );
-  console.log('fullMatch', fullMatch);
-  console.log('eightyMatch', eightyMatch);
-  console.log('sixtyMatch', sixtyMatch);
-  console.log('fourtyMatch', fourtyMatch);
-  console.log('twentyMatch', twentyMatch);
-
   const personalDataUsersFull = await getUsersPersonalData(fullMatch);
   const personalDataUsersEighty = await getUsersPersonalData(eightyMatch);
   const personalDataUsersSixty = await getUsersPersonalData(sixtyMatch);

@@ -15,7 +15,6 @@ export function useChannel(channelName, callbackOnMessage) {
   };
 
   const onUnmount = () => {
-    console.log('unmounting');
     channel.unsubscribe();
   };
 

@@ -12,8 +12,6 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  console.log(1111);
-
   if (!req.body.csrfToken) {
     return res.status(400).json({
       errors: [{ message: 'no csrf token Found' }],

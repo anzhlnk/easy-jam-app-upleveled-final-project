@@ -61,22 +61,6 @@ function Form(props) {
     }));
   }
 
-  console.log(
-    ' body:',
-    JSON.stringify({
-      firstName: formData.firstName,
-      lastName: formData.lastName,
-      birthday: formData.birthday,
-      usersInstruments: formData.instrument,
-      usersGenres: formData.genre,
-      gender: formData.gender,
-      profilePicture: formData.profilePicture,
-      location: formData.location,
-      longitude: formData.longitude,
-      latitude: formData.latitude,
-      csrfToken: props.csrfToken,
-    }),
-  );
   async function updatePersonalData() {
     const response = await fetch(`api/update-data/form`, {
       method: 'PUT',
@@ -101,7 +85,7 @@ function Form(props) {
 
     if ('errors' in updatedUserPersonalData) {
       setErrors(updatedUserPersonalData.errors);
-      console.log(errors);
+      console.error(errors);
       return;
     } else {
       // redirect user to filters
@@ -205,7 +189,6 @@ export async function getServerSideProps(context) {
   const user = await getUserByValidSessionToken(
     context.req.cookies.sessionToken,
   );
-  console.log('user', user);
 
   if (!session) {
     return {

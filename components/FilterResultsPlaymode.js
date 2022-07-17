@@ -195,20 +195,9 @@ export default function FilterResultsPlaymode(props) {
         return conversation.buddyPersonalDataId === buddyId;
       },
     );
-    console.log('buddyConversationId', buddyConversationId);
     if (buddyConversationId?.length > 0) {
-      console.log(
-        'buddyConversationId[0].conversationId',
-        buddyConversationId[0].conversationId,
-      );
       await router.push(`/chats/${buddyConversationId[0].conversationId}`);
     } else {
-      console.log(
-        JSON.stringify({
-          buddyPersonalDataId: buddyId,
-          csrfToken: props.csrfToken,
-        }),
-      );
       const response = await fetch(`./api/chats/new-chat`, {
         method: 'POST',
         headers: {
@@ -224,7 +213,7 @@ export default function FilterResultsPlaymode(props) {
 
       if ('errors' in createdChat) {
         setErrors(createdChat.errors);
-        console.log(errors);
+        console.error('Error in FilterResultsPlaymode: ', errors);
         await router.push('/discovery');
       } else {
         await router.push(`/chats/${createdChat.id}`);
@@ -240,8 +229,11 @@ export default function FilterResultsPlaymode(props) {
             <div css={addUser}>
               <button
                 onClick={() => {
-                  createChat(props.profile.personalDataId).catch(() => {
-                    console.log('error');
+                  createChat(props.profile.personalDataId).catch((err) => {
+                    console.error(
+                      'Error after onClick event when creating Chat: ',
+                      err,
+                    );
                   });
                 }}
               >

@@ -40,7 +40,6 @@ export default async function handler(
   if (req.method === 'DELETE') {
     // to  get the user from the token
     const currentUser = await getUserByValidSessionToken(sessionToken);
-    console.log('DELETE USER API: ', currentUser);
     const deletedUser = await deleteUser(currentUser.id);
     return res.status(200).json(deletedUser);
   }

@@ -218,13 +218,11 @@ export async function getServerSideProps(context) {
     profilesByGenres.map((profile) => profile.buddyPersonalDataId),
     profilesByDistance.map((profile) => profile.buddyPersonalDataId),
   ].flat();
-  console.log('profileList', profileList);
 
   const conversations = await getConversationIdsbyUsersDataId(
     dataId,
     profileList,
   );
-  console.log('conversations', conversations);
 
   const counts = {};
   profileList.forEach((e) => {

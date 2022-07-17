@@ -108,21 +108,11 @@ const AblyChatComponent = (props) => {
       // Here we're computing the state that'll be drawn into the message history
       // We do that by slicing the last 199 messages from the receivedMessages buffer
       const history = receivedMessages.slice(-199);
-      console.log('history: ', history);
       setReceivedMessages([...history, message]);
-      console.log('Adding new message: ', message);
-      console.log(
-        'receivedMessages after adding new one: ',
-        receivedMessages.slice(-1),
-      );
-      // Then finally, we take the message history, and combine it with the new message
-      // This means we'll always have up to 199 message + 1 new message, stored using the
-      // setMessages react useState hook
     },
   );
 
   async function sendChatMessage() {
-    console.log('Sending Chat Msg: ', messageText);
     channel.publish({
       name: JSON.stringify(props.personalDataId),
       data: messageText,
@@ -141,7 +131,7 @@ const AblyChatComponent = (props) => {
         }),
       });
     } catch (err) {
-      console.log(err);
+      console.error('Error in sendChatMessage: ', err);
     }
     setMessageText('');
     // inputBox.focus();

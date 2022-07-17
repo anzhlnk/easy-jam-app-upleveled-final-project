@@ -161,10 +161,6 @@ export default function UserDetail(props) {
     );
   }
 
-  console.log('additional-info - shortDescription: ', shortDescription);
-  console.log('additional-info - aboutMe: ', aboutMe);
-  console.log('additional-info - editShortDescription: ', editShortDescription);
-  console.log('additional-info - editAboutMe: ', editAboutMe);
   return (
     <div css={contentAll}>
       <Head>
@@ -323,10 +319,6 @@ export async function getServerSideProps(context) {
   const userGenres = await getUserGenreByPersonalDataID(dataId);
   const userGenresArray = userGenres.map((genre) => genre.genreName);
   const personalData = await getUserPersonalData(dataId);
-  console.log(
-    'personalData getServerSideProps additional-info.js: ',
-    personalData,
-  );
 
   if (user) {
     return {

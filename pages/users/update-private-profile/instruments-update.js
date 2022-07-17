@@ -83,7 +83,6 @@ const UserIsntrumentUpdate = (props) => {
       }),
     });
     const deletedInstrument = await response.json();
-    console.log('remove option instruments: ', deletedInstrument);
     if ('errors' in deletedInstrument) {
       setErrors(deletedInstrument.errors);
       return;
@@ -103,7 +102,6 @@ const UserIsntrumentUpdate = (props) => {
       }),
     });
     const addedInstrument = await response.json();
-    console.log('added option instruments: ', addedInstrument);
     if ('errors' in addedInstrument) {
       setErrors(addedInstrument.errors);
       return;
@@ -121,13 +119,11 @@ const UserIsntrumentUpdate = (props) => {
       const addedItems = selectedOption.filter(
         (x) => !valueUserInstruments.includes(x),
       );
-      console.log('added Items in handleChange', addedItems);
       await addOption(addedItems.map((e) => e.value));
     } else {
       const removedItems = valueUserInstruments.filter(
         (x) => !selectedOption.includes(x),
       );
-      console.log(removedItems);
       await removedItems.forEach((removedItem) =>
         removeOption(removedItem.value),
       );

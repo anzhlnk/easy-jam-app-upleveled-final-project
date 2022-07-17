@@ -74,7 +74,6 @@ const UserGenreUpdate = (props) => {
       }),
     });
     const deletedInstrument = await response.json();
-    console.log('remove option instruments: ', deletedInstrument);
     if ('errors' in deletedInstrument) {
       setErrors(deletedInstrument.errors);
       console.error(errors);
@@ -95,7 +94,6 @@ const UserGenreUpdate = (props) => {
       }),
     });
     const addedGenre = await response.json();
-    console.log('added option genres: ', addedGenre);
     if ('errors' in addedGenre) {
       setErrors(addedGenre.errors);
       return;
@@ -113,13 +111,11 @@ const UserGenreUpdate = (props) => {
       const addedItems = selectedOption.filter(
         (x) => !valueUserGenres.includes(x),
       );
-      console.log('added Items in handleChange instruments', addedItems);
       await addOption(addedItems.map((e) => e.value));
     } else {
       const removedItems = valueUserGenres.filter(
         (x) => !selectedOption.includes(x),
       );
-      console.log(removedItems);
       await removedItems.forEach((removedItem) =>
         removeOption(removedItem.value),
       );

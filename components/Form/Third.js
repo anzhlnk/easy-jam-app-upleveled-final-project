@@ -41,8 +41,7 @@ const Third = ({ nextPage, prevPage, handleFormData, values, genders }) => {
     }
   };
 
-  console.log('gender values', values.gender);
-  if (error) console.log('values.gender is empty');
+  if (error) console.error('values.gender is empty');
 
   return (
     <form onSubmit={submitFormData} css={main}>

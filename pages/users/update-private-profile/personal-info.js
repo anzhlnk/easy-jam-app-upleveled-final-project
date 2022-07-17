@@ -293,7 +293,6 @@ export async function getServerSideProps(context) {
   const userBirthday = await getUserBirthday(dataId);
   const googleAPI = process.env.GOOGLE_API_KEY;
 
-  console.log(personalData);
   if (user) {
     return {
       props: {

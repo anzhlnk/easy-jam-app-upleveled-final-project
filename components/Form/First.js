@@ -52,8 +52,6 @@ const First = ({ nextPage, handleFormData, values }) => {
     }
   };
 
-  console.log(values.firstName);
-
   return (
     <form onSubmit={submitFormData} css={main}>
       <div css={headerContainer}>
