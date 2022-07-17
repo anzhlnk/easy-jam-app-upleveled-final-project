@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "migrate": "dotenv -- ley"
+    "migrate": "dotenv -- ley",
+    "heroku-postbuild": "yarn migrate up && yarn build"
   },
   "dependencies": {
     "@emotion/react": "^11.9.3",
@@ -74,5 +75,8 @@
     "eslint-plugin-react": "7.30.0",
     "eslint-plugin-react-hooks": "4.5.0",
     "@typescript-eslint/utils": "5.27.1"
-  }
+  },
+  "cacheDirectories": [
+    ".next/cache"
+  ]
 }
