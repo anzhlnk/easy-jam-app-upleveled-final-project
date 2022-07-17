@@ -955,7 +955,11 @@ export async function getProfilesByDistance(location_id) {
 
   const profilesByDistance = await sql`
 with location_current_user as (
-  select id, latitude, longitude, preferred_distance * 1000 as maximum_buddy_distance_meters from locations where id = ${location_id}
+  select locations.id, latitude, longitude, preferred_distance * 1000 as maximum_buddy_distance_meters
+  from locations, personal_data
+  where locations.id = ${location_id}
+  and personal_data.location_id = locations.id
+  and personal_data.status = 1
 ),
 distances_to_buddies as (
   select
@@ -969,6 +973,7 @@ distances_to_buddies as (
   from locations, location_current_user, personal_data
   where locations.id != location_current_user.id
   and personal_data.location_id = locations.id
+  and personal_data.status = 1
   order by distance_to_buddy_meters
 ),
 
@@ -1047,6 +1052,7 @@ locations
 
 export async function getDistance(location_id, buddy_data_ids) {
   if (!location_id) return undefined;
+  if (buddy_data_ids.length === 0) return [];
 
   const distanceToBuddies = await sql`
 
