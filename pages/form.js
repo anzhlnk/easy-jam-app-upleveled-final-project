@@ -28,7 +28,6 @@ function Form(props) {
     firstName: '',
     lastName: '',
     birthday: twelveYearsAgo,
-    email: 'a@gmail.com',
     instrument: [],
     genre: [],
     gender: '',
