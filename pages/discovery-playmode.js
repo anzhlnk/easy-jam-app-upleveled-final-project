@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unresolved */
 import 'swiper/css';
 import 'swiper/css/effect-creative';
 import { css } from '@emotion/react';
