@@ -12,7 +12,6 @@ import {
   getGenders,
   getGenres,
   getInstruments,
-  getUserByValidSessionToken,
   getValidSessionByToken,
 } from '../util/database';
 
@@ -186,9 +185,6 @@ export default Form;
 export async function getServerSideProps(context) {
   const sessionToken = context.req.cookies.sessionToken;
   const session = await getValidSessionByToken(sessionToken);
-  const user = await getUserByValidSessionToken(
-    context.req.cookies.sessionToken,
-  );
 
   if (!session) {
     return {
