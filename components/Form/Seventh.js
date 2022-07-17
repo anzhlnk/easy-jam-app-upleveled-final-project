@@ -126,7 +126,12 @@ const Seventh = ({
 
       <div css={imageField}>
         <div className="file-input">
-          <input type="file" id="file" className="file" />
+          <input
+            type="file"
+            id="file"
+            className="file"
+            onChange={uploadImage}
+          />
           <label htmlFor="file">Select file</label>
         </div>
         {loading ? (

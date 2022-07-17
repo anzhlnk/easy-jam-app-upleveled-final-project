@@ -34,8 +34,7 @@ function Form(props) {
     instrument: [],
     genre: [],
     gender: '',
-    profilePicture:
-      'https://res.cloudinary.com/dnbe0yphw/image/upload/v1656405197/x5881le9eaea9auigpkw.png',
+    profilePicture: '',
     location: '',
     longitude: '',
     latitude: '',
