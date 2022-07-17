@@ -29,7 +29,8 @@
     "sharp": "^0.30.6",
     "swiper": "^8.2.6",
     "validator": "^13.7.0",
-    "@react-google-maps/api": "^2.12.0"
+    "@react-google-maps/api": "^2.12.0",
+    "react-places-autocomplete": "^7.3.0"
   },
   "devDependencies": {
     "@babel/eslint-parser": "7.18.2",
