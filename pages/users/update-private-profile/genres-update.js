@@ -70,7 +70,6 @@ const UserGenreUpdate = (props) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        dataId: props.dataId,
         removedItemId: removedItemId,
         csrfToken: props.csrfToken,
       }),
@@ -85,32 +84,13 @@ const UserGenreUpdate = (props) => {
 
   // API call for adding genres
   async function addOption(addedItems) {
-    console.log(
-      'addcall',
-      JSON.stringify({
-        dataId: props.dataId,
-        addedItems: addedItems.map((genre) => {
-          return {
-            personal_data_id: props.dataId,
-            genre_id: genre,
-          };
-        }),
-        csrfToken: props.csrfToken,
-      }),
-    );
     const response = await fetch(`../../api/update-data/user-genres`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        dataId: props.dataId,
-        addedItems: addedItems.map((genre) => {
-          return {
-            personal_data_id: props.dataId,
-            genre_id: genre,
-          };
-        }),
+        addedItems: addedItems,
         csrfToken: props.csrfToken,
       }),
     });
@@ -208,16 +188,11 @@ export async function getServerSideProps(context) {
 
   const csrfToken = await createCsrfToken(session.csrfSecret);
   const dataId = await getPersonalDataIDByUserId(user.id);
-
   const genres = await getGenres();
   const userGenres = await getUserGenreByPersonalDataID(dataId);
 
-  console.log('genres', genres);
-  console.log('userGenres', userGenres);
-
   return {
     props: {
-      dataId: dataId,
       csrfToken: csrfToken,
       genres: genres,
       userGenres: userGenres,

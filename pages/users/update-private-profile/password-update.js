@@ -88,7 +88,6 @@ export default function UpdatePassword(props) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        user: props.user,
         oldPassword: oldPassword,
         newPassword: newPassword,
         confirmedNewPassword: confirmedNewPassword,
@@ -176,7 +175,6 @@ export async function getServerSideProps(context) {
   if (user) {
     return {
       props: {
-        user: user,
         csrfToken: csrfToken,
       },
     };

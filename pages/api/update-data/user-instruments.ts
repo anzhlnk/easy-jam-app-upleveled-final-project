@@ -3,6 +3,8 @@ import { verifyCsrfToken } from '../../../util/auth';
 import {
   addUserInstrument,
   deleteUserInstrument,
+  getPersonalDataIDByUserId,
+  getUserByValidSessionToken,
   getValidSessionByToken,
 } from '../../../util/database';
 
@@ -36,17 +38,28 @@ export default async function handler(
     });
   }
 
+  // 5. to  get the user from the token
+  const currentUser = await getUserByValidSessionToken(sessionToken);
+  const currentUserDataId = await getPersonalDataIDByUserId(currentUser.id);
+
   // if method Delete
   if (req.method === 'DELETE') {
     const deletedUserInstruments = await deleteUserInstrument(
-      req.body.dataId,
+      currentUserDataId,
       req.body.removedItemId,
     );
     return res.status(200).json(deletedUserInstruments);
   }
 
   if (req.method === 'PUT') {
-    const addedUserInstruments = await addUserInstrument(req.body.addedItems);
+    const addedInstruments = req.body.addedItems.map((instrument: number) => {
+      return {
+        personal_data_id: currentUserDataId,
+        instrument_id: instrument,
+        relation_type_id: 1,
+      };
+    });
+    const addedUserInstruments = await addUserInstrument(addedInstruments);
     return res.status(200).json(addedUserInstruments);
   }
   // if a method not allowed is used

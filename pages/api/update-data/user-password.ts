@@ -2,6 +2,7 @@ import bcrypt from 'bcrypt';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { verifyCsrfToken } from '../../../util/auth';
 import {
+  getUserByValidSessionToken,
   getUserWithPasswordHashByUsername,
   getValidSessionByToken,
   updatePassword,
@@ -45,6 +46,9 @@ export default async function handler(
     });
   }
 
+  // 5. to  get the user from the token
+  const currentUser = await getUserByValidSessionToken(sessionToken);
+
   // check the method to be PUT
   if (req.method === 'PUT') {
     if (
@@ -62,7 +66,7 @@ export default async function handler(
     }
 
     const userWithPasswordHash = await getUserWithPasswordHashByUsername(
-      req.body.user.username,
+      currentUser.username,
     );
     const username = userWithPasswordHash.username;
 

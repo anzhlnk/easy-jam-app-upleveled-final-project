@@ -120,10 +120,12 @@ const transparentButton = css`
 `;
 
 export default function UserDetail(props) {
+  // TODO: We use || '' because the default values after registration are NULL and that causes an issue, when the user first changes
+  // their shortDesc/aboutMe sections. In the future, we replace the default values to be sent to the database with a string
   const [shortDescription, setShortDescription] = useState(
-    props.personalData.shortDescription,
+    props.personalData.shortDescription || '',
   );
-  const [aboutMe, setAboutMe] = useState(props.personalData.aboutMe);
+  const [aboutMe, setAboutMe] = useState(props.personalData.aboutMe || '');
 
   const [editShortDescription, setEditShortDescription] = useState('');
   const [editAboutMe, setEditAboutMe] = useState('');
@@ -158,6 +160,11 @@ export default function UserDetail(props) {
       </>
     );
   }
+
+  console.log('additional-info - shortDescription: ', shortDescription);
+  console.log('additional-info - aboutMe: ', aboutMe);
+  console.log('additional-info - editShortDescription: ', editShortDescription);
+  console.log('additional-info - editAboutMe: ', editAboutMe);
   return (
     <div css={contentAll}>
       <Head>
@@ -316,6 +323,10 @@ export async function getServerSideProps(context) {
   const userGenres = await getUserGenreByPersonalDataID(dataId);
   const userGenresArray = userGenres.map((genre) => genre.genreName);
   const personalData = await getUserPersonalData(dataId);
+  console.log(
+    'personalData getServerSideProps additional-info.js: ',
+    personalData,
+  );
 
   if (user) {
     return {

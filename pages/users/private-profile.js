@@ -193,7 +193,6 @@ const buttonTwo = css`
 
 export default function UserDetail(props) {
   const [popUp, setPopUp] = useState(false);
-  console.log('popUp', popUp);
   const [errors, setErrors] = useState([]);
   const router = useRouter();
 
@@ -204,8 +203,6 @@ export default function UserDetail(props) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        userId: props.user,
-        dataId: props.dataId,
         csrfToken: props.csrfToken,
       }),
     });
@@ -436,8 +433,6 @@ export async function getServerSideProps(context) {
     return {
       props: {
         csrfToken: csrfToken,
-        user: user.id,
-        dataId: dataId,
         personalData: personalData,
         userGenresArray: userGenresArray,
       },

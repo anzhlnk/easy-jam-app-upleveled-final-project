@@ -1,6 +1,11 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { verifyCsrfToken } from '../../../util/auth';
-import { deleteUser, getValidSessionByToken } from '../../../util/database';
+import {
+  deleteUser,
+  getPersonalDataIDByUserId,
+  getUserByValidSessionToken,
+  getValidSessionByToken,
+} from '../../../util/database';
 
 export default async function handler(
   req: NextApiRequest,
@@ -34,7 +39,10 @@ export default async function handler(
 
   // if method Delete
   if (req.method === 'DELETE') {
-    const deletedUser = await deleteUser(req.body.userId);
+    // to  get the user from the token
+    const currentUser = await getUserByValidSessionToken(sessionToken);
+    console.log('DELETE USER API: ', currentUser);
+    const deletedUser = await deleteUser(currentUser.id);
     return res.status(200).json(deletedUser);
   }
 

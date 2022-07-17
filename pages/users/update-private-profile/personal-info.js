@@ -308,7 +308,6 @@ export async function getServerSideProps(context) {
     return {
       props: {
         csrfToken: csrfToken,
-        dataId: dataId,
         personalData: personalData,
         userBirthday: JSON.parse(JSON.stringify(userBirthday)),
         googleAPI: googleAPI,

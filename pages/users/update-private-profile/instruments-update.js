@@ -78,7 +78,6 @@ const UserIsntrumentUpdate = (props) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        dataId: props.dataId,
         removedItemId: removedItemId,
         csrfToken: props.csrfToken,
       }),
@@ -93,34 +92,13 @@ const UserIsntrumentUpdate = (props) => {
 
   // API call for adding instruments
   async function addOption(addedItems) {
-    console.log(
-      'addcall',
-      JSON.stringify({
-        dataId: props.dataId,
-        addedItems: addedItems.map((instrument) => {
-          return {
-            personal_data_id: props.dataId,
-            instrument_id: instrument,
-            relation_type_id: 1,
-          };
-        }),
-        csrfToken: props.csrfToken,
-      }),
-    );
     const response = await fetch(`../../api/update-data/user-instruments`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        dataId: props.dataId,
-        addedItems: addedItems.map((instrument) => {
-          return {
-            personal_data_id: props.dataId,
-            instrument_id: instrument,
-            relation_type_id: 1,
-          };
-        }),
+        addedItems: addedItems,
         csrfToken: props.csrfToken,
       }),
     });
@@ -232,7 +210,6 @@ export async function getServerSideProps(context) {
 
   return {
     props: {
-      dataId: dataId,
       csrfToken: csrfToken,
       instruments: instruments,
       userInstruments: userInstruments,
