@@ -1381,8 +1381,9 @@ locations.id = rehearsal_studios.location_id
 
 export async function getConversationIdsbyUsersDataId(
   currentUserDataId,
-  buddyDataId,
+  buddyDataIds,
 ) {
+  if (buddyDataIds.length === 0) return [];
   const conversationId = await sql`
   with user_chats as (
     SELECT
@@ -1400,7 +1401,7 @@ export async function getConversationIdsbyUsersDataId(
     user_chats
     WHERE
     user_chats.conversation_id = conversation_users.conversation_id AND
-    conversation_users.personal_data_id in ${sql(buddyDataId)}
+    conversation_users.personal_data_id in ${sql(buddyDataIds)}
   `;
   return conversationId && camelcaseKeys(conversationId);
 }
