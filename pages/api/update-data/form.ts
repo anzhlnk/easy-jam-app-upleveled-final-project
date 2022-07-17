@@ -3,6 +3,8 @@ import { verifyCsrfToken } from '../../../util/auth';
 import {
   getGenders,
   getInstruments,
+  getPersonalDataIDByUserId,
+  getUserByValidSessionToken,
   getValidSessionByToken,
   insertDefaultRequiredAge,
   insertDefaultRequiredGenders,
@@ -61,6 +63,9 @@ export default async function handler(
       });
     }
 
+    const currentUser = await getUserByValidSessionToken(sessionToken);
+    const currentUserDataId = await getPersonalDataIDByUserId(currentUser.id);
+
     const defaultPreferredDistance = 100;
     const addedLocation = await insertLocation(
       req.body.location,
@@ -68,11 +73,10 @@ export default async function handler(
       req.body.latitude,
       defaultPreferredDistance, // standard value
     );
-
     const defaultPreferredStatus = 1; // standard value (1-visible, 0-not visible)
 
     const updatedProfileInfo = await updateProfileInfo(
-      req.body.dataId,
+      currentUserDataId,
       req.body.firstName,
       req.body.lastName,
       req.body.birthday,
@@ -82,29 +86,63 @@ export default async function handler(
       defaultPreferredStatus,
     );
 
-    const addedInstruments = await insertInstruments(req.body.usersInstruments);
-    const addedGenres = await insertGenres(req.body.usersGenres);
+    // to be updated
+    type InstrumentType = {
+      label: string;
+      value: number;
+    };
 
-    const dataId = req.body.dataId;
+    const listOfInstruments = req.body.usersInstruments.map(
+      (instrument: InstrumentType) => {
+        return instrument.value;
+      },
+    );
+    type InstrumentTypeForDB = number;
+    const usersInstruments = listOfInstruments.map(
+      (instrument: InstrumentTypeForDB) => {
+        return {
+          personal_data_id: currentUserDataId,
+          instrument_id: instrument,
+          relation_type_id: 1,
+        };
+      },
+    );
+
+    type GenreType = {
+      label: string;
+      value: number;
+    };
+
+    const listOfGenres = req.body.usersGenres.map((genre: GenreType) => {
+      return genre.value;
+    });
+    type GenreTypeForDB = number;
+    const usersGenres = listOfGenres.map((genre: GenreTypeForDB) => {
+      return { personal_data_id: currentUserDataId, genre_id: genre };
+    });
+
+    const addedInstruments = await insertInstruments(usersInstruments);
+    const addedGenres = await insertGenres(usersGenres);
+
     // standard value
-    const defaultRequiredAge = [0, 100];
+    const defaultRequiredAge = [12, 100];
     await insertDefaultRequiredAge(
-      dataId,
+      currentUserDataId,
       defaultRequiredAge[0],
       defaultRequiredAge[1],
     );
 
-    const listOfInstruments = await getInstruments();
+    const listOfInstrumentsFromDb = await getInstruments();
 
     type Instrument = {
-      id: string;
+      id: number;
       instrumentName: string;
     };
     // standard value
-    const defaultListOfInstruments = listOfInstruments.map(
+    const defaultListOfInstruments = listOfInstrumentsFromDb.map(
       (instrument: Instrument) => {
         return {
-          personal_data_id: dataId,
+          personal_data_id: currentUserDataId,
           instrument_id: instrument.id,
           relation_type_id: 2,
         };
@@ -114,14 +152,14 @@ export default async function handler(
     await insertDefaultRequiredInstruments(defaultListOfInstruments);
 
     type Gender = {
-      id: string;
+      id: number;
       genderName: string;
     };
     const listOfGenders = await getGenders();
     // standard value
     const defaultListOfGenders = listOfGenders.map((gender: Gender) => {
       return {
-        personal_data_id: dataId,
+        personal_data_id: currentUserDataId,
         gender_id: gender.id,
       };
     });

@@ -12,7 +12,6 @@ import {
   getGenders,
   getGenres,
   getInstruments,
-  getPersonalDataIDByUserId,
   getUserByValidSessionToken,
   getValidSessionByToken,
 } from '../util/database';
@@ -62,34 +61,14 @@ function Form(props) {
     }));
   }
 
-  const listOfInstruments = formData.instrument.map((instrument) => {
-    return instrument.value;
-  });
-
-  const usersInstruments = listOfInstruments.map((instrument) => {
-    return {
-      personal_data_id: props.dataId,
-      instrument_id: instrument,
-      relation_type_id: 1,
-    };
-  });
-
-  const listOfGenres = formData.genre.map((genre) => {
-    return genre.value;
-  });
-  const usersGenres = listOfGenres.map((genre) => {
-    return { personal_data_id: props.dataId, genre_id: genre };
-  });
-
   console.log(
     ' body:',
     JSON.stringify({
-      dataId: props.dataId,
       firstName: formData.firstName,
       lastName: formData.lastName,
       birthday: formData.birthday,
-      usersInstruments: usersInstruments,
-      usersGenres: usersGenres,
+      usersInstruments: formData.instrument,
+      usersGenres: formData.genre,
       gender: formData.gender,
       profilePicture: formData.profilePicture,
       location: formData.location,
@@ -105,12 +84,11 @@ function Form(props) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        dataId: props.dataId,
         firstName: formData.firstName,
         lastName: formData.lastName,
         birthday: formData.birthday,
-        usersInstruments: usersInstruments,
-        usersGenres: usersGenres,
+        usersInstruments: formData.instrument,
+        usersGenres: formData.genre,
         gender: formData.gender,
         profilePicture: formData.profilePicture,
         location: formData.location,
@@ -241,8 +219,6 @@ export async function getServerSideProps(context) {
   const genres = await getGenres();
   const genders = await getGenders();
 
-  const dataId = await getPersonalDataIDByUserId(user.id);
-  console.log('dataId', dataId);
   const googleAPI = process.env.GOOGLE_API_KEY;
 
   return {
@@ -252,7 +228,6 @@ export async function getServerSideProps(context) {
       instruments: instruments,
       genres: genres,
       genders: genders,
-      dataId: dataId,
       googleAPI: googleAPI,
     },
   };
