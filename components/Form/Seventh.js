@@ -74,9 +74,7 @@ const Seventh = ({
   cloudinaryName,
   updatePersonalData,
 }) => {
-  const [imageUrl, setImageUrl] = useState(
-    'https://res.cloudinary.com/dnbe0yphw/image/upload/v1656405197/x5881le9eaea9auigpkw.png',
-  );
+  const [imageUrl, setImageUrl] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
