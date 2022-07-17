@@ -38,12 +38,12 @@ export default async function handler(
   if (req.method === 'POST') {
     // to  get the user from the token
     const currentUser = await getUserByValidSessionToken(sessionToken);
-    const currentUserdataId = await getPersonalDataIDByUserId(currentUser.id);
+    const currentUserDataId = await getPersonalDataIDByUserId(currentUser.id);
     const createdNewConversation = await createNewConversation();
 
     const usersConversationList = [
       {
-        personal_data_id: currentUserdataId,
+        personal_data_id: currentUserDataId,
         conversation_id: createdNewConversation.id,
       },
       {
