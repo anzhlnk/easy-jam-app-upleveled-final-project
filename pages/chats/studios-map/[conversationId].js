@@ -102,7 +102,7 @@ const Studios = (props) => {
           //   setInfoWindowID(i);
           // }}
           // onMouseOut={() => setInfoWindowID('')}
-          animation={google.maps.Animation.DROP}
+          animation={window.google.maps.Animation.DROP}
         >
           {infoWindowID === i && (
             <InfoWindow onCloseClick={() => setInfoWindowID('')}>
