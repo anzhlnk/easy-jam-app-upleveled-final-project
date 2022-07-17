@@ -172,6 +172,7 @@ export default function UserProfile(props) {
                               conversations={props.conversations}
                               userGenresArray={props.userGenresArray}
                               percentage={personalDataMatchingGroup.percentage}
+                              csrfToken={props.csrfToken}
                             />
                           </SwiperSlide>
                         </div>
