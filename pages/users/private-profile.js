@@ -257,10 +257,12 @@ export default function UserDetail(props) {
                   style={{ width: 72, height: 72, borderRadius: 100 }}
                 />
               </div>
-              <div css={userName}>{props.personalData.firstName} </div>
+              <div css={userName}>
+                {props.personalData.firstName} {props.personalData.lastName}
+              </div>
               <div css={ageLocation}>
                 {props.personalData.age}, from{' '}
-                {props.personalData.address.split(',')[0]}
+                {props.personalData.address.split(',')[1].slice(5)}
               </div>
               <div css={playingInstruments}>
                 {props.personalData.playingInstrument
@@ -312,7 +314,7 @@ export default function UserDetail(props) {
                   </div>
                   <div css={ageLocation}>
                     {props.personalData.age}, from{' '}
-                    {props.personalData.address.split(',')[0]}
+                    {props.personalData.address.split(',')[1].slice(5)}
                   </div>
                 </div>
                 <Link href="/users/update-private-profile/personal-info">
