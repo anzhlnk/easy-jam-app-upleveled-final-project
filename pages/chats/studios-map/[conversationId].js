@@ -121,7 +121,7 @@ const Studios = (props) => {
       </Head>
       <main>
         <div css={headerContainer}>
-          <Link href="/discovery">
+          <Link href={`/chats/${props.conversation}`}>
             <img
               src="/back-icon.png"
               alt="back button"
@@ -200,6 +200,7 @@ export async function getServerSideProps(context) {
       googleAPI: googleAPI,
       studios: studios,
       closestStudio: closestStudio,
+      conversation: conversation,
     },
   };
 }
