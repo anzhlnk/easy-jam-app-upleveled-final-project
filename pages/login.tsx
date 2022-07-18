@@ -67,7 +67,7 @@ const inputContainer = css`
     padding-left: 2em;
 
     :focus {
-      outline-color: #68107a;
+      outline-color: #1b3d5f;
     }
 
     color: #a7b0c0;
@@ -98,7 +98,7 @@ const inputContainer = css`
     color: #ffffff;
 
     :active {
-      outline: #68107a;
+      outline: #1b3d5f;
     }
 
     @media (min-width: 900px) {

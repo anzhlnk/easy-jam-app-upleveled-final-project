@@ -43,11 +43,6 @@ export const headerContainer = css`
   justify-content: space-between;
   margin-left: 24px;
   margin-top: 24px;
-
-  /* :first-child {
-    z-index: 0;
-    margin-right: 10em;
-  } */
 `;
 
 const contentAll = css`
@@ -150,9 +145,8 @@ const deleteBanner = (isOpen) => css`
   width: 20em;
   position: fixed;
   bottom: 5em;
-  background: linear-gradient(#fff, #fff) padding-box,
-    linear-gradient(45deg, #f7ff26, #4dfb34, #18fdef) border-box;
-  border: 4px solid transparent;
+  background: linear-gradient(#fff, #fff) padding-box, #ffce00 border-box;
+  border: 2px solid transparent;
   border-radius: 25px;
   height: ${isOpen ? '300px' : 0};
   overflow: hidden;
@@ -168,7 +162,7 @@ const deleteBanner = (isOpen) => css`
     text-align: center;
     letter-spacing: -0.25px;
 
-    color: #5d6470;
+    color: #1b3d5f;
   }
   p {
     width: 18em;
@@ -193,7 +187,7 @@ const buttonOne = css`
     font-size: 18px;
     text-align: center;
     letter-spacing: -0.25px;
-    color: #68107a;
+    color: #1b3d5f;
   }
 `;
 

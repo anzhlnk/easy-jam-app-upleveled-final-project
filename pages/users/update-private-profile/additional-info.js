@@ -85,8 +85,7 @@ export const textSections = css`
     font-weight: 400;
     font-size: 14px;
     color: #1d232e;
-    background: linear-gradient(#fff, #fff) padding-box,
-      linear-gradient(45deg, #f7ff26, #4dfb34, #18fdef) border-box;
+    background: linear-gradient(#fff, #fff) padding-box, #ffce00 border-box;
     border: 2px solid transparent;
   }
   span {
@@ -104,7 +103,7 @@ export const textSections = css`
   }
   input:focus,
   input:active {
-    outline-color: #68107a;
+    outline-color: #1b3d5f;
   }
 
   .secondHeader {

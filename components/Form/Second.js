@@ -56,6 +56,10 @@ export const datePickerContainer = css`
 
       letter-spacing: -0.25px;
       padding-left: 2em;
+
+      :focus {
+        outline-color: #1b3d5f;
+      }
     }
   }
 `;

@@ -4,12 +4,9 @@ import Head from 'next/head';
 import Link from 'next/link';
 
 const main = css`
-  background: linear-gradient(
-    164.33deg,
-    #f7ff26 17.89%,
-    #4dfb34 55.72%,
-    #18fdef 95.17%
-  );
+  background-image: url('/landing-page.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
   width: 100vw;
   height: 100vh;
   margin: 0px;
@@ -22,6 +19,7 @@ const main = css`
 `;
 
 const contentContainer = css`
+  margin-top: 5em;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -36,17 +34,14 @@ const contentContainer = css`
 
 const logoText = css`
   position: relative;
-
   margin-top: 2em;
-
   font-family: 'Michroma';
   font-style: normal;
   font-weight: 400;
   font-size: 40px;
   line-height: 57px;
-
   text-transform: uppercase;
-  color: #2d2e1d;
+  color: #ffffff;
 `;
 const linkOne = css`
   box-sizing: border-box;
@@ -57,11 +52,10 @@ const linkOne = css`
   padding: 16px 32px;
 
   position: relative;
-  /* bottom: 16em; */
   width: 20em;
-  margin-top: 8em;
+  margin-top: 5em;
 
-  background: #f5f5f5;
+  background: #e8e8e8;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 60px;
 
@@ -76,7 +70,7 @@ const linkOne = css`
   color: #000000;
   border: none;
   :hover {
-    outline-color: #68107a;
+    outline-color: #1b3d5f;
   }
 `;
 const linkTwo = css`
@@ -87,11 +81,10 @@ const linkTwo = css`
   gap: 12px;
 
   position: relative;
-  /* bottom: 10em; */
   width: 20em;
   margin-top: 2em;
 
-  background: #949494;
+  background: #467434;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 60px;
   border: none;
@@ -108,7 +101,7 @@ const linkTwo = css`
 `;
 const lowerText = css`
   position: absolute;
-  bottom: 3em;
+  bottom: 8em;
 
   font-family: 'Michroma';
   font-style: normal;
@@ -121,7 +114,7 @@ const lowerText = css`
 
   /* Black */
 
-  color: #2d2e1d;
+  color: #a9943c;
 `;
 
 export default function Home() {

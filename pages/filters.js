@@ -37,9 +37,7 @@ const statusVisibility = css`
   margin-top: 16px;
   width: 36px;
   height: 20px;
-  background: linear-gradient(#fff, #fff) padding-box,
-    linear-gradient(45deg, #f7ff26, #4dfb34, #18fdef) border-box;
-  border: 2px solid transparent;
+  border: 2px solid #1b3d5f;
   border-radius: 50px;
 `;
 
@@ -65,6 +63,29 @@ const valueText = css`
 
   opacity: 0.29;
 `;
+
+export const colourStyles = {
+  option: (
+    styles,
+    { data, isDisabled, isFocused, isSelected, borderRadius },
+  ) => {
+    // const color = chroma(data.color);
+    console.log({
+      data,
+      isDisabled,
+      isFocused,
+      isSelected,
+      borderRadius,
+    });
+    return {
+      ...styles,
+      padding: 20,
+      backgroundColor: isFocused ? '#e9e9e9' : null,
+      color: '#333333',
+      borderRadius: 25,
+    };
+  },
+};
 
 export default function Filters(props) {
   const [errors, setErrors] = useState([]);
@@ -305,8 +326,8 @@ export default function Filters(props) {
   };
 
   const handleChangeStatus = async (selectedOption) => {
-    await updateStatus(selectedOption);
     setValueVisible(selectedOption);
+    await updateStatus(selectedOption);
   };
 
   const handleChangeDistance = async (selectedOption) => {
@@ -356,14 +377,15 @@ export default function Filters(props) {
                 max={1}
                 value={valueVisible}
                 step={1}
-                onChange={handleChangeStatus}
+                onChange={(selection) => handleChangeStatus(selection[0])}
                 allowCross={false}
                 css={statusVisibility}
                 handleStyle={{
-                  borderColor: '#18fdef',
+                  borderColor: '#1B3D5F',
                   height: 22,
                   width: 22,
                   marginTop: -8,
+                  boxShadow: 'none',
                 }}
               />
               {valueVisible === 1 ? (
@@ -393,6 +415,16 @@ export default function Filters(props) {
                 }
                 placeholder="Select Instruments"
                 onChange={handleChange}
+                styles={colourStyles}
+                theme={(theme) => ({
+                  ...theme,
+                  borderRadius: 25,
+                  colors: {
+                    ...theme.colors,
+                    primary25: '#1B3D5F',
+                    primary: '#1B3D5F',
+                  },
+                })}
               />
             </div>
             <div css={container}>
@@ -416,6 +448,16 @@ export default function Filters(props) {
                 }
                 placeholder="Select Genders"
                 onChange={handleChangeGenders}
+                styles={colourStyles}
+                theme={(theme) => ({
+                  ...theme,
+                  borderRadius: 25,
+                  colors: {
+                    ...theme.colors,
+                    primary25: '#1B3D5F',
+                    primary: '#1B3D5F',
+                  },
+                })}
               />
             </div>
             <div css={container}>
@@ -434,9 +476,10 @@ export default function Filters(props) {
                   backgroundColor: '#CACACA',
                 }}
                 handleStyle={{
-                  borderColor: '#18fdef',
+                  borderColor: '#1B3D5F',
                   height: 16,
                   width: 16,
+                  boxShadow: 'none',
                 }}
               />
             </div>
@@ -458,9 +501,10 @@ export default function Filters(props) {
                 onChange={handleChangeDistance}
                 allowCross={false}
                 handleStyle={{
-                  borderColor: '#18fdef',
+                  borderColor: '#1B3D5F',
                   height: 16,
                   width: 16,
+                  boxShadow: 'none',
                 }}
               />
             </div>

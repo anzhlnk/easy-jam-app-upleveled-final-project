@@ -22,7 +22,7 @@ export const inputContainer = css`
     border: 1px solid #e7ecf3;
     border-radius: 25px;
 
-    accent-color: #68107a;
+    accent-color: #1b3d5f;
   }
   span {
     margin-top: 0.5em;

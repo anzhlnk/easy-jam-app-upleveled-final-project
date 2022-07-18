@@ -1,26 +1,54 @@
+import { css } from '@emotion/react';
 import { useState } from 'react';
 import Select from 'react-select';
 import { errorMessage } from '../../pages/login';
 import { main, title } from '../../pages/register';
 import { nextButton, nextButtonContainer } from './First';
 import { headerContainer, prevButton, prevButtonContainer } from './Second';
-import { inputContainer } from './Third';
 
-const customStyles = {
-  option: (provided) => ({
-    ...provided,
-    borderBottom: '1px grey',
-    padding: 20,
-  }),
-  control: () => ({
-    width: 200,
-  }),
-  singleValue: (provided, state) => {
-    const opacity = state.isDisabled ? 0.5 : 1;
-    const transition = 'opacity 300ms';
+export const inputContainer = css`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0px;
+  margin: 0px;
+  width: 100vw;
+  .select {
+    width: 20em;
+    height: 50px;
+  }
+  :active,
+  :focus {
+    outline-color: #1b3d5f;
+  }
+`;
 
-    return { ...provided, opacity, transition };
+export const colourStyles = {
+  option: (
+    styles,
+    { data, isDisabled, isFocused, isSelected, borderRadius },
+  ) => {
+    // const color = chroma(data.color);
+    console.log({
+      data,
+      isDisabled,
+      isFocused,
+      isSelected,
+      borderRadius,
+    });
+    return {
+      ...styles,
+      padding: 20,
+      backgroundColor: isFocused ? '#e9e9e9' : null,
+      color: '#333333',
+      borderRadius: 25,
+    };
   },
+  control: (base) => ({
+    ...base,
+    minHeight: 50,
+  }),
 };
 
 const Fourth = ({
@@ -67,7 +95,7 @@ const Fourth = ({
       </div>
       <div css={inputContainer}>
         <Select
-          styles={customStyles}
+          className="select"
           id="instrument-multi-select"
           instanceId="instrument-multi-select"
           isMulti
@@ -92,6 +120,17 @@ const Fourth = ({
                 : data,
             );
           }}
+          styles={colourStyles}
+          theme={(theme) => ({
+            ...theme,
+            borderRadius: 25,
+
+            colors: {
+              ...theme.colors,
+              primary25: '#1B3D5F',
+              primary: '#1B3D5F',
+            },
+          })}
         />
       </div>
       {error ? (

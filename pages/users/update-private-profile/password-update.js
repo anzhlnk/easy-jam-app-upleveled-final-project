@@ -10,7 +10,6 @@ import {
   getUserByValidSessionToken,
   getValidSessionByToken,
 } from '../../../util/database';
-import { headerContainer } from './instruments-update';
 import { confirmButton, confirmButtonContainer, title } from './personal-info';
 
 export const contentContainer = css`
@@ -23,6 +22,21 @@ export const nextButtonContainer = css`
   display: flex;
   justify-content: right;
   width: 21em;
+`;
+
+export const headerContainer = css`
+  z-index: 0;
+  @media (min-width: 500px) {
+    width: 50vw;
+  }
+  width: 50vw;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-left: 24px;
+  margin-top: -24px;
+  margin-bottom: 38px;
 `;
 
 export const nextButton = css`

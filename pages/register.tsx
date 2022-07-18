@@ -51,7 +51,7 @@ export const inputContainer = css`
   }
   input:active,
   input:focus {
-    outline-color: #68107a;
+    outline-color: #1b3d5f;
   }
   button {
     width: 21em;
@@ -77,7 +77,7 @@ export const inputContainer = css`
   }
 
   button:active {
-    background: #68107a;
+    background: #1b3d5f;
   }
 `;
 

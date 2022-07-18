@@ -41,7 +41,6 @@ export default async function handler(
     // to  get the user from the token
     const currentUser = await getUserByValidSessionToken(sessionToken);
     const currentUserDataId = await getPersonalDataIDByUserId(currentUser.id);
-
     const updatedStatus = await updateStatus(
       currentUserDataId,
       req.body.updatedStatus,

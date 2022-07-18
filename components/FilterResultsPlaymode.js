@@ -127,14 +127,17 @@ const addUser = css`
   width: 35px;
   height: 35px;
 
-  background: linear-gradient(#fff, #fff) padding-box,
-    linear-gradient(45deg, #f7ff26, #4dfb34, #18fdef) border-box;
+  background: linear-gradient(#fff, #fff) padding-box, #ffce00 border-box;
   border: 2px solid transparent;
   border-radius: 50px;
 
   box-shadow: 1px 1px 4px rgba(93, 107, 130, 0.44);
   button {
     border: none;
+    z-index: 1;
+  }
+  img {
+    z-index: 0;
   }
 `;
 

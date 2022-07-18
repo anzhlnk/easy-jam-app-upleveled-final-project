@@ -3,25 +3,9 @@ import Select from 'react-select';
 import { errorMessage } from '../../pages/login';
 import { main, title } from '../../pages/register';
 import { contentContainer, nextButton, nextButtonContainer } from './First';
+import { colourStyles, inputContainer } from './Fourth';
 import { headerContainer, prevButton, prevButtonContainer } from './Second';
-import { inputContainer } from './Third';
 
-const customStyles = {
-  option: (provided) => ({
-    ...provided,
-    borderBottom: '1px grey',
-    padding: 20,
-  }),
-  control: () => ({
-    width: 200,
-  }),
-  singleValue: (provided, state) => {
-    const opacity = state.isDisabled ? 0.5 : 1;
-    const transition = 'opacity 300ms';
-
-    return { ...provided, opacity, transition };
-  },
-};
 const Fifth = ({ nextPage, prevPage, handleFormData, values, genres }) => {
   const [error, setError] = useState(false);
   const submitFormData = (e) => {
@@ -57,7 +41,7 @@ const Fifth = ({ nextPage, prevPage, handleFormData, values, genres }) => {
         </div>
         <div css={inputContainer}>
           <Select
-            styles={customStyles}
+            className="select"
             id="genre-multi-select"
             instanceId="genre-multi-select"
             isMulti
@@ -81,6 +65,17 @@ const Fifth = ({ nextPage, prevPage, handleFormData, values, genres }) => {
                   : data,
               );
             }}
+            styles={colourStyles}
+            theme={(theme) => ({
+              ...theme,
+              borderRadius: 25,
+
+              colors: {
+                ...theme.colors,
+                primary25: '#1B3D5F',
+                primary: '#1B3D5F',
+              },
+            })}
           />
         </div>
         {error ? (
