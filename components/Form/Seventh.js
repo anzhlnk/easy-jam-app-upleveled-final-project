@@ -27,7 +27,7 @@ const imageField = css`
     width: 200px;
     height: 50px;
     border-radius: 25px;
-    background: linear-gradient(45deg, #f7ff26, #4dfb34, #18fdef);
+    background: #1b3d5f;
     box-shadow: 0 4px 7px rgba(0, 0, 0, 0.4);
     display: flex;
     align-items: center;

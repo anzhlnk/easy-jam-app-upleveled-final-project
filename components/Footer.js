@@ -14,6 +14,9 @@ const main = css`
   background: #fafafa;
   height: 80px;
   border-top: 0.5px solid #a7b0c0;
+  @media (min-width: 900px) {
+    height: 42px;
+  }
 
   .footerButtons {
     display: flex;
@@ -21,9 +24,13 @@ const main = css`
     justify-content: center;
     align-items: center;
     height: 80px;
+
     img {
       margin-right: 1.5em;
       margin-left: 1.5em;
+      @media (min-width: 900px) {
+        margin-bottom: 2em;
+      }
     }
   }
 `;

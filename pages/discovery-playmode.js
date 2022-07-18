@@ -23,40 +23,12 @@ import {
   getUsersPersonalData,
   getValidSessionByToken,
 } from '../util/database';
-
-export const headerContainer = css`
-  @media (min-width: 500px) {
-    width: 60vw;
-  }
-  width: 50vw;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  margin-left: 24px;
-  margin-top: -24px;
-  img,
-  a {
-    margin-right: 9em;
-  }
-`;
-
-export const main = css`
-  width: 100vw;
-  height: 100vh;
-  position: relative;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
-`;
-const allContentContainer = css`
-  display: flex;
-  flex-direction: column;
-  margin-top: 2em;
-  justify-content: center;
-  align-items: center;
-`;
+import {
+  allContentContainer,
+  emptyResult,
+  headerContainer,
+  main,
+} from './discovery';
 
 const contentContainer = css`
   display: flex;
@@ -73,6 +45,9 @@ const contentContainer = css`
     /* margin: 100px auto; */
     width: 80vw;
     height: 85vh;
+    @media (min-width: 900px) {
+      width: 50vw;
+    }
   }
 
   .swiper-slide {
@@ -122,6 +97,7 @@ export default function UserProfile(props) {
           </Link>
           <Link href="/discovery">
             <img
+              className="filter"
               src="/filterMode.png"
               alt="filter"
               style={{ width: 24, height: 24 }}
@@ -130,6 +106,12 @@ export default function UserProfile(props) {
         </div>
         <div css={allContentContainer}>
           <div css={contentContainer}>
+            {matchingProfiles.every((group) => group.users === null) && (
+              <p css={emptyResult}>
+                Sorry, there are currently no matches. <br /> <br />
+                Please, check your visibility status.
+              </p>
+            )}
             <Swiper
               grabCursor={true}
               effect="creative"

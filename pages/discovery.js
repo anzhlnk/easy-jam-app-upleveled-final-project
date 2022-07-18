@@ -34,17 +34,21 @@ const matchPercentage = css`
 `;
 
 export const headerContainer = css`
-  z-index: 0;
   @media (min-width: 500px) {
-    width: 50vw;
+    width: 60vw;
   }
-  width: 45vw;
+  width: 50vw;
   display: flex;
   flex-direction: row;
+
   align-items: center;
   justify-content: space-between;
   margin-left: 24px;
   margin-top: -24px;
+  img {
+    margin-right: 9em;
+  }
+  margin-bottom: 2em;
 `;
 
 export const main = css`
@@ -55,29 +59,38 @@ export const main = css`
   display: flex;
   flex-direction: column;
   justify-content: start;
-  box-sizing: border-box;
 `;
-const allContentContainer = css`
+export const allContentContainer = css`
   display: flex;
   flex-direction: column;
-  margin-top: 2em;
+
   justify-content: center;
   align-items: center;
-  box-sizing: border-box;
 `;
 
 const contentContainer = css`
   display: flex;
   flex-direction: column;
-  align-items: left;
+  align-items: center;
   justify-content: center;
   margin-left: 24px;
   margin-right: 24px;
-  box-sizing: border-box;
   @media (min-width: 900px) {
     width: 50em;
   }
-  max-width: vw;
+`;
+
+export const emptyResult = css`
+  width: 90vw;
+  height: 80vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  font-family: 'Michroma';
+  word-spacing: 4px;
+  font-size: 14px;
+  line-height: 40px;
+  text-transform: uppercase;
 `;
 
 export default function Discovery(props) {
@@ -108,7 +121,7 @@ export default function Discovery(props) {
               <img
                 src="/play_icon.png"
                 alt="filter"
-                style={{ width: 11, height: 14 }}
+                style={{ width: 24, height: 24 }}
               />
             </Link>
           </div>
@@ -155,6 +168,12 @@ export default function Discovery(props) {
               </div>
             );
           })}
+          {matchingProfiles.every((group) => group.users === null) && (
+            <p css={emptyResult}>
+              Sorry, there are currently no matches. <br /> <br />
+              Please, check your visibility status.
+            </p>
+          )}
         </div>
       </main>
     </div>

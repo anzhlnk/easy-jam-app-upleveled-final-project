@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import Select from 'react-select';
+import { colourStyles, inputContainer } from '../../../components/Form/Fourth';
 import { createCsrfToken } from '../../../util/auth';
 import {
   getGenres,
@@ -11,24 +12,7 @@ import {
 } from '../../../util/database';
 import { title } from '../usersbyid/[userId]';
 import { headerContainer } from './instruments-update';
-import { inputContainer } from './personal-info';
 
-const customStyles = {
-  option: (provided) => ({
-    ...provided,
-    borderBottom: '1px grey',
-    padding: 20,
-  }),
-  control: () => ({
-    width: 200,
-  }),
-  singleValue: (provided, state) => {
-    const opacity = state.isDisabled ? 0.5 : 1;
-    const transition = 'opacity 300ms';
-
-    return { ...provided, opacity, transition };
-  },
-};
 const UserGenreUpdate = (props) => {
   const [errors, setErrors] = useState([]);
   // const [error, setError] = useState(false);
@@ -141,7 +125,7 @@ const UserGenreUpdate = (props) => {
       </div>
       <div css={inputContainer}>
         <Select
-          styles={customStyles}
+          className="select"
           id="genre-multi-select"
           instanceId="genre-multi-select"
           isMulti
@@ -156,6 +140,17 @@ const UserGenreUpdate = (props) => {
           }
           placeholder="Select Genres"
           onChange={handleChange}
+          styles={colourStyles}
+          theme={(theme) => ({
+            ...theme,
+            borderRadius: 25,
+
+            colors: {
+              ...theme.colors,
+              primary25: '#1B3D5F',
+              primary: '#1B3D5F',
+            },
+          })}
         />
       </div>
       {/* {error ? <div css={errorMessage}>Please add at least 3 genres</div> : ''}

@@ -49,10 +49,10 @@ export const confirmButtonContainer = css`
   display: flex;
   justify-content: right;
   width: 21em;
-  position: fixed;
+  /* position: fixed; */
   bottom: 8em;
   @media (min-width: 500px) {
-    bottom: 40em;
+    width: 65%;
   }
 `;
 
@@ -73,7 +73,9 @@ export const confirmButton = css`
   justify-content: center;
 
   margin-top: 10em;
-
+  @media (min-width: 500px) {
+    margin-top: 5em;
+  }
   height: 53px;
   width: 53px;
   background: #92969a;

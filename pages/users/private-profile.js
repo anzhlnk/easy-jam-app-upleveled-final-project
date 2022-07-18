@@ -42,7 +42,7 @@ export const headerContainer = css`
   align-items: center;
   justify-content: space-between;
   margin-left: 24px;
-  margin-top: 24px;
+  margin-top: 37px;
 `;
 
 const contentAll = css`
@@ -203,6 +203,14 @@ const buttonTwo = css`
   }
 `;
 
+const sliderContainer = css`
+  @media (min-width: 500px) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+`;
+
 export default function UserDetail(props) {
   const [popUp, setPopUp] = useState(false);
   const [errors, setErrors] = useState([]);
@@ -307,110 +315,113 @@ export default function UserDetail(props) {
           </SwiperSlide>
 
           <SwiperSlide>
-            <div css={settingContentContainer}>
-              <div>
-                <img
-                  src={props.personalData.profilePictureUrl}
-                  alt="user avatar"
-                  style={{ width: 72, height: 72, borderRadius: 100 }}
-                />
-              </div>
-              <div css={personalInfoEditorContainer}>
-                <div css={nameAgeLocationContainer}>
-                  <div css={userNameEditPage}>
-                    {props.personalData.firstName} {props.personalData.lastName}
-                  </div>
-                  <div css={ageLocation}>
-                    {props.personalData.age}, from{' '}
-                    {props.personalData.address.split(',').slice(0, 2)}
-                  </div>
-                </div>
-                <Link href="/users/update-private-profile/personal-info">
+            <div css={sliderContainer}>
+              <div css={settingContentContainer}>
+                <div>
                   <img
-                    alt="to adapting personal info"
-                    src="/edit.png"
-                    style={{ width: 35, height: 35 }}
+                    src={props.personalData.profilePictureUrl}
+                    alt="user avatar"
+                    style={{ width: 72, height: 72, borderRadius: 100 }}
                   />
-                </Link>
-              </div>
-              <div css={textSections}>
-                <div css={editOptionsContainer}>
-                  <Link href="/users/update-private-profile/additional-info">
-                    <a>
-                      <h2>Profile</h2>
-                      <img
-                        src="/right_icon.png"
-                        alt="continue button"
-                        style={{ width: 24, height: 24 }}
-                      />
-                    </a>
-                  </Link>
                 </div>
-                <div css={editOptionsContainer}>
-                  <Link href="/users/update-private-profile/password-update">
-                    <a>
-                      <h2>Change password</h2>{' '}
-                      <img
-                        src="/right_icon.png"
-                        alt="continue button"
-                        style={{ width: 24, height: 24 }}
-                      />
-                    </a>
-                  </Link>
-                </div>
-                <div css={editOptionsContainer}>
-                  {/* TODO Ask mentor about this: */}
-                  <a href="/logout">
-                    <h2>Log out</h2>{' '}
-                    <img
-                      src="/right_icon.png"
-                      alt="continue button"
-                      style={{ width: 24, height: 24 }}
-                    />
-                  </a>
-                </div>
-                <div css={editOptionsContainer}>
-                  <button onClick={() => setPopUp(true)}>
-                    <h2>Delete account</h2>{' '}
-                    <img
-                      src="/right_icon.png"
-                      alt="continue button"
-                      style={{ width: 24, height: 24 }}
-                    />
-                  </button>
-                  {popUp && (
-                    <div css={deleteBanner(popUp)}>
-                      <h2>Are you sure?</h2>
-                      <p>
-                        If you delete your account, you will lose your profile
-                        data and matches.
-                      </p>
-                      <p>Would you like to delete your account?</p>
-                      <div css={buttonOne}>
-                        <button onClick={deleteAccountHandler}>
-                          Delete My Account
-                        </button>
-                      </div>
-                      <div>
-                        <button
-                          css={buttonTwo}
-                          onClick={() => {
-                            setPopUp(false);
-                          }}
-                        >
-                          Cancel
-                        </button>
-                        {errors.map((error) => (
-                          <div
-                            key={`error-${error.message}`}
-                            css={errorMessage}
-                          >
-                            {error.message}
-                          </div>
-                        ))}
-                      </div>
+                <div css={personalInfoEditorContainer}>
+                  <div css={nameAgeLocationContainer}>
+                    <div css={userNameEditPage}>
+                      {props.personalData.firstName}{' '}
+                      {props.personalData.lastName}
                     </div>
-                  )}
+                    <div css={ageLocation}>
+                      {props.personalData.age}, from{' '}
+                      {props.personalData.address.split(',').slice(0, 2)}
+                    </div>
+                  </div>
+                  <Link href="/users/update-private-profile/personal-info">
+                    <img
+                      alt="to adapting personal info"
+                      src="/edit.png"
+                      style={{ width: 35, height: 35 }}
+                    />
+                  </Link>
+                </div>
+                <div css={textSections}>
+                  <div css={editOptionsContainer}>
+                    <Link href="/users/update-private-profile/additional-info">
+                      <a>
+                        <h2>Profile</h2>
+                        <img
+                          src="/right_icon.png"
+                          alt="continue button"
+                          style={{ width: 24, height: 24 }}
+                        />
+                      </a>
+                    </Link>
+                  </div>
+                  <div css={editOptionsContainer}>
+                    <Link href="/users/update-private-profile/password-update">
+                      <a>
+                        <h2>Change password</h2>{' '}
+                        <img
+                          src="/right_icon.png"
+                          alt="continue button"
+                          style={{ width: 24, height: 24 }}
+                        />
+                      </a>
+                    </Link>
+                  </div>
+                  <div css={editOptionsContainer}>
+                    {/* TODO Ask mentor about this: */}
+                    <a href="/logout">
+                      <h2>Log out</h2>{' '}
+                      <img
+                        src="/right_icon.png"
+                        alt="continue button"
+                        style={{ width: 24, height: 24 }}
+                      />
+                    </a>
+                  </div>
+                  <div css={editOptionsContainer}>
+                    <button onClick={() => setPopUp(true)}>
+                      <h2>Delete account</h2>{' '}
+                      <img
+                        src="/right_icon.png"
+                        alt="continue button"
+                        style={{ width: 24, height: 24 }}
+                      />
+                    </button>
+                    {popUp && (
+                      <div css={deleteBanner(popUp)}>
+                        <h2>Are you sure?</h2>
+                        <p>
+                          If you delete your account, you will lose your profile
+                          data and matches.
+                        </p>
+                        <p>Would you like to delete your account?</p>
+                        <div css={buttonOne}>
+                          <button onClick={deleteAccountHandler}>
+                            Delete My Account
+                          </button>
+                        </div>
+                        <div>
+                          <button
+                            css={buttonTwo}
+                            onClick={() => {
+                              setPopUp(false);
+                            }}
+                          >
+                            Cancel
+                          </button>
+                          {errors.map((error) => (
+                            <div
+                              key={`error-${error.message}`}
+                              css={errorMessage}
+                            >
+                              {error.message}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>

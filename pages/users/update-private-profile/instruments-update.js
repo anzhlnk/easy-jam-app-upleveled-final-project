@@ -2,6 +2,7 @@ import { css } from '@emotion/react';
 import Link from 'next/link';
 import { useState } from 'react';
 import Select from 'react-select';
+import { colourStyles, inputContainer } from '../../../components/Form/Fourth';
 import { createCsrfToken } from '../../../util/auth';
 import {
   getInstruments,
@@ -12,24 +13,6 @@ import {
 } from '../../../util/database';
 import { errorMessage } from '../../login';
 import { title } from '../usersbyid/[userId]';
-import { inputContainer } from './personal-info';
-
-const customStyles = {
-  option: (provided) => ({
-    ...provided,
-    borderBottom: '1px grey',
-    padding: 20,
-  }),
-  control: () => ({
-    width: 200,
-  }),
-  singleValue: (provided, state) => {
-    const opacity = state.isDisabled ? 0.5 : 1;
-    const transition = 'opacity 300ms';
-
-    return { ...provided, opacity, transition };
-  },
-};
 
 export const headerContainer = css`
   z-index: 0;
@@ -145,7 +128,7 @@ const UserIsntrumentUpdate = (props) => {
       </div>
       <div css={inputContainer}>
         <Select
-          styles={customStyles}
+          className="select"
           id="instrument-multi-select"
           instanceId="instrument-multi-select"
           isMulti
@@ -162,6 +145,17 @@ const UserIsntrumentUpdate = (props) => {
           }
           placeholder="Select Instruments"
           onChange={handleChange}
+          styles={colourStyles}
+          theme={(theme) => ({
+            ...theme,
+            borderRadius: 25,
+
+            colors: {
+              ...theme.colors,
+              primary25: '#1B3D5F',
+              primary: '#1B3D5F',
+            },
+          })}
         />
       </div>
       {/* {error ? (

@@ -4,7 +4,6 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import validator from 'validator';
 import { errorMessage } from '../../../pages/login';
-import { main } from '../../../pages/register';
 import { createCsrfToken } from '../../../util/auth';
 import {
   getUserByValidSessionToken,
@@ -29,7 +28,7 @@ export const headerContainer = css`
   @media (min-width: 500px) {
     width: 50vw;
   }
-  width: 50vw;
+  width: 55vw;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -52,6 +51,17 @@ export const nextButton = css`
   border-radius: 100px;
   border: none;
   color: #ffffff;
+`;
+export const main = css`
+  width: 100vw;
+  margin: 0px;
+  padding: 0px;
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  align-items: left;
 `;
 
 export const inputContainer = css`

@@ -161,6 +161,9 @@ const nameAgeDistanceContainer = css`
     text-align: right;
     color: #a7b0c0;
   }
+  @media (min-width: 900px) {
+    width: 15vw;
+  }
 `;
 const percentageMessageContainer = css`
   width: 100%;

@@ -11,7 +11,6 @@ import {
   getValidSessionByToken,
 } from '../../../util/database';
 import {
-  contentContainer,
   genreList,
   genreListContainer,
   headerContainer,
@@ -25,6 +24,15 @@ const contentAll = css`
   padding-left: 12px;
   width: 100vw;
   height: 85vh;
+`;
+
+export const contentContainer = css`
+  display: flex;
+  flex-direction: column;
+  margin-top: 2em;
+  align-items: center;
+  padding-left: 64px;
+  padding-right: 64px;
 `;
 
 const alignWithPencil = css`
@@ -189,7 +197,7 @@ export default function UserDetail(props) {
           <div css={userName}>{props.personalData.firstName} </div>
           <div css={ageLocation}>
             {props.personalData.age}, from{' '}
-            {props.personalData.address.split(',')[0]}
+            {props.personalData.address.split(',').slice(0, 2)}
           </div>
           <div css={alignWithPencil}>
             <div css={playinInstruments} style={{ justifyContent: 'center' }}>

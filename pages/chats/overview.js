@@ -79,6 +79,7 @@ const errorsStyle = css`
   justify-content: center;
   /* align-items: center; */
   font-family: 'Michroma';
+  word-spacing: 4px;
   font-size: 14px;
   line-height: 40px;
   text-transform: uppercase;

@@ -50,6 +50,9 @@ export default function App({ Component, pageProps }) {
             margin: 0px;
             padding: 0px;
           }
+          .swiper-pagination-bullet-active {
+            background-color: #1b3d5f !important;
+          }
         `}
       />
       <Layout user={user} profileImage={profileImage}>
