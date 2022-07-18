@@ -125,6 +125,23 @@ export const ageLocation = css`
   opacity: 0.29;
 `;
 
+const userNameEditPage = css`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 32px;
+  line-height: 40px;
+  text-align: center;
+  letter-spacing: -1.5px;
+
+  color: #1d232e;
+`;
+
 const deleteBanner = (isOpen) => css`
   display: flex;
   flex-direction: column;
@@ -306,7 +323,7 @@ export default function UserDetail(props) {
               </div>
               <div css={personalInfoEditorContainer}>
                 <div css={nameAgeLocationContainer}>
-                  <div css={userName}>
+                  <div css={userNameEditPage}>
                     {props.personalData.firstName} {props.personalData.lastName}
                   </div>
                   <div css={ageLocation}>
