@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 const avatarContainer = css`
   width: 100vw;
@@ -26,6 +26,10 @@ function Anchor({ children, ...restProps }) {
 
 export default function Header(props) {
   const { asPath } = useRouter();
+
+  useEffect(() => {
+    props.refreshUserProfile();
+  }, [props]);
 
   return (
     <header>

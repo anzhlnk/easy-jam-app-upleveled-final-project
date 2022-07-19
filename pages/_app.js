@@ -55,7 +55,11 @@ export default function App({ Component, pageProps }) {
           }
         `}
       />
-      <Layout user={user} profileImage={profileImage}>
+      <Layout
+        user={user}
+        profileImage={profileImage}
+        refreshUserProfile={refreshUserProfile}
+      >
         <Component {...pageProps} refreshUserProfile={refreshUserProfile} />
       </Layout>
     </>
