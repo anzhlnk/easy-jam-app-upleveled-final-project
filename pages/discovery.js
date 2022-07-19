@@ -37,7 +37,7 @@ export const headerContainer = css`
   @media (min-width: 500px) {
     width: 60vw;
   }
-  width: 50vw;
+  width: 48vw;
   display: flex;
   flex-direction: row;
 
@@ -45,8 +45,8 @@ export const headerContainer = css`
   justify-content: space-between;
   margin-left: 24px;
   margin-top: -24px;
-  img {
-    margin-right: 9em;
+  .filter {
+    margin-top: 4px;
   }
   margin-bottom: 2em;
 `;
@@ -55,7 +55,6 @@ export const main = css`
   width: 100vw;
   height: 100vh;
   position: relative;
-
   display: flex;
   flex-direction: column;
   justify-content: start;

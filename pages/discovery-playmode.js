@@ -41,8 +41,11 @@ const contentContainer = css`
     width: 50em;
   }
 
+  .emptyResultText {
+    margin-top: 4px;
+  }
+
   .swiper {
-    /* margin: 100px auto; */
     width: 80vw;
     height: 85vh;
     @media (min-width: 900px) {
@@ -90,6 +93,7 @@ export default function UserProfile(props) {
         <div css={headerContainer}>
           <Link href="/filters">
             <img
+              className="filter"
               src="/filter_icon.png"
               alt="filter"
               style={{ width: 20, height: 19 }}
@@ -97,7 +101,6 @@ export default function UserProfile(props) {
           </Link>
           <Link href="/discovery">
             <img
-              className="filter"
               src="/filterMode.png"
               alt="filter"
               style={{ width: 24, height: 24 }}
@@ -107,7 +110,7 @@ export default function UserProfile(props) {
         <div css={allContentContainer}>
           <div css={contentContainer}>
             {matchingProfiles.every((group) => group.users === null) && (
-              <p css={emptyResult}>
+              <p css={emptyResult} className="emptyResultText">
                 Sorry, there are currently no matches. <br /> <br />
                 Please, check your visibility status.
               </p>

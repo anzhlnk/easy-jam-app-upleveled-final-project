@@ -40,7 +40,7 @@ const imageField = css`
     line-height: 24px;
     text-align: center;
     letter-spacing: -0.25px;
-    color: #1d232e;
+    color: #ffffff;
 
     cursor: pointer;
     transition: transform 0.2s ease-out;
@@ -64,6 +64,7 @@ const imageStyle = css`
 
 const imageContainer = css`
   display: flex;
+  justify-content: center;
   width: 100vw;
   justify-content: right;
 `;
@@ -137,7 +138,7 @@ const Seventh = ({
         ) : (
           <div css={imageContainer}>
             <img
-              src={imageUrl}
+              src={imageUrl ? imageUrl : '/user.png'}
               className="mt-4"
               alt="upload"
               css={imageStyle}
