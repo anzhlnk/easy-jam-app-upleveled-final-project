@@ -16,6 +16,7 @@ import {
   getUserByValidSessionToken,
   getValidSessionByToken,
 } from '../../../util/database';
+import { main } from '../../discovery';
 
 const { useState } = React;
 
@@ -35,7 +36,8 @@ export const title = css`
 `;
 
 export const headerContainer = css`
-  z-index: 0;
+  z-index: 1;
+  position: fixed;
   @media (min-width: 500px) {
     width: 50vw;
   }
@@ -49,7 +51,7 @@ export const headerContainer = css`
 `;
 
 const contentContainer = css`
-  margin-top: 4em;
+  margin-top: 60px;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -119,7 +121,7 @@ const Studios = (props) => {
         <title>Closest studio</title>
         <meta name="description" content="About the app" />
       </Head>
-      <main>
+      <main css={main}>
         <div css={headerContainer}>
           <Link href={`/chats/${props.conversation}`}>
             <img

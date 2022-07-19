@@ -42,7 +42,7 @@ export const headerContainer = css`
   align-items: center;
   justify-content: space-between;
   margin-left: 24px;
-  margin-top: 37px;
+  margin-top: 36px;
 `;
 
 const contentAll = css`

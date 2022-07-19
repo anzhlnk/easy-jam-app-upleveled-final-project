@@ -6,8 +6,11 @@ const avatarContainer = css`
   width: 100vw;
   display: flex;
   justify-content: right;
-  margin-top: 24px;
+  padding-top: 32px;
   z-index: 1;
+  position: fixed;
+  top: 0;
+  background: #ffff;
 `;
 const profileImage = css`
   width: 35px;

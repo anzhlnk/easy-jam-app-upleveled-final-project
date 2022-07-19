@@ -22,7 +22,8 @@ import {
 import { main } from '../../discovery';
 
 export const headerContainer = css`
-  z-index: 0;
+  z-index: 1;
+  position: fixed;
   @media (min-width: 500px) {
     width: 50vw;
   }
@@ -32,19 +33,13 @@ export const headerContainer = css`
   align-items: center;
   justify-content: space-between;
   margin-left: 24px;
-  margin-top: -24px;
-  margin-bottom: 38px;
+  margin-top: -25.5px;
+
   h1 {
     margin-right: -1em;
   }
 `;
 
-export const contentContainer = css`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-`;
 export const confirmButtonContainer = css`
   display: flex;
   justify-content: right;
@@ -104,6 +99,15 @@ export const inputContainer = css`
     border-radius: 25px;
     padding-left: 2em;
   }
+`;
+
+export const contentContainer = css`
+  display: flex;
+  flex-direction: column;
+  margin-top: 32px;
+  align-items: center;
+  padding-left: 64px;
+  padding-right: 64px;
 `;
 
 export default function UpdatePersonalInfo(props) {
@@ -195,70 +199,72 @@ export default function UpdatePersonalInfo(props) {
         </Link>
         <h1 css={title}>Personal info</h1>
       </div>
-      <div css={inputContainer}>
-        <input
-          placeholder="First name"
-          onChange={(event) => setFirstName(event.currentTarget.value)}
-          defaultValue={firstName}
-        />
-        <input
-          placeholder="Last name"
-          onChange={(event) => setLastName(event.currentTarget.value)}
-          defaultValue={lastName}
-        />
-        <PlacesAutocomplete
-          value={location}
-          onChange={handleChange}
-          onSelect={handleSelect}
-        >
-          {({
-            getInputProps,
-            suggestions,
-            getSuggestionItemProps,
-            loading,
-          }) => (
-            <div css={inputContainer}>
-              <input {...getInputProps({ placeholder: 'address' })} />
-              <div>
-                {loading && <div>Loading...</div>}
-                {suggestions.map((suggestion) => {
-                  const style = {
-                    background: suggestion.active ? '#d9dbdb' : '#fff',
-                    width: '20em',
-                    marginTop: 12,
-                    marginBottom: 12,
-                    paddingTop: 4,
-                    paddingBottom: 4,
-                    fontFamily: 'Inter',
-                    fontWeight: 500,
-                    fontSize: 14,
-                    color: '#5d6470',
-                  };
-
-                  return (
-                    <div key={`li-suggestion-${suggestion.placeId}`}>
-                      <div {...getSuggestionItemProps(suggestion, { style })}>
-                        {suggestion.description}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          )}
-        </PlacesAutocomplete>
-        <div css={datePickerContainer}>
-          <DatePicker
-            wrapperClassName="date-picker"
-            dateFormat="dd/MM/yyyy"
-            maxDate={twelveYearsAgo}
-            selected={birthday}
-            showYearDropdown
-            dateFormatCalendar="MMMM"
-            yearDropdownItemNumber={60}
-            scrollableYearDropdown
-            onChange={(event) => setBirthday(event)}
+      <div css={contentContainer}>
+        <div css={inputContainer}>
+          <input
+            placeholder="First name"
+            onChange={(event) => setFirstName(event.currentTarget.value)}
+            defaultValue={firstName}
           />
+          <input
+            placeholder="Last name"
+            onChange={(event) => setLastName(event.currentTarget.value)}
+            defaultValue={lastName}
+          />
+          <PlacesAutocomplete
+            value={location}
+            onChange={handleChange}
+            onSelect={handleSelect}
+          >
+            {({
+              getInputProps,
+              suggestions,
+              getSuggestionItemProps,
+              loading,
+            }) => (
+              <div css={inputContainer}>
+                <input {...getInputProps({ placeholder: 'address' })} />
+                <div>
+                  {loading && <div>Loading...</div>}
+                  {suggestions.map((suggestion) => {
+                    const style = {
+                      background: suggestion.active ? '#d9dbdb' : '#fff',
+                      width: '20em',
+                      marginTop: 12,
+                      marginBottom: 12,
+                      paddingTop: 4,
+                      paddingBottom: 4,
+                      fontFamily: 'Inter',
+                      fontWeight: 500,
+                      fontSize: 14,
+                      color: '#5d6470',
+                    };
+
+                    return (
+                      <div key={`li-suggestion-${suggestion.placeId}`}>
+                        <div {...getSuggestionItemProps(suggestion, { style })}>
+                          {suggestion.description}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </PlacesAutocomplete>
+          <div css={datePickerContainer}>
+            <DatePicker
+              wrapperClassName="date-picker"
+              dateFormat="dd/MM/yyyy"
+              maxDate={twelveYearsAgo}
+              selected={birthday}
+              showYearDropdown
+              dateFormatCalendar="MMMM"
+              yearDropdownItemNumber={60}
+              scrollableYearDropdown
+              onChange={(event) => setBirthday(event)}
+            />
+          </div>
         </div>
       </div>
       {error ? <div css={errorMessage}>Please, enter your full name</div> : ''}

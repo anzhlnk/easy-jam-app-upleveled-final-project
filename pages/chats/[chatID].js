@@ -12,6 +12,7 @@ import {
   getUserByValidSessionToken,
   getValidSessionByToken,
 } from '../../util/database';
+import { main } from '../discovery';
 import { title } from '../users/usersbyid/[userId]';
 
 const notAuthenticated = css`
@@ -28,7 +29,8 @@ const notAuthenticated = css`
 `;
 
 const headerContainer = css`
-  z-index: 0;
+  z-index: 1;
+  position: fixed;
   @media (min-width: 500px) {
     width: 50vw;
   }
@@ -39,7 +41,7 @@ const headerContainer = css`
   align-items: center;
   justify-content: space-between;
   margin-left: 24px;
-  margin-top: -32px;
+  margin-top: -29px;
   .nameLocation {
     display: flex;
     flex-direction: row;
@@ -50,6 +52,7 @@ const headerContainer = css`
 `;
 
 const contentContainer = css`
+  margin-top: 60px;
   margin-left: 24px;
   margin-right: 24px;
   display: flex;
@@ -85,33 +88,35 @@ export default function TestChat(props) {
       <Head>
         <meta name="description" content="Chats" />
       </Head>
-      <div css={headerContainer}>
-        <Link href="/discovery">
-          <img
-            src="/back-icon.png"
-            alt="back button"
-            style={{ width: 24, height: 24 }}
-          />
-        </Link>
-        <div className="nameLocation">
-          <h1 css={title}>{props.buddyName}</h1>
-          <Link href={`/chats/studios-map/${props.conversation}`}>
+      <main css={main}>
+        <div css={headerContainer}>
+          <Link href="/discovery">
             <img
-              src="/location.png"
+              src="/back-icon.png"
               alt="back button"
-              style={{ width: 17, height: 27 }}
+              style={{ width: 24, height: 24 }}
             />
           </Link>
+          <div className="nameLocation">
+            <h1 css={title}>{props.buddyName}</h1>
+            <Link href={`/chats/studios-map/${props.conversation}`}>
+              <img
+                src="/location.png"
+                alt="back button"
+                style={{ width: 17, height: 27 }}
+              />
+            </Link>
+          </div>
         </div>
-      </div>
-      <div css={contentContainer}>
-        <AblyChatComponent
-          conversation={props.conversation}
-          conversationHistory={props.conversationHistory}
-          csrfToken={props.csrfToken}
-          personalDataId={props.dataId}
-        />
-      </div>
+        <div css={contentContainer}>
+          <AblyChatComponent
+            conversation={props.conversation}
+            conversationHistory={props.conversationHistory}
+            csrfToken={props.csrfToken}
+            personalDataId={props.dataId}
+          />
+        </div>
+      </main>
     </>
   );
 }

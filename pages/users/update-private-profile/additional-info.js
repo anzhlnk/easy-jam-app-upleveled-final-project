@@ -13,7 +13,6 @@ import {
 import {
   genreList,
   genreListContainer,
-  headerContainer,
   instrumentImage,
   instrumentImageContainer,
   title,
@@ -29,7 +28,7 @@ const contentAll = css`
 export const contentContainer = css`
   display: flex;
   flex-direction: column;
-  margin-top: 2em;
+  margin-top: 120px;
   align-items: center;
   padding-left: 64px;
   padding-right: 64px;
@@ -47,6 +46,21 @@ export const playinInstruments = css`
   flex-direction: row;
   justify-content: center;
   width: 80vw;
+`;
+
+export const headerContainer = css`
+  z-index: 1;
+  @media (min-width: 500px) {
+    width: 50vw;
+  }
+  position: fixed;
+  width: 50vw;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-left: 24px;
+  margin-top: -84px;
 `;
 
 export const ageLocation = css`
@@ -111,7 +125,8 @@ export const textSections = css`
   }
   input:focus,
   input:active {
-    outline-color: #1b3d5f;
+    outline: none !important;
+    border-color: #1b3d5f;
   }
 
   .secondHeader {

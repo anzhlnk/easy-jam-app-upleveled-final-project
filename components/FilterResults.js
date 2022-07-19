@@ -43,6 +43,10 @@ const profileButtonContainer = css`
 
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
   }
+
+  .profileButton {
+    color: #000000 !important;
+  }
 `;
 const profileImage = css`
   display: flex;
@@ -91,7 +95,7 @@ const instrumentImageContainer = css`
   align-items: center;
   justify-content: center;
   margin-right: 0.5em;
-  margin-top: 0.5em;
+  margin-top: 1em;
 `;
 
 const instrumentImage = css`
@@ -149,7 +153,7 @@ export default function FilterResults(props) {
           km
         </div>
         <Link href={`/users/usersbyid/${props.profile.personalDataId}`}>
-          <button>{'>'}</button>
+          <button className="profileButton">{'>'}</button>
         </Link>
       </div>
     </div>

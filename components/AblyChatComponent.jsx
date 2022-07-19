@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useChannel } from './AblyReactEffect';
 
 const chatHolder = css`
-  margin-top: 32px;
+  margin-top: 64px;
   display: grid;
   grid-template-rows: 1fr 100px;
   height: 80vh;
@@ -46,7 +46,7 @@ const textarea = css`
   margin-right: 1em;
   :focus,
   :active {
-    outline-color: #68107a;
+    outline-color: #1b3d5f;
   }
 `;
 

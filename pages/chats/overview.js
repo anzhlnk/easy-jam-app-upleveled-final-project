@@ -8,11 +8,8 @@ import {
   getUserByValidSessionToken,
   getValidSessionByToken,
 } from '../../util/database';
-import {
-  contentContainer,
-  headerContainer,
-  title,
-} from '../users/usersbyid/[userId]';
+import { main } from '../discovery';
+import { headerContainer, title } from '../users/usersbyid/[userId]';
 
 const userChat = css`
   display: flex;
@@ -30,6 +27,14 @@ const avatar = css`
   border-radius: 25px;
 `;
 
+export const contentContainer = css`
+  display: flex;
+  flex-direction: column;
+  margin-top: 40px;
+  align-items: center;
+  padding-left: 64px;
+  padding-right: 64px;
+`;
 const nameTextContainer = css`
   display: flex;
   flex-direction: column;
@@ -111,7 +116,7 @@ export default function UserDetail(props) {
   }
   return (
     <div>
-      <main>
+      <main css={main}>
         <Head>
           <title>Chat</title>
           <meta name="description" content="About the app" />

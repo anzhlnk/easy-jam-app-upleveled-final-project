@@ -12,7 +12,7 @@ const main = css`
   z-index: 1;
   bottom: 0;
   background: #fafafa;
-  height: 80px;
+  height: 60px;
   border-top: 0.5px solid #a7b0c0;
   @media (min-width: 900px) {
     height: 42px;
@@ -23,11 +23,12 @@ const main = css`
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    height: 80px;
+    height: 70px;
 
     img {
       margin-right: 1.5em;
       margin-left: 1.5em;
+      margin-bottom: 1em;
       @media (min-width: 900px) {
         margin-bottom: 2em;
       }

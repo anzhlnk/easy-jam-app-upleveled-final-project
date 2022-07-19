@@ -34,6 +34,9 @@ const matchPercentage = css`
 `;
 
 export const headerContainer = css`
+  position: fixed;
+  z-index: 1;
+
   @media (min-width: 500px) {
     width: 50vw;
   }
@@ -52,6 +55,7 @@ export const headerContainer = css`
 `;
 
 export const main = css`
+  margin-top: 60px;
   width: 100vw;
   height: 100vh;
   position: relative;
@@ -65,6 +69,7 @@ export const allContentContainer = css`
 
   justify-content: center;
   align-items: center;
+  margin-top: 32px;
 `;
 
 const contentContainer = css`

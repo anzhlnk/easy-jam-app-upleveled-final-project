@@ -127,14 +127,14 @@ const addUser = css`
   width: 35px;
   height: 35px;
 
-  background: linear-gradient(#fff, #fff) padding-box, #ffce00 border-box;
-  border: 2px solid transparent;
+  border: 2px solid #ffce00;
   border-radius: 50px;
 
-  box-shadow: 1px 1px 4px rgba(93, 107, 130, 0.44);
   button {
     border: none;
     z-index: 1;
+
+    background-color: #ffffff;
   }
   img {
     z-index: 0;

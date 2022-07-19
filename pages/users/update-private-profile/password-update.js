@@ -24,7 +24,7 @@ export const nextButtonContainer = css`
 `;
 
 export const headerContainer = css`
-  z-index: 0;
+  z-index: 1;
   @media (min-width: 500px) {
     width: 50vw;
   }
@@ -34,17 +34,15 @@ export const headerContainer = css`
   align-items: center;
   justify-content: space-between;
   margin-left: 24px;
-  margin-top: -24px;
-  margin-bottom: 38px;
+  margin-top: 34.5px;
+  margin-bottom: 30px;
 `;
 
 export const nextButton = css`
   display: flex;
   align-items: center;
   justify-content: center;
-
   margin-top: 10em;
-
   height: 53px;
   width: 53px;
   background: #92969a;

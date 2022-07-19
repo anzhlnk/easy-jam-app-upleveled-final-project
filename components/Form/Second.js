@@ -75,7 +75,7 @@ export const headerContainer = css`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  margin-top: 24px;
+  margin-top: 34px;
 `;
 
 const Second = ({ nextPage, prevPage, handleFormData, values }) => {

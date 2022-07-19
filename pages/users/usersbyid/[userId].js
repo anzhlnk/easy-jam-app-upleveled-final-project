@@ -13,12 +13,14 @@ import {
   getUserPersonalData,
   getValidSessionByToken,
 } from '../../../util/database';
+import { main } from '../../discovery';
 
 export const headerContainer = css`
-  z-index: 0;
+  z-index: 1;
   @media (min-width: 500px) {
     width: 50vw;
   }
+  position: fixed;
   width: 50vw;
   display: flex;
   flex-direction: row;
@@ -41,7 +43,7 @@ export const title = css`
 export const contentContainer = css`
   display: flex;
   flex-direction: column;
-  margin-top: 2em;
+  margin-top: 60px;
   align-items: center;
   padding-left: 64px;
   padding-right: 64px;
@@ -239,7 +241,7 @@ export default function UserProfile(props) {
         <meta name="description" content="About the app" />
       </Head>
 
-      <main>
+      <main css={main}>
         <div css={headerContainer}>
           <Link href="/discovery">
             <img
