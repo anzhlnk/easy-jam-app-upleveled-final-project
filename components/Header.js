@@ -19,6 +19,10 @@ const profileImage = css`
   border-radius: 25px;
   margin-right: 24px;
 `;
+function Anchor({ children, ...restProps }) {
+  // using a instead of Link since we want to force a full refresh
+  return <a {...restProps}>{children}</a>;
+}
 
 export default function Header(props) {
   const { asPath } = useRouter();
@@ -30,13 +34,13 @@ export default function Header(props) {
         asPath !== '/filters' &&
         props.user && (
           <div css={avatarContainer}>
-            <Link href="/users/private-profile">
+            <Anchor href="/users/private-profile">
               <img
                 css={profileImage}
                 src={props.profileImage.profilePictureUrl}
                 alt="user"
               />
-            </Link>
+            </Anchor>
           </div>
         )}
     </header>
