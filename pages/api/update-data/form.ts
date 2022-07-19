@@ -121,8 +121,8 @@ export default async function handler(
       return { personal_data_id: currentUserDataId, genre_id: genre };
     });
 
-    const addedInstruments = await insertInstruments(usersInstruments);
-    const addedGenres = await insertGenres(usersGenres);
+    await insertInstruments(usersInstruments);
+    await insertGenres(usersGenres);
 
     // standard value
     const defaultRequiredAge = [12, 100];
@@ -167,12 +167,10 @@ export default async function handler(
     // standard value
     await insertDefaultRequiredGenders(defaultListOfGenders);
 
-    return (
-      res.status(200).json(updatedProfileInfo),
-      res.status(200).json(addedLocation),
-      res.status(200).json(addedInstruments),
-      res.status(200).json(addedGenres)
-    );
+    return res.status(200).json(updatedProfileInfo);
+    // res.status(200).json(addedLocation),
+    // res.status(200).json(addedInstruments),
+    // res.status(200).json(addedGenres)
   }
 
   // if a method not allowed is used
