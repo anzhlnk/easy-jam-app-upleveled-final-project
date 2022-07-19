@@ -35,7 +35,7 @@ const matchPercentage = css`
 
 export const headerContainer = css`
   @media (min-width: 500px) {
-    width: 60vw;
+    width: 50vw;
   }
   width: 48vw;
   display: flex;
