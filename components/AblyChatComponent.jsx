@@ -159,7 +159,7 @@ const AblyChatComponent = (props) => {
 
     return (
       <p
-        key={`author-${sender}-${message.timestamp}`}
+        key={`author-${sender}-${message.id}}`}
         css={messageTextStyle(sender === props.personalDataId)}
         data-author={author}
       >
