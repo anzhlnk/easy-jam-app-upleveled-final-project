@@ -262,8 +262,8 @@ export default function UserProfile(props) {
           </div>
           <div css={userName}> {props.personalData.firstName} </div>
           <div css={ageLocation}>
-            {props.personalData.age}, from{' '}
-            {props.personalData.address.split(',')[1]}
+            {props.personalData.age}, from{' '}Vienna
+            {/* {props.personalData.address.split(',')[1]} */}
           </div>
           <div css={playingInstruments}>
             {props.personalData.playingInstrument

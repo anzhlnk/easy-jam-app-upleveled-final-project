@@ -278,7 +278,8 @@ export default function UserDetail(props) {
               </div>
               <div css={ageLocation}>
                 {props.personalData.age}, from{' '}
-                {props.personalData.address.split(',').slice(0, 2)}
+                {/* {props.personalData.address.split(',').slice(0, 2)} */}
+                Vienna
               </div>
               <div css={playingInstruments}>
                 {props.personalData.playingInstrument
@@ -331,8 +332,8 @@ export default function UserDetail(props) {
                       {props.personalData.lastName}
                     </div>
                     <div css={ageLocation}>
-                      {props.personalData.age}, from{' '}
-                      {props.personalData.address.split(',').slice(0, 2)}
+                      {props.personalData.age}, from Vienna
+                      {/* {props.personalData.address.split(',').slice(0, 2)} */}
                     </div>
                   </div>
                   <Link href="/users/update-private-profile/personal-info">
