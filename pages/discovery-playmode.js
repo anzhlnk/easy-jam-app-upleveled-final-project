@@ -41,10 +41,6 @@ const contentContainer = css`
     width: 50em;
   }
 
-  .emptyResultText {
-    margin-top: 4px;
-  }
-
   .swiper {
     width: 80vw;
     height: 85vh;

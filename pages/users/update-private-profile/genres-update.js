@@ -1,7 +1,8 @@
+import { css } from '@emotion/react';
 import Link from 'next/link';
 import { useState } from 'react';
 import Select from 'react-select';
-import { colourStyles, inputContainer } from '../../../components/Form/Fourth';
+import { colourStyles } from '../../../components/Form/Fourth';
 import { createCsrfToken } from '../../../util/auth';
 import {
   getGenres,
@@ -10,8 +11,27 @@ import {
   getUserGenreByPersonalDataID,
   getValidSessionByToken,
 } from '../../../util/database';
+import { main } from '../../discovery';
 import { title } from '../usersbyid/[userId]';
-import { headerContainer } from './instruments-update';
+import { inputContainer } from './instruments-update';
+
+export const headerContainer = css`
+  position: fixed;
+  z-index: 1;
+
+  @media (min-width: 500px) {
+    width: 50vw;
+  }
+  width: 70vw;
+  display: flex;
+  flex-direction: row;
+
+  align-items: center;
+  justify-content: space-between;
+  margin-left: 24px;
+  margin-top: -24px;
+  margin-bottom: 2em;
+`;
 
 const UserGenreUpdate = (props) => {
   const [errors, setErrors] = useState([]);
@@ -109,7 +129,8 @@ const UserGenreUpdate = (props) => {
 
   return (
     <form
-    // onSubmit={submitFormData}
+      css={main}
+      // onSubmit={submitFormData}
     >
       <div css={headerContainer}>
         <Link href="/users/update-private-profile/additional-info">
@@ -119,9 +140,7 @@ const UserGenreUpdate = (props) => {
             style={{ width: 24, height: 24 }}
           />
         </Link>
-        <h1 css={title}>
-          The genres <br /> I'd play...{' '}
-        </h1>
+        <h1 css={title}>The genres I'd play... </h1>
       </div>
       <div css={inputContainer}>
         <Select

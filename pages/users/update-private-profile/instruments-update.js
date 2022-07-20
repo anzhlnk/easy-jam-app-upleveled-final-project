@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import Link from 'next/link';
 import { useState } from 'react';
 import Select from 'react-select';
-import { colourStyles, inputContainer } from '../../../components/Form/Fourth';
+import { colourStyles } from '../../../components/Form/Fourth';
 import { createCsrfToken } from '../../../util/auth';
 import {
   getInstruments,
@@ -11,22 +11,44 @@ import {
   getUserInstrument,
   getValidSessionByToken,
 } from '../../../util/database';
+import { main } from '../../discovery';
 import { errorMessage } from '../../login';
 import { title } from '../usersbyid/[userId]';
 
 export const headerContainer = css`
-  z-index: 0;
+  position: fixed;
+  z-index: 1;
+
   @media (min-width: 500px) {
     width: 50vw;
   }
-  width: 50vw;
+  width: 60vw;
   display: flex;
   flex-direction: row;
+
   align-items: center;
   justify-content: space-between;
   margin-left: 24px;
   margin-top: -24px;
-  margin-bottom: 38px;
+  margin-bottom: 2em;
+`;
+
+export const inputContainer = css`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0px;
+  margin-top: 46px;
+  width: 100vw;
+  .select {
+    width: 20em;
+    height: 50px;
+  }
+  :active,
+  :focus {
+    outline-color: #1b3d5f;
+  }
 `;
 
 const UserIsntrumentUpdate = (props) => {
@@ -115,7 +137,7 @@ const UserIsntrumentUpdate = (props) => {
   };
 
   return (
-    <form>
+    <form css={main}>
       <div css={headerContainer}>
         <Link href="/users/update-private-profile/additional-info">
           <img

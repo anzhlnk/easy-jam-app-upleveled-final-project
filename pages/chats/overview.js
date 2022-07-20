@@ -30,7 +30,7 @@ const avatar = css`
 export const contentContainer = css`
   display: flex;
   flex-direction: column;
-  margin-top: 40px;
+  margin-top: 32px;
   align-items: center;
   padding-left: 64px;
   padding-right: 64px;
@@ -93,7 +93,7 @@ const errorsStyle = css`
 export default function UserDetail(props) {
   if ('errors' in props) {
     return (
-      <>
+      <main css={main}>
         <Head>
           <title>{props.errors}</title>
           <meta name="description" content="User not found" />
@@ -111,7 +111,7 @@ export default function UserDetail(props) {
         <div css={contentContainer}>
           <p css={errorsStyle}>{props.errors}</p>
         </div>
-      </>
+      </main>
     );
   }
   return (
