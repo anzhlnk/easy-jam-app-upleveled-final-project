@@ -211,8 +211,8 @@ export default function UserDetail(props) {
           </div>
           <div css={userName}>{props.personalData.firstName} </div>
           <div css={ageLocation}>
-            {props.personalData.age}, from{' '}
-            {props.personalData.address.split(',').slice(0, 2)}
+            {props.personalData.age}, from Vienna
+            {/* {props.personalData.address.split(',').slice(0, 2)} */}
           </div>
           <div css={alignWithPencil}>
             <div css={playinInstruments} style={{ justifyContent: 'center' }}>
