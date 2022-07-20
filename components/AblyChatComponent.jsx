@@ -1,9 +1,9 @@
 import { css } from '@emotion/react';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useChannel } from './AblyReactEffect';
 
 const chatHolder = css`
-  margin-top: 64px;
+  /* margin-top: 64px; */
   display: grid;
   grid-template-rows: 1fr 100px;
   height: 80vh;
@@ -63,6 +63,7 @@ const textButtonContainer = css`
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  margin-top: 32px;
   position: fixed;
   left: 1em;
 `;
@@ -94,7 +95,7 @@ const messageTextStyle = (me) =>
 
 const AblyChatComponent = (props) => {
   let inputBox = null;
-  let messageEnd = null;
+  const messageEndRef = useRef(null);
 
   const [messageText, setMessageText] = useState('');
   const [receivedMessages, setReceivedMessages] = useState(
@@ -174,19 +175,23 @@ const AblyChatComponent = (props) => {
     );
   });
 
+  // useEffect(() => {
+  //   messageEnd.scrollIntoView({ behaviour: 'smooth' });
+  // });
+
   useEffect(() => {
-    messageEnd.scrollIntoView({ behaviour: 'smooth' });
-  });
+    messageEndRef.current.scrollIntoView({
+      behavior: 'smooth',
+      block: 'nearest',
+      // inline: 'start',
+    });
+  }, [receivedMessages]);
 
   return (
     <div css={chatHolder}>
       <div css={chatText}>
         {messages}
-        <div
-          ref={(element) => {
-            messageEnd = element;
-          }}
-        ></div>
+        <div ref={messageEndRef} />
       </div>
       <form onSubmit={handleFormSubmission} css={form}>
         <div css={textButtonContainer}>
