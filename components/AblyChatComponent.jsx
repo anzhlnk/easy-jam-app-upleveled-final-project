@@ -46,7 +46,8 @@ const textarea = css`
   margin-right: 1em;
   :focus,
   :active {
-    outline-color: #1b3d5f;
+    outline: none !important;
+    border-color: #1b3d5f;
   }
 `;
 
