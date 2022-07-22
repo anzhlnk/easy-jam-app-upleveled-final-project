@@ -104,6 +104,7 @@ export default function TestChat(props) {
                 src="/location.png"
                 alt="back button"
                 style={{ width: 17, height: 27 }}
+                data-test-id="location-image"
               />
             </Link>
           </div>

@@ -46,6 +46,7 @@ export default function Header(props) {
                 css={profileImage}
                 src={props.profileImage.profilePictureUrl}
                 alt="user"
+                data-test-id="user-avatar"
               />
             </Anchor>
           </div>

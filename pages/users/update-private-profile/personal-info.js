@@ -205,11 +205,13 @@ export default function UpdatePersonalInfo(props) {
             placeholder="First name"
             onChange={(event) => setFirstName(event.currentTarget.value)}
             defaultValue={firstName}
+            data-test-id="update-first-name"
           />
           <input
             placeholder="Last name"
             onChange={(event) => setLastName(event.currentTarget.value)}
             defaultValue={lastName}
+            data-test-id="update-last-name"
           />
           <PlacesAutocomplete
             value={location}
@@ -270,7 +272,11 @@ export default function UpdatePersonalInfo(props) {
       {error ? <div css={errorMessage}>Please, enter your full name</div> : ''}
 
       <div css={confirmButtonContainer}>
-        <button css={confirmButton} onClick={updatePersonalData}>
+        <button
+          css={confirmButton}
+          onClick={updatePersonalData}
+          data-test-id="confirm"
+        >
           <img
             src="/tick_icon.png"
             alt="tick icon"

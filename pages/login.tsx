@@ -187,6 +187,7 @@ export default function Login(props: Props) {
                 setUsername(event.currentTarget.value);
               }}
               placeholder="Username"
+              data-test-id="username"
             />
             <input
               type="password"
@@ -197,8 +198,11 @@ export default function Login(props: Props) {
                 setPassword(event.currentTarget.value);
               }}
               placeholder="Password"
+              data-test-id="password"
             />
-            <button onClick={() => loginHandler()}>Login</button>
+            <button onClick={() => loginHandler()} data-test-id="login">
+              Login
+            </button>
           </div>
 
           {errors.map((error) => (

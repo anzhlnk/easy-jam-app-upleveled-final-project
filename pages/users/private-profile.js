@@ -341,6 +341,7 @@ export default function UserDetail(props) {
                       alt="to adapting personal info"
                       src="/edit.png"
                       style={{ width: 35, height: 35 }}
+                      data-test-id="update-user-info"
                     />
                   </Link>
                 </div>

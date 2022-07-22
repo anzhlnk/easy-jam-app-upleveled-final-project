@@ -519,6 +519,7 @@ export default function Filters(props) {
                 css={nextButton}
                 onClick={buttonHandler}
                 style={{ marginTop: 36 }}
+                data-test-id="tick"
               >
                 <img
                   src="/tick_icon.png"

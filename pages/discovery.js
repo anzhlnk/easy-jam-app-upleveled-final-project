@@ -118,6 +118,7 @@ export default function Discovery(props) {
               src="/filter_icon.png"
               alt="filter"
               style={{ width: 20, height: 19 }}
+              data-test-id="filters"
             />
           </Link>
           <div>

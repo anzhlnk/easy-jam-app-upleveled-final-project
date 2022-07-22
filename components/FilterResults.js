@@ -153,7 +153,9 @@ export default function FilterResults(props) {
           km
         </div>
         <Link href={`/users/usersbyid/${props.profile.personalDataId}`}>
-          <button className="profileButton">{'>'}</button>
+          <button className="profileButton" data-test-id="to-user-profile">
+            {'>'}
+          </button>
         </Link>
       </div>
     </div>

@@ -262,7 +262,7 @@ export default function UserProfile(props) {
           </div>
           <div css={userName}> {props.personalData.firstName} </div>
           <div css={ageLocation}>
-            {props.personalData.age}, from{' '}Vienna
+            {props.personalData.age}, from Vienna
             {/* {props.personalData.address.split(',')[1]} */}
           </div>
           <div css={playingInstruments}>
@@ -297,7 +297,11 @@ export default function UserProfile(props) {
             <span>{props.personalData.aboutMe}</span>
           </div>
           <hr css={horizontalLine} />
-          <button css={sendRequestButton} onClick={createAChat}>
+          <button
+            css={sendRequestButton}
+            onClick={createAChat}
+            data-test-id="send-message"
+          >
             Send a message
           </button>
         </div>

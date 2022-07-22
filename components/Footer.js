@@ -47,7 +47,12 @@ export default function Footer(props) {
               <img css={image} src="/discovery-active.png" alt="discovery" />
             </Link>
             <Link href="/chats/overview">
-              <img css={image} src="/chat-inactive.png" alt="discovery" />
+              <img
+                css={image}
+                src="/chat-inactive.png"
+                alt="discovery"
+                data-test-id="to-chats"
+              />
             </Link>
           </div>
         </div>
@@ -56,7 +61,12 @@ export default function Footer(props) {
         <div css={main}>
           <div className="footerButtons">
             <Link href="/discovery">
-              <img css={image} src="/discovery-active.png" alt="discovery" />
+              <img
+                css={image}
+                src="/discovery-active.png"
+                alt="discovery"
+                data-test-id="to-chats"
+              />
             </Link>
             <Link href="/chats/overview">
               <img css={image} src="/chat-inactive.png" alt="discovery" />
@@ -68,7 +78,12 @@ export default function Footer(props) {
         <div css={main}>
           <div className="footerButtons">
             <Link href="/discovery">
-              <img css={image} src="/discovery-inactive.png" alt="discovery" />
+              <img
+                css={image}
+                src="/discovery-inactive.png"
+                alt="discovery"
+                data-test-id="to-chats"
+              />
             </Link>
             <Link href="/chats/overview">
               <img css={image} src="/chat-active.png" alt="discovery" />

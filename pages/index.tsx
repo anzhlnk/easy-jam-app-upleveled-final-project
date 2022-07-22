@@ -132,7 +132,9 @@ export default function Home() {
             <button css={linkOne}>Sign Up </button>
           </Link>
           <Link href="/login" passHref>
-            <button css={linkTwo}>Log In</button>
+            <button css={linkTwo} data-test-id="login-index">
+              Log In
+            </button>
           </Link>
           <div css={lowerText}> Start jamming now</div>
         </div>
