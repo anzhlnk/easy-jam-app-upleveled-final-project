@@ -139,6 +139,16 @@ export async function getServerSideProps(context) {
   if (user) {
     // get the conversation via the id from the url
     const conversation = await getConversationById(context.query.chatID);
+
+    if (!conversation) {
+      return {
+        redirect: {
+          destination: '/discovery',
+          permanent: false,
+        },
+      };
+    }
+
     const participantsOfTheConversation = await getConversationsUser(
       conversation.id,
     );
@@ -152,15 +162,6 @@ export async function getServerSideProps(context) {
     if (!currentUserParticipant) {
       return {
         props: { errors: 'Not authenticated' },
-      };
-    }
-
-    if (!conversation) {
-      return {
-        redirect: {
-          destination: '/discovery',
-          permanent: false,
-        },
       };
     }
 
