@@ -30,9 +30,17 @@ function Anchor({ children, ...restProps }) {
 export default function Header(props) {
   const { asPath } = useRouter();
 
-  useEffect(() => {
-    props.refreshUserProfile();
-  }, [props]);
+  try {
+    if (props?.profileImage?.profilePictureUrl === null && asPath !== '/form') {
+      props.refreshUserProfile();
+    }
+  } catch (error) {
+    console.error(
+      `Error trying to refresh User Profile in Header --- ${error} with props ${JSON.stringify(
+        props,
+      )}`,
+    );
+  }
 
   return (
     <header>

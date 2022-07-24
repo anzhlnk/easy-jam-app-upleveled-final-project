@@ -5,6 +5,3 @@ build
 
 # Ably library import
 pages/chats/\[chatID\].js
-
-#
-components/Header.js
