@@ -214,6 +214,11 @@ const sliderContainer = css`
   }
 `;
 
+function Anchor({ children, ...restProps }) {
+  // using a instead of Link since we want to force a full refresh
+  return <a {...restProps}>{children}</a>;
+}
+
 export default function UserDetail(props) {
   const [popUp, setPopUp] = useState(false);
   const [errors, setErrors] = useState([]);
@@ -374,15 +379,14 @@ export default function UserDetail(props) {
                     </Link>
                   </div>
                   <div css={editOptionsContainer}>
-                    {/* TODO Ask mentor about this: */}
-                    <a href="/logout">
+                    <Anchor href="/logout">
                       <h2>Log out</h2>{' '}
                       <img
                         src="/right_icon.png"
                         alt="continue button"
                         style={{ width: 24, height: 24 }}
                       />
-                    </a>
+                    </Anchor>
                   </div>
                   <div css={editOptionsContainer}>
                     <button onClick={() => setPopUp(true)}>
