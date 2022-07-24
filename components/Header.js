@@ -37,6 +37,9 @@ export default function Header(props) {
   return (
     <header>
       {asPath !== '/form' &&
+        asPath !== '/' &&
+        asPath !== '/register' &&
+        asPath !== '/login' &&
         asPath !== '/users/private-profile' &&
         asPath !== '/filters' &&
         props.user && (
