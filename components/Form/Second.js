@@ -32,7 +32,7 @@ export const datePickerContainer = css`
   justify-content: center;
   align-items: center;
 
-  margin-bottom: 10em;
+  margin-bottom: 3.92em;
 
   .date-picker {
     width: 100%;

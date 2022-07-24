@@ -143,6 +143,9 @@ const deleteBanner = (isOpen) => css`
   justify-content: start;
   align-items: center;
   width: 20em;
+  @media screen and (min-width: 900px) {
+    width: 42em;
+  }
   position: fixed;
   bottom: 5em;
   background: linear-gradient(#fff, #fff) padding-box, #ffce00 border-box;

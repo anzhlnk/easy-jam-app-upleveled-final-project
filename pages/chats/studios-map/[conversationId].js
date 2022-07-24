@@ -39,7 +39,7 @@ export const headerContainer = css`
   z-index: 1;
   position: fixed;
   @media (min-width: 500px) {
-    width: 50vw;
+    width: 55vw;
   }
   width: 75vw;
   display: flex;

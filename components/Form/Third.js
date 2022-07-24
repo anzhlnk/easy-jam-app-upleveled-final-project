@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import { useState } from 'react';
 import { main, title } from '../../pages/register';
-import { nextButton, nextButtonContainer } from './First';
+import { contentContainer, nextButton } from './First';
 import { headerContainer, prevButton, prevButtonContainer } from './Second';
 
 export const inputContainer = css`
@@ -17,7 +17,7 @@ export const inputContainer = css`
     justify-content: center;
     width: 50px;
     height: 50px;
-    margin-top: 2em;
+    margin-top: 1em;
     box-sizing: border-box;
     border: 1px solid #e7ecf3;
     border-radius: 25px;
@@ -26,6 +26,18 @@ export const inputContainer = css`
   }
   span {
     margin-top: 0.5em;
+  }
+`;
+
+export const nextButtonContainer = css`
+  display: flex;
+  justify-content: right;
+  width: 21em;
+  margin-top: 16em;
+
+  @media (min-width: 500px) {
+    width: 20em;
+    margin-top: 6em;
   }
 `;
 
@@ -57,7 +69,7 @@ const Third = ({ nextPage, prevPage, handleFormData, values, genders }) => {
           />
         </button>
       </div>
-      <div>
+      <div css={contentContainer}>
         <div css={inputContainer}>
           <input
             type="radio"

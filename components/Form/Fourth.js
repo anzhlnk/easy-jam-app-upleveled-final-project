@@ -14,6 +14,7 @@ export const inputContainer = css`
   padding: 0px;
   margin: 0px;
   width: 100vw;
+  margin-bottom: 4.9em;
   .select {
     width: 20em;
     height: 50px;

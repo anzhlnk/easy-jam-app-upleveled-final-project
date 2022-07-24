@@ -56,7 +56,8 @@ export default async function handler(
       !req.body.gender ||
       !req.body.location ||
       !req.body.longitude ||
-      !req.body.latitude
+      !req.body.latitude ||
+      !req.body.profilePicture
     ) {
       return res.status(400).json({
         errors: [{ message: 'Please add personal data' }],

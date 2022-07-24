@@ -8,9 +8,9 @@ const chatHolder = css`
   grid-template-rows: 1fr 100px;
   height: 80vh;
 
-  @media screen and (min-width: 600px) {
+  @media screen and (min-width: 900px) {
     height: 85vh;
-    width: 80vw;
+    width: 70em;
   }
 `;
 
@@ -21,6 +21,9 @@ const form = css`
 
 const chatText = css`
   height: 100%;
+  @media screen and (min-width: 900px) {
+    width: 80em;
+  }
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -31,6 +34,10 @@ const chatText = css`
 
 const textarea = css`
   width: 80vw;
+  @media screen and (min-width: 900px) {
+    width: 60em;
+    margin-left: 16em;
+  }
   height: 50px;
   box-sizing: border-box;
   background: #f8fafd;
@@ -81,14 +88,23 @@ const messageTextStyle = (me) =>
 
     border-radius: 10px;
     flex-grow: 0;
+
     border-bottom-right-radius: ${me ? '0' : '10px'};
     border-bottom-left-radius: ${me ? '10px' : '0'};
+
     margin-left: ${me ? '7.5em' : 'auto'};
     margin-right: ${me ? 'auto' : '8em'};
-    @media screen and (min-width: 500px) {
-      margin-left: ${me ? '55em' : 'auto'};
-      margin-right: ${me ? 'auto' : '80em'};
+
+    @media screen and (min-device-width: 600px) and (max-device-width: 900px) {
+      margin-left: ${me ? '22em' : 'auto'};
+      margin-right: ${me ? 'auto' : '22em'};
     }
+
+    @media screen and (min-width: 900px) {
+      margin-left: ${me ? '50em' : 'auto'};
+      margin-right: ${me ? 'auto' : '60em'};
+    }
+
     inline-size: 13em;
     line-break: strict;
     overflow-wrap: break-word;

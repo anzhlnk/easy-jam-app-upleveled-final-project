@@ -15,10 +15,11 @@ export const nextButtonContainer = css`
   display: flex;
   justify-content: right;
   width: 21em;
-  position: fixed;
-  bottom: 8em;
+  margin-top: 25em;
+
   @media (min-width: 500px) {
-    bottom: 40em;
+    width: 20em;
+    margin-top: 15em;
   }
 `;
 
@@ -26,8 +27,6 @@ export const nextButton = css`
   display: flex;
   align-items: center;
   justify-content: center;
-
-  margin-top: 10em;
 
   height: 53px;
   width: 53px;

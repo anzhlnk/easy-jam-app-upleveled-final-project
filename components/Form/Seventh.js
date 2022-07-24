@@ -4,7 +4,6 @@ import { useState } from 'react';
 import validator from 'validator';
 import { errorMessage } from '../../pages/login';
 import { main, title } from '../../pages/register';
-import { nextButton, nextButtonContainer } from './First';
 import { headerContainer, prevButton, prevButtonContainer } from './Second';
 
 const imageField = css`
@@ -47,9 +46,37 @@ const imageField = css`
   }
 `;
 
-const imageStyle = css`
+export const nextButtonContainer = css`
+  display: flex;
+  justify-content: right;
+  width: 21em;
+  margin-top: 11.2em;
+
   @media (min-width: 500px) {
-    margin-right: 24em;
+    width: 20em;
+    margin-top: 1.2em;
+  }
+`;
+
+export const nextButton = css`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 53px;
+  width: 53px;
+  background: #92969a;
+  border-radius: 100px;
+  border: none;
+  color: #ffffff;
+`;
+
+const imageStyle = css`
+  @media (min-width: 900px) {
+    margin-right: 40%;
+  }
+  @media (min-width: 500px) and (max-width: 900px) {
+    margin-right: 30%;
   }
   margin-right: 24px;
   margin-top: 4em;

@@ -1,3 +1,4 @@
+import { css } from '@emotion/react';
 import { useLoadScript } from '@react-google-maps/api';
 import { useMemo, useState } from 'react';
 import PlacesAutocomplete, {
@@ -6,9 +7,61 @@ import PlacesAutocomplete, {
 } from 'react-places-autocomplete';
 import validator from 'validator';
 import { errorMessage } from '../../pages/login';
-import { inputContainer, main, title } from '../../pages/register';
-import { nextButton, nextButtonContainer } from './First';
+import { main, title } from '../../pages/register';
 import { headerContainer, prevButton, prevButtonContainer } from './Second';
+
+export const inputContainer = css`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  padding: 0px;
+  margin: 0px;
+  width: 100vw;
+  height: 368px;
+  input {
+    width: 25em;
+    height: 50px;
+    margin-top: 1em;
+    box-sizing: border-box;
+    background: #f8fafd;
+    border: 1px solid #e7ecf3;
+    border-radius: 25px;
+    padding-left: 2em;
+  }
+  input:active,
+  input:focus {
+    height: 50px;
+    outline-color: #1b3d5f;
+  }
+`;
+
+export const nextButtonContainer = css`
+  display: flex;
+  justify-content: right;
+  width: 21em;
+
+  @media (min-width: 500px) {
+    width: 20em;
+  }
+`;
+
+export const nextButton = css`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-top: 12em;
+  @media (min-width: 500px) {
+    margin-top: 0em;
+  }
+  height: 53px;
+  width: 53px;
+  background: #92969a;
+  border-radius: 100px;
+  border: none;
+  color: #ffffff;
+`;
 
 const Sixth = ({ nextPage, prevPage, handleFormData, values, googleAPI }) => {
   const [error, setError] = useState(false);
@@ -76,7 +129,7 @@ const Sixth = ({ nextPage, prevPage, handleFormData, values, googleAPI }) => {
                   background: suggestion.active ? '#d9dbdb' : '#fff',
                   width: '20em',
                   marginTop: 12,
-                  marginBottom: 12,
+                  // marginBottom: 12,
                   paddingTop: 4,
                   paddingBottom: 4,
                   fontFamily: 'Inter',
