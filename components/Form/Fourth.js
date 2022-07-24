@@ -26,17 +26,7 @@ export const inputContainer = css`
 `;
 
 export const colourStyles = {
-  option: (
-    styles,
-    { data, isDisabled, isFocused, isSelected, borderRadius },
-  ) => {
-    console.log({
-      data,
-      isDisabled,
-      isFocused,
-      isSelected,
-      borderRadius,
-    });
+  option: (styles, { isFocused }) => {
     return {
       ...styles,
       padding: 20,
