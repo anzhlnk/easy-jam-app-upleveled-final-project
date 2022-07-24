@@ -30,7 +30,6 @@ export const colourStyles = {
     styles,
     { data, isDisabled, isFocused, isSelected, borderRadius },
   ) => {
-    // const color = chroma(data.color);
     console.log({
       data,
       isDisabled,
