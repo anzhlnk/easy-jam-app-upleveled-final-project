@@ -12,6 +12,9 @@ import {
   getGenders,
   getGenres,
   getInstruments,
+  getPersonalDataIDByUserId,
+  getUserByValidSessionToken,
+  getUserPersonalData,
   getValidSessionByToken,
 } from '../util/database';
 
@@ -188,6 +191,27 @@ export async function getServerSideProps(context) {
   if (!session) {
     return {
       props: { errors: 'Not authenticated' },
+    };
+  }
+  const user = await getUserByValidSessionToken(
+    context.req.cookies.sessionToken,
+  );
+  const dataId = await getPersonalDataIDByUserId(user.id);
+  const personalData = await getUserPersonalData(dataId);
+  if (
+    personalData?.firstName &&
+    personalData?.lastName &&
+    personalData?.age &&
+    personalData?.address &&
+    personalData?.longitude &&
+    personalData?.latitude &&
+    personalData?.profilePictureUrl
+  ) {
+    return {
+      redirect: {
+        destination: '/discovery',
+        permanent: false,
+      },
     };
   }
 
