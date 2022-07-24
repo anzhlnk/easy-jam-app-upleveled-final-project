@@ -65,18 +65,7 @@ const valueText = css`
 `;
 
 export const colourStyles = {
-  option: (
-    styles,
-    { data, isDisabled, isFocused, isSelected, borderRadius },
-  ) => {
-    // const color = chroma(data.color);
-    console.log({
-      data,
-      isDisabled,
-      isFocused,
-      isSelected,
-      borderRadius,
-    });
+  option: (styles, { isFocused }) => {
     return {
       ...styles,
       padding: 20,
