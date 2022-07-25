@@ -212,7 +212,6 @@ export async function getServerSideProps(context) {
       counts[e] = 0;
     }
     counts[e]++;
-    // return ((e: count) += 1);
   });
 
   const distanceToBuddies = await getDistance(locationId, profileList);

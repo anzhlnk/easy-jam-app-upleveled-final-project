@@ -27,8 +27,6 @@ const matchPercentage = css`
   align-items: center;
   justify-content: left;
   margin-bottom: 1.5em;
-  /* background: linear-gradient(#fff, #fff) padding-box,
-    linear-gradient(45deg, #f7ff26, #4dfb34, #18fdef) border-box; */
   padding-bottom: 1em;
   border-bottom: 4px solid transparent;
 `;
@@ -221,7 +219,6 @@ export async function getServerSideProps(context) {
       counts[e] = 0;
     }
     counts[e]++;
-    // return ((e: count) += 1);
   });
 
   const distanceToBuddies = await getDistance(locationId, profileList);

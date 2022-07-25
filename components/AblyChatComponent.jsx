@@ -3,7 +3,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useChannel } from './AblyReactEffect';
 
 const chatHolder = css`
-  /* margin-top: 64px; */
   display: grid;
   grid-template-rows: 1fr 100px;
   height: 80vh;
@@ -173,8 +172,6 @@ const AblyChatComponent = (props) => {
     const author =
       Number(message.name) === props.personalDataId ? 'me' : message.name;
 
-    // const author = message.connectionId === ably.connection.id ? 'me' : 'other';
-
     return (
       <p
         key={`author-${sender}-${message.id}}`}
@@ -192,15 +189,10 @@ const AblyChatComponent = (props) => {
     );
   });
 
-  // useEffect(() => {
-  //   messageEnd.scrollIntoView({ behaviour: 'smooth' });
-  // });
-
   useEffect(() => {
     messageEndRef.current.scrollIntoView({
       behavior: 'smooth',
       block: 'nearest',
-      // inline: 'start',
     });
   }, [receivedMessages]);
 

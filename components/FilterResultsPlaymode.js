@@ -182,12 +182,7 @@ const percentageMessageContainer = css`
     font-weight: 400;
     font-size: 14px;
     line-height: 20px;
-    /* identical to box height, or 143% */
-
     text-align: right;
-
-    /* Text/300 */
-
     color: #a7b0c0;
   }
 `;

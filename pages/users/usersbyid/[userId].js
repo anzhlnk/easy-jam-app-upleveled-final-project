@@ -195,7 +195,7 @@ export const sendRequestButton = css`
 
 export default function UserProfile(props) {
   const router = useRouter();
-  // create a new chat}
+  // create a new chat
   const [errors, setErrors] = useState([]);
 
   async function createAChat() {

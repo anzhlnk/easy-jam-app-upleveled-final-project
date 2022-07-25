@@ -21,7 +21,6 @@ const notAuthenticated = css`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  /* align-items: center; */
   font-family: 'Michroma';
   font-size: 14px;
   line-height: 40px;

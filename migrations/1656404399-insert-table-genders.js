@@ -10,7 +10,6 @@ const genderDatabase = [
   },
 ];
 
-// //migration start
 exports.up = async (sql) => {
   await sql`
 INSERT INTO genders

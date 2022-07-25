@@ -3,7 +3,6 @@ const relationType = [
   { relation_name: 'searching' },
 ];
 
-// //migration start
 exports.up = async (sql) => {
   await sql`
 INSERT INTO users_instruments_relation
@@ -19,4 +18,3 @@ WHERE
 relation_name = ${relation.relation_name}`;
   }
 };
-// end of migration

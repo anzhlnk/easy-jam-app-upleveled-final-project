@@ -169,9 +169,6 @@ export default async function handler(
     await insertDefaultRequiredGenders(defaultListOfGenders);
 
     return res.status(200).json(updatedProfileInfo);
-    // res.status(200).json(addedLocation),
-    // res.status(200).json(addedInstruments),
-    // res.status(200).json(addedGenres)
   }
 
   // if a method not allowed is used

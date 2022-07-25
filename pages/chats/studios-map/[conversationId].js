@@ -98,11 +98,6 @@ const Studios = (props) => {
           onClick={() => {
             handleMarkerClick(i);
           }}
-          // For Hovering:
-          // onMouseOver={() => {
-          //   setInfoWindowID(i);
-          // }}
-          // onMouseOut={() => setInfoWindowID('')}
           animation={window.google.maps.Animation.DROP}
         >
           {infoWindowID === i && (
@@ -192,10 +187,8 @@ export async function getServerSideProps(context) {
       return participant.personalDataId;
     },
   );
-
-  const closestStudio = await getClosestStudio(participantsDataId);
-
   // based on personal data ids, return  the closes studio
+  const closestStudio = await getClosestStudio(participantsDataId);
 
   return {
     props: {

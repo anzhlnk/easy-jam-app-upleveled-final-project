@@ -14,7 +14,6 @@ const instrumentDatabase = [
   { instrument_name: 'accordion' },
 ];
 
-// //migration start
 exports.up = async (sql) => {
   await sql`
 INSERT INTO instruments
@@ -30,4 +29,3 @@ WHERE
 instrument_name = ${instrument.instrument_name}`;
   }
 };
-// end of migration

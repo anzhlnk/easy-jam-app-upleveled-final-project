@@ -67,7 +67,6 @@ const Sixth = ({ nextPage, prevPage, handleFormData, values, googleAPI }) => {
   const [error, setError] = useState(false);
   const libraries = useMemo(() => ['places'], []);
   const handleChange = (value) => {
-    // does this function have to wait for handleFormData to succeed before continuing?
     handleFormData('location', value);
   };
 

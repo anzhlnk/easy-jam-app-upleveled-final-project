@@ -102,18 +102,12 @@ const linkTwo = css`
 const lowerText = css`
   position: absolute;
   bottom: 8em;
-
   font-family: 'Michroma';
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
   line-height: 23px;
-  /* identical to box height */
-
   text-transform: uppercase;
-
-  /* Black */
-
   color: #a9943c;
 `;
 
@@ -146,7 +140,7 @@ export default function Home() {
 export function getServerSideProps(context: GetServerSidePropsContext) {
   const token = context.req.cookies.sessionToken;
 
-  // if there is a token, redirect to discovert
+  // if there is a token, redirect to discovery
   if (token) {
     return {
       redirect: {

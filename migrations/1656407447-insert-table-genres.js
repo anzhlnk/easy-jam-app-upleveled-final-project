@@ -86,7 +86,6 @@ const genreDatabase = [
   },
 ];
 
-// //migration start
 exports.up = async (sql) => {
   await sql`
 INSERT INTO genres
@@ -102,4 +101,3 @@ WHERE
 genre_name = ${genre.genre_name}`;
   }
 };
-// end of migration
