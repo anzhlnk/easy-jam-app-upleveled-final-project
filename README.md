@@ -6,6 +6,21 @@ Go through the list of matching results or jump into a swiping mode. Update sear
 
 The deployed version can be found [here](https://easy-jam.herokuapp.com).
 
+<img alt="Video of the project" src="public/journey.gif">
+
+## Functionalities
+
+- Multi-step registration form
+- User authentication (registration and login)
+- User authorisation (API only allows the account owner to modify or delete info)
+- CSRF mitigation using one of the token validation techniques suggested by OWASP
+- Logout, user info update and user delete
+- Mutual matching based on user profiles (2-step process in PostgreSQL)
+- 2 Discovery modes (list view and swiping mode)
+- Chat built with Ably
+- Suggestion of the closest rehearsal studio for 2 users
+- Possibility to check other users’ profiles, keep yours up to date and update profile’s visibility status
+
 ## Screenshots
 
 | Landing page                                                    | Filters                                                | List of Results                                                        |
@@ -31,19 +46,6 @@ The deployed version can be found [here](https://easy-jam.herokuapp.com).
 ### Database Schema in DrawSQL
 
 <img alt="DrawSQL"  src="public/drawSQL.png">
-
-## Functionalities
-
-- Multi-step registration form
-- User authentication (registration and login)
-- User authorisation (API only allows the account owner to modify or delete info)
-- CSRF mitigation using one of the token validation techniques suggested by OWASP
-- Logout, user info update and user delete
-- Mutual matching based on user profiles (2-step process in PostgreSQL)
-- 2 Discovery modes (list view and swiping mode)
-- Chat built with Ably
-- Suggestion of the closest rehearsal studio for 2 users
-- Possibility to check other users’ profiles, keep yours up to date and update profile’s visibility status
 
 ## Technologies
 
