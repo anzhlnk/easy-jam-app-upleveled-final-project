@@ -1,6 +1,7 @@
 # EASYJAM <br/>Web application for finding a like-minded person to jam with based on instruments, genres, gender, age and distance
 
 ## Description
+This is my final project for the web development bootcamp from https://upleveled.io/.
 
 Go through the list of matching results or jump into a swiping mode. Update searching criteria. Switch off the visibility status not to be displayed in the searching results. Check other users profiles and update yours at any time. Start a conversation and check the suggested closest rehearsal studio for 2 users.
 
