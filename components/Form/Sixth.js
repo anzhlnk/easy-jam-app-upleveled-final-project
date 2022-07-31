@@ -22,7 +22,6 @@ export const inputContainer = css`
   input {
     width: 25em;
     height: 50px;
-    margin-top: 1em;
     box-sizing: border-box;
     background: #f8fafd;
     border: 1px solid #e7ecf3;
@@ -61,6 +60,19 @@ export const nextButton = css`
   border-radius: 100px;
   border: none;
   color: #ffffff;
+`;
+
+const additionalText = css`
+  margin-bottom: 0px;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 24px;
+  text-align: center;
+  letter-spacing: -0.25px;
+
+  color: #5d6470;
 `;
 
 const Sixth = ({ nextPage, prevPage, handleFormData, values, googleAPI }) => {
@@ -119,7 +131,9 @@ const Sixth = ({ nextPage, prevPage, handleFormData, values, googleAPI }) => {
         {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
           <div css={inputContainer}>
             <input {...getInputProps({ placeholder: 'Type address' })} />
-
+            <span css={additionalText}>
+              *Please, click on one of the suggestions
+            </span>
             <div>
               {loading ? <div>...loading</div> : null}
 
@@ -149,7 +163,6 @@ const Sixth = ({ nextPage, prevPage, handleFormData, values, googleAPI }) => {
           </div>
         )}
       </PlacesAutocomplete>
-
       {error ? <div css={errorMessage}>Please,add your address</div> : ''}
 
       <div css={nextButtonContainer}>
