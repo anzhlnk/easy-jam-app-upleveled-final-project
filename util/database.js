@@ -359,7 +359,6 @@ export async function getPersonalDataIDByUserId(userId) {
     WHERE
       user_id = ${userId}
   `;
-  // return dataId && camelcaseKeys(dataId);
   return dataId.id;
 }
 
@@ -483,7 +482,6 @@ export async function getLocationIdByPersonalDataID(PersonalDataId) {
     personal_data
     WHERE
       id = ${PersonalDataId}`;
-  // return locationId && camelcaseKeys(locationId);
   return locationId.location_id;
 }
 
@@ -802,7 +800,40 @@ WHERE  personal_data_id= ${personal_data_id}
   return profilesByGender && camelcaseKeys(profilesByGender);
 }
 
-/* genres = > pass genre ids, current user personal id as parameter   */
+/* Second solution for filtering
+with user_gender_interested_in as(
+  SELECT
+  r.personal_data_id as buddy_personal_data_id,
+  p.id as personal_data_id,
+  p.status as visibility_status
+   FROM
+  personal_data p,
+  gender_requirements r
+  WHERE
+  p.status =1 AND
+  p.gender_id = r.gender_id AND
+  p.id != r.personal_data_id AND
+  p.id = 3),
+
+  other_users_intersted_in_current_user as (select gender_requirements.personal_data_id as personal_data_id_intersted_in_user
+  from gender_requirements, personal_data p
+  where gender_requirements.gender_id = p.gender_id
+  and p.id = 3),
+
+  other_users_intersted_in_current_user_visible as (
+  select other_users_intersted_in_current_user.personal_data_id_intersted_in_user as personal_data_id from other_users_intersted_in_current_user, personal_data
+  where other_users_intersted_in_current_user.personal_data_id_intersted_in_user = personal_data.id
+  AND personal_data.status = 1
+  ),
+
+  matches as (
+  select buddy_personal_data_id
+  from user_gender_interested_in, other_users_intersted_in_current_user_visible
+  where user_gender_interested_in.buddy_personal_data_id = other_users_intersted_in_current_user_visible.personal_data_id
+  )
+
+  select * from matches
+  */
 
 export async function getProfilesByGenres(personal_data_id) {
   if (!personal_data_id) return undefined;
@@ -842,19 +873,6 @@ genre_matches
 WHERE personal_data_id = ${personal_data_id}`;
   return profilesByGenres && camelcaseKeys(profilesByGenres);
 }
-
-// SELECT
-// DISTINCT users_genres.personal_data_id as personal_data_id
-// FROM
-// personal_data,
-// users_genres
-// WHERE
-// personal_data.status = 1 AND
-// personal_data_id = users_genres.personal_data_id AND
-// users_genres.genre_id in ${sql(genre_ids)} AND
-// users_genres.personal_data_id != ${personal_data_id}`;
-
-/* age = > pas the current user id */
 
 export async function getProfilesByAge(personal_data_id) {
   if (!personal_data_id) return undefined;
@@ -1276,8 +1294,6 @@ ORDER by second_step.timestamp desc
   `;
   return camelcaseKeys(chats);
 }
-
-// TO_CHAR(messages.timestamp, 'YYYY-MM-DD HH24:MI:SS') as timestamp,
 
 // studios
 
