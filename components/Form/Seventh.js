@@ -50,11 +50,11 @@ export const nextButtonContainer = css`
   display: flex;
   justify-content: right;
   width: 21em;
-  margin-top: 11.2em;
+  margin-top: 11.14em;
 
   @media (min-width: 500px) {
     width: 20em;
-    margin-top: 1.2em;
+    margin-top: 1.14em;
   }
 `;
 
