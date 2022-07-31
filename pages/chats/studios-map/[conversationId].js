@@ -114,7 +114,7 @@ const Studios = (props) => {
     <div>
       <Head>
         <title>Closest studio</title>
-        <meta name="description" content="About the app" />
+        <meta name="closest studio" content="Closest studio" />
       </Head>
       <main css={main}>
         <div css={headerContainer}>
