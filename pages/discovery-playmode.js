@@ -59,7 +59,7 @@ const contentContainer = css`
   }
 `;
 
-export default function UserProfile(props) {
+export default function DiscoveryPlayMode(props) {
   // if (!props.personalData || 'errors' in props) {
   //   return (
   //     <>
@@ -83,7 +83,7 @@ export default function UserProfile(props) {
     <div css={main}>
       <Head>
         <title>Discovery page</title>
-        <meta name="search for jamming" content="look for you jamming buddy" />
+        <meta name="search results" content="look for you jamming buddy" />
       </Head>
       <main>
         <div css={headerContainer}>
