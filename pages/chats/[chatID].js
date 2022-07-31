@@ -64,11 +64,11 @@ const AblyChatComponent = dynamic(
   { ssr: false },
 );
 
-export default function TestChat(props) {
+export default function Chat(props) {
   return 'errors' in props ? (
     <>
       <Head>
-        <meta name="description" content="Chats" />
+        <meta name="chat" content="Not authenticated" />
       </Head>
       <div css={headerContainer}>
         <Link href="/discovery">
@@ -85,7 +85,7 @@ export default function TestChat(props) {
   ) : (
     <>
       <Head>
-        <meta name="description" content="Chats" />
+        <meta name="chat" content="Chats" />
       </Head>
       <main css={main}>
         <div css={headerContainer}>
