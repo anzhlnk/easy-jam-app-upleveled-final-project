@@ -107,7 +107,7 @@ export default function Discovery(props) {
     <div>
       <Head>
         <title>Discovery page</title>
-        <meta name="search for jamming" content="look for you jamming buddy" />
+        <meta name="search results" content="look for you jamming buddy" />
       </Head>
       <main css={main}>
         <div css={headerContainer}>
