@@ -176,7 +176,7 @@ export default function UserDetail(props) {
       <>
         <Head>
           <title>User not found</title>
-          <meta name="description" content="User not found" />
+          <meta name="additional user info" content="User not found" />
         </Head>
         <h1>404 - User not found</h1>
       </>
@@ -187,7 +187,7 @@ export default function UserDetail(props) {
     <div css={contentAll}>
       <Head>
         <title>{props.personalData.firstName}</title>
-        <meta name="description" content="About the app" />
+        <meta name="additional user info" content="Additional user info" />
       </Head>
 
       <main>
