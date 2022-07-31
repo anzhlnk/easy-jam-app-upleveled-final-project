@@ -90,13 +90,13 @@ const errorsStyle = css`
   text-transform: uppercase;
 `;
 
-export default function UserDetail(props) {
+export default function ChatsOverview(props) {
   if ('errors' in props) {
     return (
       <main css={main}>
         <Head>
           <title>{props.errors}</title>
-          <meta name="description" content="User not found" />
+          <meta name="chats overview" content="User not found" />
         </Head>
         <div css={headerContainer}>
           <Link href="/discovery">
@@ -119,7 +119,7 @@ export default function UserDetail(props) {
       <main css={main}>
         <Head>
           <title>Chat</title>
-          <meta name="description" content="About the app" />
+          <meta name="chats overview" content="Chats overview" />
         </Head>
         <div css={headerContainer}>
           <Link href="/discovery">
