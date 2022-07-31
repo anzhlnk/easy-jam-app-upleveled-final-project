@@ -14,7 +14,7 @@ export default function UserProfile(props: Props) {
       <>
         <Head>
           <title>User not found</title>
-          <meta name="description" content="User not found" />
+          <meta name="user profile" content="other user profile" />
         </Head>
         <h1>404 - User not found</h1>
       </>
