@@ -228,7 +228,7 @@ export default function UserProfile(props) {
       <>
         <Head>
           <title>User not found</title>
-          <meta name="description" content="User not found" />
+          <meta name="user" content="User not found" />
         </Head>
         <h1>404 - User not found</h1>
       </>
@@ -238,7 +238,7 @@ export default function UserProfile(props) {
     <div>
       <Head>
         <title>{props.personalData.firstName}</title>
-        <meta name="description" content="About the app" />
+        <meta name="user profile" content="other user profile" />
       </Head>
 
       <main css={main}>
