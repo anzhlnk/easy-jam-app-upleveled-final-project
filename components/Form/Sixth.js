@@ -163,7 +163,7 @@ const Sixth = ({ nextPage, prevPage, handleFormData, values, googleAPI }) => {
           </div>
         )}
       </PlacesAutocomplete>
-      {error ? <div css={errorMessage}>Please,add your address</div> : ''}
+      {error ? <div css={errorMessage}>Please, add your address</div> : ''}
 
       <div css={nextButtonContainer}>
         <button css={nextButton}>{'>'}</button>
