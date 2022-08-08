@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 import { useState } from 'react';
+import { errorMessage } from '../../pages/login';
 import { main, title } from '../../pages/register';
 import { contentContainer, nextButton } from './First';
 import { headerContainer, prevButton, prevButtonContainer } from './Second';
@@ -53,8 +54,6 @@ const Third = ({ nextPage, prevPage, handleFormData, values, genders }) => {
     }
   };
 
-  if (error) console.error('values.gender is empty');
-
   return (
     <form onSubmit={submitFormData} css={main}>
       <div css={headerContainer}>
@@ -106,6 +105,7 @@ const Third = ({ nextPage, prevPage, handleFormData, values, genders }) => {
           <span> {genders[2].genderName}</span>
         </div>
       </div>
+      {error ? <div css={errorMessage}>Please, add your gender</div> : ''}
       <div css={nextButtonContainer}>
         <button css={nextButton}>{'>'}</button>
       </div>

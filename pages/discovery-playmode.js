@@ -25,6 +25,7 @@ import {
 } from '../util/database';
 import {
   allContentContainer,
+  authenticationError,
   emptyResult,
   headerContainer,
   main,
@@ -60,18 +61,6 @@ const contentContainer = css`
 `;
 
 export default function DiscoveryPlayMode(props) {
-  // if (!props.personalData || 'errors' in props) {
-  //   return (
-  //     <>
-  //       <Head>
-  //         <title>User not found</title>
-  //         <meta name="description" content="User not found" />
-  //       </Head>
-  //       <h1>404 - User not found</h1>
-  //     </>
-  //   );
-  // }
-
   const matchingProfiles = [
     { percentage: '100% match', users: props.personalDataUsersFull },
     { percentage: '80% match', users: props.personalDataUsersEighty },
@@ -79,6 +68,22 @@ export default function DiscoveryPlayMode(props) {
     { percentage: '40% match', users: props.personalDataUsersFourty },
     { percentage: '20% match', users: props.personalDataUsersTwenty },
   ];
+
+  if ('errors' in props) {
+    return (
+      <>
+        <Head>
+          <title>User not found</title>
+          <meta name="user not found" content="User not found" />
+        </Head>
+        <div css={authenticationError}>
+          {props.errors} Please, <Link href="/register"> Sign up </Link> or{' '}
+          <Link href="/login">Log in</Link>
+        </div>
+      </>
+    );
+  }
+
   return (
     <div css={main}>
       <Head>
@@ -173,16 +178,17 @@ export default function DiscoveryPlayMode(props) {
 export async function getServerSideProps(context) {
   const sessionToken = context.req.cookies.sessionToken;
   const session = await getValidSessionByToken(sessionToken);
+
+  if (!session) {
+    return {
+      props: { errors: 'Not authenticated.' },
+    };
+  }
+
   const csrfToken = await createCsrfToken(session.csrfSecret);
   const user = await getUserByValidSessionToken(
     context.req.cookies.sessionToken,
   );
-
-  if (!session) {
-    return {
-      props: { errors: 'Not authenticated' },
-    };
-  }
 
   const dataId = await getPersonalDataIDByUserId(user.id);
   const locationId = await getLocationIdByPersonalDataID(dataId);

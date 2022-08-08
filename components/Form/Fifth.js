@@ -79,7 +79,7 @@ const Fifth = ({ nextPage, prevPage, handleFormData, values, genres }) => {
           />
         </div>
         {error ? (
-          <div css={errorMessage}>Please add at least 3 genres</div>
+          <div css={errorMessage}>Please, add at least 3 genres</div>
         ) : (
           ''
         )}

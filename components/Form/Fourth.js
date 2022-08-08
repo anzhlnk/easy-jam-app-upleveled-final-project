@@ -124,7 +124,7 @@ const Fourth = ({
         />
       </div>
       {error ? (
-        <div css={errorMessage}>Please add at least 1 instrument</div>
+        <div css={errorMessage}>Please, add at least 1 instrument</div>
       ) : (
         ''
       )}

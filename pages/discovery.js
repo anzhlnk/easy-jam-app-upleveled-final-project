@@ -95,6 +95,37 @@ export const emptyResult = css`
   text-transform: uppercase;
 `;
 
+export const authenticationError = css`
+  @media (min-width: 900px) {
+    width: 100vw;
+
+    a {
+      margin-right: 8px;
+      margin-left: 8px;
+    }
+  }
+  position: absolute;
+  bottom: 50%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Michroma';
+  word-spacing: 4px;
+  font-size: 14px;
+  line-height: 40px;
+  text-transform: uppercase;
+  a {
+    margin-right: 8px;
+    margin-left: 8px;
+  }
+  a {
+    text-decoration: none;
+    color: #1b3d5f;
+  }
+`;
+
 export default function Discovery(props) {
   const matchingProfiles = [
     { numberOfMatchingCategories: 5, users: props.personalDataUsersFull },
@@ -103,6 +134,20 @@ export default function Discovery(props) {
     { numberOfMatchingCategories: 2, users: props.personalDataUsersFourty },
     { numberOfMatchingCategories: 1, users: props.personalDataUsersTwenty },
   ];
+  if ('errors' in props) {
+    return (
+      <>
+        <Head>
+          <title>User not found</title>
+          <meta name="user not found" content="User not found" />
+        </Head>
+        <div css={authenticationError}>
+          {props.errors} Please, <Link href="/register"> Sign up </Link> or{' '}
+          <Link href="/login">Log in</Link>
+        </div>
+      </>
+    );
+  }
   return (
     <div>
       <Head>
@@ -186,16 +231,15 @@ export default function Discovery(props) {
 export async function getServerSideProps(context) {
   const sessionToken = context.req.cookies.sessionToken;
   const session = await getValidSessionByToken(sessionToken);
-  const user = await getUserByValidSessionToken(
-    context.req.cookies.sessionToken,
-  );
 
   if (!session) {
     return {
-      props: { errors: 'Not authenticated' },
+      props: { errors: 'Not authenticated.' },
     };
   }
-
+  const user = await getUserByValidSessionToken(
+    context.req.cookies.sessionToken,
+  );
   const dataId = await getPersonalDataIDByUserId(user.id);
   const locationId = await getLocationIdByPersonalDataID(dataId);
 

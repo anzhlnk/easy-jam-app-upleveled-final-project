@@ -1,6 +1,8 @@
 import 'react-datepicker/dist/react-datepicker.css';
 import { css } from '@emotion/react';
+import { useState } from 'react';
 import DatePicker from 'react-datepicker';
+import { errorMessage } from '../../pages/login';
 import { main, title } from '../../pages/register';
 import { nextButton, nextButtonContainer } from './First';
 
@@ -79,9 +81,14 @@ export const headerContainer = css`
 `;
 
 const Second = ({ nextPage, prevPage, handleFormData, values }) => {
+  const [error, setError] = useState(false);
   const submitFormData = (e) => {
     e.preventDefault();
-    nextPage();
+    if (!values.birthday) {
+      setError(true);
+    } else {
+      nextPage();
+    }
   };
 
   let twelveYearsAgo = new Date();
@@ -118,6 +125,11 @@ const Second = ({ nextPage, prevPage, handleFormData, values }) => {
           }}
         />
       </div>
+      {error ? (
+        <div css={errorMessage}>Please, add your date of birth</div>
+      ) : (
+        ''
+      )}
       <div css={nextButtonContainer}>
         <button css={nextButton}>{'>'}</button>
       </div>

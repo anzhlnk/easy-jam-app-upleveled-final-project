@@ -23,6 +23,7 @@ import {
   getUserStatus,
   getValidSessionByToken,
 } from '../util/database';
+import { authenticationError } from './discovery';
 import { errorMessage } from './login';
 
 const container = css`
@@ -340,7 +341,20 @@ export default function Filters(props) {
       await router.push('/discovery');
     }
   };
-
+  // if ('errors' in props) {
+  //   return (
+  //     <>
+  //       <Head>
+  //         <title>User not found</title>
+  //         <meta name="user not found" content="User not found" />
+  //       </Head>
+  //       <div css={authenticationError}>
+  //         {props.errors} Please, <Link href="/register"> Sign up </Link> or{' '}
+  //         <Link href="/login">Log in</Link>
+  //       </div>
+  //     </>
+  //   );
+  // }
   return (
     <div>
       <Head>
@@ -532,16 +546,16 @@ export default function Filters(props) {
 export async function getServerSideProps(context) {
   const sessionToken = context.req.cookies.sessionToken;
   const session = await getValidSessionByToken(sessionToken);
-  const user = await getUserByValidSessionToken(
-    context.req.cookies.sessionToken,
-  );
 
   if (!session) {
     return {
-      props: { errors: 'Not authenticated' },
+      props: { errors: 'Not authenticated.' },
     };
   }
 
+  const user = await getUserByValidSessionToken(
+    context.req.cookies.sessionToken,
+  );
   const csrfToken = await createCsrfToken(session.csrfSecret);
   const dataId = await getPersonalDataIDByUserId(user.id);
   const instruments = await getInstruments();
