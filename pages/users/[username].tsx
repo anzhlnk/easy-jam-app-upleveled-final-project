@@ -30,17 +30,6 @@ type Props = {
 };
 
 export default function UserProfile(props: Props) {
-  if (!props.user) {
-    return (
-      <>
-        <Head>
-          <title>User not found</title>
-          <meta name="user profile" content="other user profile" />
-        </Head>
-        <h1>404 - User not found</h1>
-      </>
-    );
-  }
   if ('errors' in props) {
     return (
       <>
@@ -52,6 +41,17 @@ export default function UserProfile(props: Props) {
           {props.errors} Please, <Link href="/register"> Sign up </Link> or{' '}
           <Link href="/login">Log in</Link>
         </div>
+      </>
+    );
+  }
+  if (!props.user) {
+    return (
+      <>
+        <Head>
+          <title>User not found</title>
+          <meta name="user profile" content="other user profile" />
+        </Head>
+        <h1 css={authenticationError}>404 - User not found</h1>
       </>
     );
   }
