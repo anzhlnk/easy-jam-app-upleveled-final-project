@@ -29,7 +29,7 @@ export const prevButton = css`
   z-index: 1;
   margin-bottom: 38px;
 `;
-export const datePickerContainer = css`
+export const datePickerContainer = (isBlack) => css`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -51,16 +51,17 @@ export const datePickerContainer = css`
       font-family: 'Inter';
       font-style: normal;
       font-weight: 400;
-      font-size: 16px;
+      /* font-size: 16px; */
       letter-spacing: -0.25px;
-      color: #a7b0c0;
+      color: ${isBlack ? 'black' : '#a7b0c0'};
       line-height: 24px;
 
       letter-spacing: -0.25px;
       padding-left: 2em;
 
       :focus {
-        outline-color: #1b3d5f;
+        outline: none !important;
+        border-color: #1b3d5f;
       }
     }
   }
@@ -82,6 +83,7 @@ export const headerContainer = css`
 
 const Second = ({ nextPage, prevPage, handleFormData, values }) => {
   const [error, setError] = useState(false);
+  const [fontBlack, setFontBlack] = useState(false);
   const submitFormData = (e) => {
     e.preventDefault();
     if (!values.birthday) {
@@ -110,7 +112,7 @@ const Second = ({ nextPage, prevPage, handleFormData, values }) => {
           />
         </button>
       </div>
-      <div css={datePickerContainer}>
+      <div css={datePickerContainer(fontBlack)}>
         <DatePicker
           wrapperClassName="date-picker"
           dateFormat="dd/MM/yyyy"
@@ -122,6 +124,7 @@ const Second = ({ nextPage, prevPage, handleFormData, values }) => {
           scrollableYearDropdown
           onChange={(data) => {
             handleFormData('birthday', data);
+            setFontBlack(true);
           }}
         />
       </div>
