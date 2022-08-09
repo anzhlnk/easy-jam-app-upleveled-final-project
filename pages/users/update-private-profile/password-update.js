@@ -81,6 +81,10 @@ export const inputContainer = css`
     border: 1px solid #e7ecf3;
     border-radius: 25px;
     padding-left: 2em;
+    :focus {
+      outline: none !important;
+      border-color: #1b3d5f;
+    }
   }
 `;
 
