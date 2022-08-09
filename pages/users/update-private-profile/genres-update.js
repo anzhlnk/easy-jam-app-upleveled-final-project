@@ -66,7 +66,7 @@ const UserGenreUpdate = (props) => {
 
   const handleLinkClick = async (e) => {
     e.preventDefault();
-    if (valueUserGenres.length === 0) {
+    if (valueUserGenres.length < 3) {
       setError(true);
     } else {
       await router.push(`/users/update-private-profile/additional-info`);
