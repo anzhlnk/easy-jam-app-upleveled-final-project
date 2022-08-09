@@ -98,6 +98,10 @@ export const inputContainer = css`
     border: 1px solid #e7ecf3;
     border-radius: 25px;
     padding-left: 2em;
+    :focus {
+      outline: none !important;
+      border-color: #1b3d5f;
+    }
   }
 `;
 
@@ -152,7 +156,8 @@ export default function UpdatePersonalInfo(props) {
     if (
       validator.isEmpty(firstName) ||
       validator.isEmpty(lastName) ||
-      validator.isEmpty(location)
+      validator.isEmpty(location) ||
+      !birthday
     ) {
       setError(true);
     }
@@ -268,8 +273,8 @@ export default function UpdatePersonalInfo(props) {
             />
           </div>
         </div>
+        {error ? <div css={errorMessage}>Please, fill all fields</div> : ''}
       </div>
-      {error ? <div css={errorMessage}>Please, enter your full name</div> : ''}
 
       <div css={confirmButtonContainer}>
         <button
