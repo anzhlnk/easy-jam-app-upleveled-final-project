@@ -73,8 +73,8 @@ export default function DiscoveryPlayMode(props) {
     return (
       <>
         <Head>
-          <title>User not found</title>
-          <meta name="user not found" content="User not found" />
+          <title>Not authenticated </title>
+          <meta name="Not authenticated" content="Not authenticated" />
         </Head>
         <div css={authenticationError}>
           {props.errors} Please, <Link href="/register"> Sign up </Link> or{' '}
