@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import Select from 'react-select';
 import { colourStyles } from '../../../components/Form/Fourth';
@@ -31,6 +31,12 @@ export const headerContainer = css`
   margin-left: 24px;
   margin-top: -24px;
   margin-bottom: 2em;
+  button {
+    height: 24px;
+    width: 24px;
+    border: none;
+    background-color: white;
+  }
 `;
 
 export const inputContainer = css`
@@ -52,8 +58,9 @@ export const inputContainer = css`
 `;
 
 const UserIsntrumentUpdate = (props) => {
-  // const [error, setError] = useState(false);
+  const [error, setError] = useState(false);
   const [errors, setErrors] = useState([]);
+  const router = useRouter();
 
   const displayedInstrumentOptions = [
     { label: 'Select All', value: 'all' },
@@ -73,6 +80,15 @@ const UserIsntrumentUpdate = (props) => {
       };
     }),
   );
+
+  const handleLinkClick = async (e) => {
+    e.preventDefault();
+    if (valueUserInstruments.length === 0) {
+      setError(true);
+    } else {
+      await router.push(`/users/update-private-profile/additional-info`);
+    }
+  };
 
   // API call for deleting instruments
 
@@ -139,13 +155,13 @@ const UserIsntrumentUpdate = (props) => {
   return (
     <form css={main}>
       <div css={headerContainer}>
-        <Link href="/users/update-private-profile/additional-info">
+        <button onClick={handleLinkClick}>
           <img
             src="/back-icon.png"
             alt="back button"
             style={{ width: 24, height: 24 }}
           />
-        </Link>
+        </button>
         <h1 css={title}> I'm playing...</h1>
       </div>
       <div css={inputContainer}>
@@ -179,21 +195,20 @@ const UserIsntrumentUpdate = (props) => {
             },
           })}
         />
+        {error ? (
+          <div css={errorMessage}>Please, add at least 1 instrument</div>
+        ) : (
+          ''
+        )}
+        {errors.map((issue) => {
+          console.error(issue);
+          return (
+            <div key={`error-${issue.message}`} css={errorMessage}>
+              {issue.message}
+            </div>
+          );
+        })}
       </div>
-      {/* {error ? (
-        <div css={errorMessage}>Please add at least 1 instrument</div>
-      ) : (
-        ''
-      )} */}
-
-      {errors.map((issue) => {
-        console.error(issue);
-        return (
-          <div key={`error-${issue.message}`} css={errorMessage}>
-            {issue.message}
-          </div>
-        );
-      })}
     </form>
   );
 };

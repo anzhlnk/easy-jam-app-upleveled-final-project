@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import Select from 'react-select';
 import { colourStyles } from '../../../components/Form/Fourth';
@@ -12,6 +12,7 @@ import {
   getValidSessionByToken,
 } from '../../../util/database';
 import { main } from '../../discovery';
+import { errorMessage } from '../../login';
 import { title } from '../usersbyid/[userId]';
 import { inputContainer } from './instruments-update';
 
@@ -31,20 +32,19 @@ export const headerContainer = css`
   margin-left: 24px;
   margin-top: -24px;
   margin-bottom: 2em;
+  button {
+    height: 24px;
+    width: 24px;
+    border: none;
+    background-color: white;
+  }
 `;
 
 const UserGenreUpdate = (props) => {
   const [errors, setErrors] = useState([]);
-  // const [error, setError] = useState(false);
-  // const submitFormData = (e) => {
-  //   e.preventDefault();
+  const [error, setError] = useState(false);
+  const router = useRouter();
 
-  //   if (values.genre.length < 3) {
-  //     setError(true);
-  //   } else {
-  //     nextPage();
-  //   }
-  // };
   const displayedGenreOptions = [
     { label: 'Select All', value: 'all' },
     ...props.genres.map((currentGenre) => {
@@ -64,6 +64,14 @@ const UserGenreUpdate = (props) => {
     }),
   );
 
+  const handleLinkClick = async (e) => {
+    e.preventDefault();
+    if (valueUserGenres.length === 0) {
+      setError(true);
+    } else {
+      await router.push(`/users/update-private-profile/additional-info`);
+    }
+  };
   // API call for deleting instruments
 
   async function removeOption(removedItemId) {
@@ -133,13 +141,13 @@ const UserGenreUpdate = (props) => {
       // onSubmit={submitFormData}
     >
       <div css={headerContainer}>
-        <Link href="/users/update-private-profile/additional-info">
+        <button onClick={handleLinkClick}>
           <img
             src="/back-icon.png"
             alt="back button"
             style={{ width: 24, height: 24 }}
           />
-        </Link>
+        </button>
         <h1 css={title}>The genres I'd play... </h1>
       </div>
       <div css={inputContainer}>
@@ -171,13 +179,17 @@ const UserGenreUpdate = (props) => {
             },
           })}
         />
+        {error ? (
+          <div css={errorMessage}>Please add at least 3 genres</div>
+        ) : (
+          ''
+        )}
+        {errors.map((issue) => (
+          <div key={`error-${issue.message}`} css={errorMessage}>
+            {error.message}
+          </div>
+        ))}
       </div>
-      {/* {error ? <div css={errorMessage}>Please add at least 3 genres</div> : ''}
-      {errors.map((issue) => (
-        <div key={`error-${issue.message}`} css={errorMessage}>
-          {error.message}
-        </div>
-      ))} */}
     </form>
   );
 };
