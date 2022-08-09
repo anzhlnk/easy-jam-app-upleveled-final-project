@@ -1,13 +1,34 @@
+import { css } from '@emotion/react';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
-import { getUserByUsername } from '../../util/database';
+import Link from 'next/link';
+import { getUserByUsername, getValidSessionByToken } from '../../util/database';
+import { authenticationError } from '../discovery';
+
+const headerStyle = css`
+  position: absolute;
+  bottom: 50%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Michroma';
+  word-spacing: 4px;
+  font-size: 14px;
+  line-height: 40px;
+  text-transform: uppercase;
+  width: 100vw;
+`;
 
 type Props = {
   user?: {
     id: number;
     username: string;
   };
+  errors?: string;
 };
+
 export default function UserProfile(props: Props) {
   if (!props.user) {
     return (
@@ -20,17 +41,29 @@ export default function UserProfile(props: Props) {
       </>
     );
   }
-
+  if ('errors' in props) {
+    return (
+      <>
+        <Head>
+          <title>Not authenticated </title>
+          <meta name="Not authenticated" content="Not authenticated" />
+        </Head>
+        <div css={authenticationError}>
+          {props.errors} Please, <Link href="/register"> Sign up </Link> or{' '}
+          <Link href="/login">Log in</Link>
+        </div>
+      </>
+    );
+  }
   return (
     <div>
       <Head>
         <title>{props.user.id}</title>
-        <meta name="description" content="About the app" />
+        <meta name="user profile" content="other user profile" />
       </Head>
 
       <main>
-        <h1>User # {props.user.id}</h1>
-        <div>username: {props.user.username} </div>
+        <h1 css={headerStyle}>Coming soon...</h1>
       </main>
     </div>
   );
@@ -41,6 +74,13 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   if (!userIdFromUrl || Array.isArray(userIdFromUrl)) {
     return {
       props: {},
+    };
+  }
+  const sessionToken = context.req.cookies.sessionToken;
+  const session = await getValidSessionByToken(sessionToken);
+  if (!session) {
+    return {
+      props: { errors: 'Not authenticated' },
     };
   }
   const user = await getUserByUsername(userIdFromUrl);
