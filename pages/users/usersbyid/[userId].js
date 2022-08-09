@@ -320,13 +320,12 @@ export async function getServerSideProps(context) {
 
   const sessionToken = context.req.cookies.sessionToken;
   const session = await getValidSessionByToken(sessionToken);
-  const csrfToken = await createCsrfToken(session.csrfSecret);
   if (!session) {
     return {
       props: { errors: 'Not authenticated' },
     };
   }
-
+  const csrfToken = await createCsrfToken(session.csrfSecret);
   const currentUser = await getUserByValidSessionToken(
     context.req.cookies.sessionToken,
   );
