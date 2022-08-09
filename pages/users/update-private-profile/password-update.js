@@ -162,13 +162,13 @@ export default function UpdatePassword(props) {
             setConfirmedNewPassword(event.currentTarget.value)
           }
         />
+        {error ? <div css={errorMessage}>Please, fill all fields</div> : ''}
+        {errors.map((errorFromDb) => (
+          <div key={`error-${errorFromDb.message}`} css={errorMessage}>
+            {errorFromDb.message}
+          </div>
+        ))}
       </div>
-      {error ? <div css={errorMessage}>Please, fill all fields</div> : ''}
-      {errors.map((errorFromDb) => (
-        <div key={`error-${errorFromDb.message}`} css={errorMessage}>
-          {errorFromDb.message}
-        </div>
-      ))}
 
       <div css={confirmButtonContainer}>
         <button css={confirmButton} onClick={updatePassword}>
