@@ -94,9 +94,9 @@ export default async function handler(
     const passwordHash = await bcrypt.hash(req.body.newPassword, 12);
 
     // to update the password
-    await updatePassword(username, passwordHash);
+    const updatedPassword = await updatePassword(username, passwordHash);
 
-    res.status(200);
+    res.status(200).json(updatedPassword);
   } else {
     res.status(405).json({ errors: [{ message: 'method not allowed' }] });
   }
