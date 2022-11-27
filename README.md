@@ -5,8 +5,6 @@ This is my final project for the web development bootcamp from https://upleveled
 
 Go through the list of matching results or jump into a swiping mode. Update searching criteria. Switch off the visibility status not to be displayed in the searching results. Check other users profiles and update yours at any time. Start a conversation and check the suggested closest rehearsal studio for 2 users.
 
-The deployed version can be found [here](https://easy-jam.herokuapp.com).
-
 <img alt="Video of the project" src="public/journey.gif">
 
 ## Functionalities
@@ -82,15 +80,3 @@ yarn
 - Install dotenv-cli with yarn add dotenv-cli
 - Run the migrations with yarn migrate up
 - Start the server by running yarn dev
-
-## Deploy on Heroku
-
-- Sign up at Heroku: https://www.heroku.com/.
-- Create a new App
-- Choose a name and select the "Europe" Region
-- Click "Connect to GitHub"
-- Search for your repository and click on "Connect"
-- Click on "Enable Automatic Deploys"
-- Go back to the Overview tab and click on "Configure Add-On"
-- Search for "Postgres" and select "Heroku Postgres"
-- Trigger a deploy by pushing your repo to GitHub
